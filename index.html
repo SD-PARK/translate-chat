@@ -21,13 +21,29 @@
                 const socket = io();
                 const name = makeRandomName();
 
+                // 접속 시 유저 정보를 서버에 전송
                 socket.emit('login', {
                     name: name,
                     userid: name + '@gmail.com'
                 });
 
+                // 접속한 유저 정보를 서버에서 받아 출력
                 socket.on('login', (name) => {
                     $('#chatLogs').append('<div>' + name + 'has joined</div>');
+                });
+
+                // Send 버튼 클릭 시
+                $('form').submit((e) => {
+                    e.preventDefault();
+                    let $msgForm = $('#msgForm');
+
+                    socket.emit('chat', $msgForm.val());
+                    $msgForm.val('');
+                });
+
+                // 서버에서 채팅 메시지와 유저 네임을 받아와 출력
+                socket.on('chat', (data) => {
+                    $('#chatLogs').append('<div><strong>' + data.name + '</strong>: ' + data.msg + '</div>');
                 });
 
                 // 무작위 닉네임 생성(영문 3글자, 숫자 2글자)

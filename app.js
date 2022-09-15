@@ -17,7 +17,15 @@ io.on('connection', (socket) => {
         socket.userid = data.userid;
 
         io.emit('login', socket.name);
-    })
+    });
+
+    socket.on('chat', (msg) => {
+        console.log(socket.name + ': ' + msg);
+        io.emit('chat', {
+            name: socket.name,
+            msg: msg
+        });
+    });
 });
 
 // 서버 실행 시
