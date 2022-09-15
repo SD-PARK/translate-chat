@@ -14,10 +14,35 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Send</button>
             </form>
+            <div id="chatLogs"></div>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
             <script src="/socket.io/socket.io.js"></script>
             <script>
                 const socket = io();
+                const name = makeRandomName();
+
+                socket.emit('login', {
+                    name: name,
+                    userid: name + '@gmail.com'
+                });
+
+                socket.on('login', (name) => {
+                    $('#chatLogs').append('<div>' + name + 'has joined</div>');
+                });
+
+                // 무작위 닉네임 생성(영문 3글자, 숫자 2글자)
+                function makeRandomName() {
+                    let name = '';
+                    let possible = 'abcdefghijklmnopqrstuvwyz';
+                    let possibleNum = '1234567890';
+
+                    for(let i=0; i<3; i++)
+                        name += possible.charAt(Math.floor(Math.random() * possible.length));
+                    for(let i=0; i<3; i++)
+                        name += possibleNum.charAt(Math.floor(Math.random() * possibleNum.length));
+                    
+                    return name;
+                }
             </script>
         </div>
     </body>

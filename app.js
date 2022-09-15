@@ -11,7 +11,13 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    
+    socket.on('login', (data) => {
+        console.log('client logged-in:\n name: ' + data.name + '\n userid: ' + userid);
+        socket.name = data.name;
+        socket.userid = data.userid;
+
+        io.emit('login', socket.name);
+    })
 });
 
 // 서버 실행 시
