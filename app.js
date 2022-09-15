@@ -7,7 +7,7 @@ const PORT = 3000;
 
 // Default(localhost:{PORT}) 주소로 접근 시
 app.get('/', (req, res) => {
-    res.sendFile(__dirname, '/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', (socket) => {
