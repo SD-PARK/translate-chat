@@ -20,10 +20,11 @@ io.on('connection', (socket) => {
 
     // 클라이언트 채팅 입력 시
     socket.on('chat', (msg) => {
-        console.log(socket.name + ': ' + msg);
+        console.log('Room ' + socket.room + ';' + socket.name + ': ' + msg);
         io.to(socket.room).emit('chat', {
             name: socket.name,
-            msg: msg
+            msg: msg,
+            time: timePrint()
         });
     });
 
@@ -38,6 +39,16 @@ io.on('connection', (socket) => {
 
         io.to(socket.room).emit('joinRoom', socket.name);
     });
+
+    // 현재 시간 구하기
+    function timePrint() {
+        let time = new Date();
+        let hours = ('0' + time.getHours()).slice(-2);
+        let minutes = ('0' + time.getMinutes()).slice(-2);
+        let seconds = ('0' + time.getSeconds()).slice(-2);
+
+        return hours + ':' + minutes + ':' + seconds;
+    }
 });
 
 // 서버 실행 시
