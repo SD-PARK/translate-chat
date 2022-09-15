@@ -11,6 +11,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+    // 클라이언트 접속 시
     socket.on('login', (data) => {
         console.log('client logged-in:\n name: ' + data.name + '\n userid: ' + data.userid);
         socket.name = data.name;
@@ -19,6 +20,7 @@ io.on('connection', (socket) => {
         io.emit('login', socket.name);
     });
 
+    // 클라이언트 채팅 입력 시
     socket.on('chat', (msg) => {
         console.log(socket.name + ': ' + msg);
         io.emit('chat', {
