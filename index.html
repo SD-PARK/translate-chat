@@ -7,12 +7,20 @@
     <body>
         <div class="container">
             <h3>Socket.io Chat Example</h3>
-            <form class="form-inline">
+            <form class="form-horizontal">
                 <div class="form-group">
-                    <label for="msgForm">Send: </label>
-                    <input type="text" id="msgForm" class="form-control">
+                    <button id="room1" class="btn btn-info">Join Room1</button>
+                    <button id="room2" class="btn btn-info">Join Room2</button>
                 </div>
-                <button type="submit" class="btn btn-primary">Send</button>
+                <div class="form-group">
+                    <label>Room Number: </label>
+                    <label id="roomNum">None</label> 
+                </div>
+                <div class="form-inline form-group">
+                    <label for="msgForm">Send: </label>
+                    <input type="text" id="msgForm" class="form-control" onkeypress="if(event.keyCode==13){$('form').submit()}">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
             </form>
             <div id="chatLogs"></div>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -20,6 +28,7 @@
             <script>
                 const socket = io();
                 const name = makeRandomName();
+                let room = '';
 
                 // 접속 시 유저 정보를 서버에 전송
                 socket.emit('login', {
@@ -27,18 +36,34 @@
                     userid: name + '@gmail.com'
                 });
 
-                // 접속한 유저 정보를 서버에서 받아 출력
-                socket.on('login', (name) => {
-                    $('#chatLogs').append('<div>' + name + ' has joined</div>');
+                // 1번 방 선택 시
+                $('#room1').click((e) => {
+                    e.preventDefault();
+                    roomSelect('1');
+                });
+
+                // 2번 방 선택 시
+                $('#room2').click((e) => {
+                    e.preventDefault();
+                    roomSelect('2');
+                });
+
+                // 유저 방 입장 이벤트
+                socket.on('joinRoom', (name) => {
+                    $('#chatLogs').append('<div>' + name + ' has joined Room ' + room + '</div>');
                 });
 
                 // Send 버튼 클릭 시
                 $('form').submit((e) => {
                     e.preventDefault();
-                    let $msgForm = $('#msgForm');
+                    if (room == '') {
+                        $('#chatLogs').append('<div><strong>No Room Selected.</strong></div>');
+                    } else {
+                        let $msgForm = $('#msgForm');
 
-                    socket.emit('chat', $msgForm.val());
-                    $msgForm.val('');
+                        socket.emit('chat', $msgForm.val());
+                        $msgForm.val('');
+                    }
                 });
 
                 // 서버에서 채팅 메시지와 유저 네임을 받아와 출력
@@ -54,10 +79,20 @@
 
                     for(let i=0; i<3; i++)
                         name += possible.charAt(Math.floor(Math.random() * possible.length));
-                    for(let i=0; i<3; i++)
+                    for(let i=0; i<2; i++)
                         name += possibleNum.charAt(Math.floor(Math.random() * possibleNum.length));
                     
                     return name;
+                }
+
+                // 방 선택 함수
+                function roomSelect(roomNum) {
+                    if(room != roomNum) {
+                        room = roomNum;
+                        socket.emit('joinRoom', roomNum);
+                        $('#roomNum').text(roomNum);
+                        $('#chatLogs').empty();
+                    }
                 }
             </script>
         </div>
