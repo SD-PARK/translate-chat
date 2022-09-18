@@ -33,30 +33,28 @@
                 const name = makeRandomName();
                 let room = '';
 
-                // 접속 시 유저 정보를 서버에 전송
+                // 서버에 유저 정보 전송
                 socket.emit('login', {
                     name: name,
                     userid: name + '@gmail.com'
                 });
 
-                // 1번 방 선택 시
+                // 방 입장 이벤트
                 $('#room1').click((e) => {
                     e.preventDefault();
                     roomSelect('1');
                 });
-
-                // 2번 방 선택 시
                 $('#room2').click((e) => {
                     e.preventDefault();
                     roomSelect('2');
                 });
 
-                // 유저 방 입장 이벤트
+                // 같은 룸에 유저 입장 시 chatLogs에 알림 메세지 추가
                 socket.on('joinRoom', (name) => {
                     $('#chatLogs').append('<div>' + name + ' has joined Room ' + room + '</div><hr>');
                 });
 
-                // Send 버튼 클릭 시
+                // Send 버튼 클릭 시 방이 선택되어 있다면 서버에 메세지 전송
                 $('form').submit((e) => {
                     e.preventDefault();
                     if (room == '') {
@@ -69,12 +67,12 @@
                     }
                 });
 
-                // 서버에서 채팅 메시지와 유저 네임, 시간을 받아와 출력
+                // 전송받은 채팅 메시지와 닉네임, 시간 출력
                 socket.on('chat', (data) => {
                     $('#chatLogs').append('<div><strong>' + data.name + '</strong>: ' + data.msg + '<div style="float:right;">' + data.time + '</div></div><hr>');
                 });
 
-                // 무작위 닉네임 생성(영문 3글자, 숫자 2글자)
+                /** 무작위 닉네임 생성(영문 3글자, 숫자 2글자) */
                 function makeRandomName() {
                     let name = '';
                     let possible = 'abcdefghijklmnopqrstuvwyz';
@@ -88,7 +86,7 @@
                     return name;
                 }
 
-                // 방 선택 함수
+                /** 선택한 방이 현재 접속 중인 방이 아닐 경우 방 입장 및 변경 이벤트 실행 */
                 function roomSelect(roomNum) {
                     if(room != roomNum) {
                         room = roomNum;
