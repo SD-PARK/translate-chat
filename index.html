@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -9,7 +10,7 @@
     </head>
     <body>
         <div class="container">
-            <h3>Socket.io Chat Example</h3>
+            <h3 style="margin-left: -15px;">Socket.io Chat Example</h3>
             <form class="form-horizontal">
                 <div class="form-group">
                     <button id="room1" class="btn btn-info">Join Room1</button>
@@ -30,7 +31,8 @@
             <script src="/socket.io/socket.io.js"></script>
             <script>
                 const socket = io();
-                const name = makeRandomName();
+                let name = makeRandomName();
+                name = prompt('이름을 입력하세요', name) ?? name;
                 let room = '';
 
                 // 서버에 유저 정보 전송
@@ -51,7 +53,7 @@
 
                 // 같은 룸에 유저 입장 시 chatLogs에 알림 메세지 추가
                 socket.on('joinRoom', (name) => {
-                    $('#chatLogs').append('<div>' + name + ' has joined Room ' + room + '</div><hr>');
+                    $('#chatLogs').append('<div><strong>' + name + ' has joined Room ' + room + '</strong></div><hr>');
                 });
 
                 // Send 버튼 클릭 시 방이 선택되어 있다면 서버에 메세지 전송
