@@ -20,7 +20,7 @@ io.on('connection', (socket) => {
 
     // 채팅 입력 시 같은 룸의 모든 클라이언트에게 입력받은 채팅, 메세지, 시간 전송
     socket.on('chat', (msg) => {
-        console.log('Room ' + socket.room + ';' + socket.name + ': ' + msg);
+        console.log('Room ' + socket.room + ' → ' + socket.name + ': ' + msg);
         io.to(socket.room).emit('chat', {
             name: socket.name,
             msg: msg,
@@ -30,8 +30,10 @@ io.on('connection', (socket) => {
 
     // 방 입장 시 해당 룸에 접속 알림 메시지 전송
     socket.on('joinRoom', (roomNum) => {
-        if(socket.room != undefined)
+        if(socket.room != undefined) {
             socket.leave(socket.room);
+            io.to(socket.room).emit('leftRoom', socket.name);
+        }
         socket.room = roomNum;
 
         console.log('Client joined :\n Name: ' + socket.name + '\n Room: ' + socket.room);
@@ -40,14 +42,13 @@ io.on('connection', (socket) => {
         io.to(socket.room).emit('joinRoom', socket.name);
     });
 
-    /** 현재 시간 값 */
+    /** 현재 시간 값 {hh:mm} */
     function timePrint() {
         let time = new Date();
         let hours = ('0' + time.getHours()).slice(-2);
         let minutes = ('0' + time.getMinutes()).slice(-2);
-        let seconds = ('0' + time.getSeconds()).slice(-2);
 
-        return hours + ':' + minutes + ':' + seconds;
+        return hours + ':' + minutes;
     }
 });
 

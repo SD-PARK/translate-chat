@@ -56,6 +56,11 @@
                     $('#chatLogs').append('<div><strong>' + name + ' has joined Room ' + room + '</strong></div><hr>');
                 });
 
+                // 같은 룸의 유저 퇴장 시 chatLogs에 알림 메시지 추가
+                socket.on('leftRoom', (name) => {
+                    $('#chatLogs').append('<div><strong>' + name + ' has left Room ' + room + '</strong></div><hr>');
+                });
+
                 // Send 버튼 클릭 시 방이 선택되어 있다면 서버에 메세지 전송
                 $('form').submit((e) => {
                     e.preventDefault();
