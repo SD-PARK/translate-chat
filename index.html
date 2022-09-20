@@ -11,18 +11,18 @@
     <body>
         <div class="container">
             <h3 style="margin-left: -15px;">Socket.io Chat Example</h3>
+            <div class="form-group" style="margin-left: -15px;">
+                <button id="room1" class="btn btn-info">Join Room1</button>
+                <button id="room2" class="btn btn-info">Join Room2</button>
+            </div>
             <form class="form-horizontal">
-                <div class="form-group">
-                    <button id="room1" class="btn btn-info">Join Room1</button>
-                    <button id="room2" class="btn btn-info">Join Room2</button>
-                </div>
                 <div class="form-group">
                     <label>Room Number: </label>
                     <label id="roomNum">None</label> 
                 </div>
                 <div class="form-inline form-group">
                     <label for="msgForm">Send: </label>
-                    <input type="text" id="msgForm" class="form-control" onkeypress="if(event.keyCode==13){$('form').submit()}">
+                    <input type="text" id="msgForm" class="form-control">
                     <button type="submit" class="btn btn-primary">Send</button>
                 </div>
             </form>
