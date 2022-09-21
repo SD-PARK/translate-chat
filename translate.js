@@ -1,35 +1,53 @@
-// 실행 안 됨.
+// promise = 비동기적 처리 = 다중 작업 || 요청을 보낼때 응답 상태와 상관없이 다음 동작을 수행함. 즉, A작업이 시작되었을 때 동시에 B작업이 실행되며, A작업은 결과 값이 나오는대로 출력됨.
+// async = function 앞에 async를 붙이면 promise 객체로 인식됨.
+// await = promise 객체를 호출하는 함수 앞에 붙이면 데이터를 가져오는 것이 완료될 때까지 기다림.
+// constructor = 생성자.
 
-var express = require('express');
-var app = express();
-var client_id = '9vx_e0D3S6lFhXCHHi73';
-var client_secret = '3k3oxC22Hp';
-var query = "번역할 문장을 입력하세요.";
-app.get('/translate', function (req, res) {
-   var api_url = 'https://openapi.naver.com/v1/papago/n2mt';
-   // request 모듈은 2020년 2월 11일 부로 deprecated 되었음.
-   // 다른 패키지 사용할 것.
-   var request = require('request');
-   var options = {
-       url: api_url,
-       // source: 원본 언어의 언어 코드, target: 목적 언어의 언어 코드, text: 번역할 텍스트(1회 호출 시 최대 5,000자)
-       form: {'source':'ko', 'target':'en', 'text':query},
-       // X-Naver-Client-Id: 발급받은 클라이언트 아이디 값, X-Naver-Client-Secret: 발급받은 클라이언트 시크릿 값
-       headers: {'X-Naver-Client-Id':client_id, 'X-Naver-Client-Secret': client_secret}
-    };
-    // request 객체의 post를 이용하여 options 인자를 통해 API를 호출한다.
-   request.post(options, function (error, response, body) {
-    // response.statusCode == 200: HTTP 요청이 성공했음을 나타내는 서버측 응답 상태 코드
-     if (!error && response.statusCode == 200) {
-       res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
-       res.end(body);
-     } else {
-       res.status(response.statusCode).end();
-       console.log('error = ' + response.statusCode);
-     }
-   });
- });
+const axios = require('axios');
+const qs = require('query-string');
 
- app.listen(3000, function () {
-   console.log('http://127.0.0.1:3000/translate app listening on port 3000!');
- });
+class Papago {
+    constructor(config) {
+        this.config = config;
+    }
+
+    async lookup(term) {
+        if (this.config == null) {
+          // '먼저 구성을 사용하여 Papago 인스턴스를 초기화해야 합니다.'
+            throw new Error('Papago instance should be initialized with config first');
+        } if (term == null) {
+          // '검색 용어 조회 인수로 제공되어야 합니다.'
+            throw new Error('Search term should be provided as lookup arguments');
+        }
+
+        const params = qs.stringify({
+            source: 'ko',
+            target: 'en',
+            text: term,
+        });
+
+        const config = {
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'x-naver-client-id': this.config.NAVER_CLIENT_ID,
+                'x-naver-client-secret': this.config.NAVER_CLIENT_SECRET,
+            },
+        };
+
+        const response = await axios.post('https://openapi.naver.com/v1/papago/n2mt', params, config);
+
+        return response.data.message.result.translatedText;
+    }
+}
+
+async function main() {
+    const papago = new Papago({
+        NAVER_CLIENT_ID: '9vx_e0D3S6lFhXCHHi73',
+        NAVER_CLIENT_SECRET: '3k3oxC22Hp',
+    });
+
+    const nmtResult = await papago.lookup('안녕, 우람. 반가워.');
+    console.log(nmtResult);
+}
+
+main();
