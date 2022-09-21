@@ -42,13 +42,9 @@ io.on('connection', (socket) => {
         io.to(socket.room).emit('joinRoom', socket.name);
     });
 
-    /** 현재 시간 값 {hh:mm} */
+    /** 현재 시간 값 {am/pm hh:mm} */
     function timePrint() {
-        let time = new Date();
-        let hours = ('0' + time.getHours()).slice(-2);
-        let minutes = ('0' + time.getMinutes()).slice(-2);
-
-        return hours + ':' + minutes;
+        return new Intl.DateTimeFormat('ko', {timeStyle: 'short'}).format(new Date());
     }
 });
 
