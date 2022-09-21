@@ -11,7 +11,7 @@ class Papago {
         this.config = config;
     }
 
-    async lookup(term) {
+    async lookup(source, target, term) {
         if (this.config == null) {
           // '먼저 구성을 사용하여 Papago 인스턴스를 초기화해야 합니다.'
             throw new Error('Papago instance should be initialized with config first');
@@ -21,8 +21,8 @@ class Papago {
         }
 
         const params = qs.stringify({
-            source: 'ko',
-            target: 'en',
+            source: source,
+            target: target,
             text: term,
         });
 
@@ -46,7 +46,7 @@ async function main() {
         NAVER_CLIENT_SECRET: '3k3oxC22Hp',
     });
 
-    const nmtResult = await papago.lookup('안녕, 우람. 반가워.');
+    const nmtResult = await papago.lookup('ko', 'en', '안녕, 우람. 반가워.');
     console.log(nmtResult);
 }
 
