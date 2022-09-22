@@ -16,9 +16,18 @@
                 <button id="room2" class="btn btn-info">Join Room2</button>
             </div>
             <form class="form-horizontal">
-                <div class="form-group">
-                    <label>Room Number: </label>
-                    <label id="roomNum">None</label> 
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label>Room Number: </label>
+                        <label id="roomNum">None</label> 
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Languege: </label>
+                        <select id="lang" class="form-select">
+                            <option value="ko" selected>Korean</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-inline form-group">
                     <label for="msgForm">Send: </label>
@@ -34,11 +43,13 @@
                 let name = makeRandomName();
                 name = prompt('이름을 입력하세요', name) ?? name;
                 let room = '';
+                let languege = $('#lang option:selected').val();
 
                 // 서버에 유저 정보 전송
                 socket.emit('login', {
                     name: name,
-                    userid: name + '@gmail.com'
+                    userid: name + '@gmail.com',
+                    languege: languege
                 });
 
                 // 방 입장 이벤트
@@ -60,6 +71,12 @@
                 socket.on('leftRoom', (name) => {
                     $('#chatLogs').append('<div style="text-align:center;"><strong>' + name + ' has left Room ' + room + '</strong></div><hr>');
                 });
+
+                // 사용 언어 변경
+                $('#lang').change(() => {
+                    languege = $('#lang option:selected').val();
+                    socket.emit('setLanguege', languege);
+                })
 
                 // Send 버튼 클릭 시 방이 선택되어 있다면 서버에 메세지 전송
                 $('form').submit((e) => {

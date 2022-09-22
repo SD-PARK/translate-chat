@@ -5,17 +5,11 @@
 
 const axios = require('axios');
 const qs = require('query-string');
+const key = require('./config/key');
 
 class Papago {
-    constructor(config) {
-        this.config = config;
-    }
-
     async lookup(source, target, term) {
-        if (this.config == null) {
-          // '먼저 구성을 사용하여 Papago 인스턴스를 초기화해야 합니다.'
-            throw new Error('Papago instance should be initialized with config first');
-        } if (term == null) {
+        if (term == null) {
           // '검색 용어 조회 인수로 제공되어야 합니다.'
             throw new Error('Search term should be provided as lookup arguments');
         }
@@ -29,8 +23,8 @@ class Papago {
         const config = {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'x-naver-client-id': this.config.NAVER_CLIENT_ID,
-                'x-naver-client-secret': this.config.NAVER_CLIENT_SECRET,
+                'x-naver-client-id': key.NAVER_CLIENT_ID,
+                'x-naver-client-secret': key.NAVER_CLIENT_SECRET,
             },
         };
 
@@ -40,14 +34,4 @@ class Papago {
     }
 }
 
-async function main() {
-    const papago = new Papago({
-        NAVER_CLIENT_ID: '9vx_e0D3S6lFhXCHHi73',
-        NAVER_CLIENT_SECRET: '3k3oxC22Hp',
-    });
-
-    const nmtResult = await papago.lookup('ko', 'en', '안녕, 우람. 반가워.');
-    console.log(nmtResult);
-}
-
-main();
+module.exports = new Papago();

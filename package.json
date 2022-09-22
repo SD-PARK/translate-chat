@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/SD-PARK/Git#readme",
   "dependencies": {
+    "axios": "0.27.2",
     "express": "4.18.1",
+    "query-string": "7.1.1",
     "socket.io": "4.5.2"
   }
 }
