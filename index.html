@@ -93,6 +93,7 @@
 
                 // 전송받은 채팅 메시지와 닉네임, 시간 출력
                 socket.on('chat', (data) => {
+                    // 원문 메세지를 번역하여 출력
                     socket.emit('translate', data.msg, (res) => {
                         $('#chatLogs').append('<div><strong>' + data.name + '</strong>: ' + res.trans_msg + '<div style="float:right;">' + data.time + '</div></div><hr>');
                     })

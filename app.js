@@ -33,6 +33,7 @@ io.on('connection', (socket) => {
         io.to(socket.room).emit('chat', config);
     });
 
+    // 전송받은 메세지를 번역 후 callback.
     socket.on('translate', async (msg, callback) => {
         let trans_msg;
         try {
