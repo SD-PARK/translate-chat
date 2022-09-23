@@ -2,7 +2,6 @@ const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const { callbackify } = require('util');
 const papago = require('./translate');
 
 // 포트 값 지정; localhost:{PORT}
@@ -37,14 +36,12 @@ io.on('connection', (socket) => {
     socket.on('translate', async (msg, callback) => {
         let trans_msg;
         try {
-            if(socket.languege == 'ko')
-                trans_msg = await papago.lookup('en', 'ko', msg);
-            else if(socket.languege == 'en')
-                trans_msg = await papago.lookup('ko', 'en', msg);
+            trans_msg = await papago.lookup(socket.languege, msg);
+            console.log('Translate Complete: ', msg, ' -> ', trans_msg);
         } catch(e) {
             trans_msg = msg;
+            console.log('Translate Failed: ', msg);
         }
-        console.log('Translate Complete: ', msg, ' -> ', trans_msg);
         callback({
             trans_msg: trans_msg
         });
