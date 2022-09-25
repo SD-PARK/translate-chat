@@ -29,6 +29,7 @@
                         </select>
                     </div>
                 </div>
+                
                 <div class="form-inline form-group">
                     <label for="msgForm">Send: </label>
                     <input type="text" id="msgForm" class="form-control">
@@ -91,11 +92,11 @@
                     }
                 });
 
-                // 전송받은 채팅 메시지와 닉네임, 시간 출력
+                // 전송받은 채팅 메시지와 닉네임, 언어, 시간 출력
                 socket.on('chat', (data) => {
                     // 원문 메세지를 번역하여 출력
                     socket.emit('translate', data.msg, (res) => {
-                        $('#chatLogs').append('<div><strong>' + data.name + '</strong>: ' + res.trans_msg + '<div style="float:right;">' + data.time + '</div></div><hr>');
+                        $('#chatLogs').append('<div><strong>' + data.name + '</strong>: ' + res.trans_msg + '<div style="float:right;">(' + data.lang + ') ' + data.time + '</div></div><hr>');
                     })
                 });
 
