@@ -21,13 +21,14 @@ io.on('connection', (socket) => {
         socket.languege = data.languege;
     });
 
-    // 채팅 입력 시 같은 룸의 모든 클라이언트에게 입력받은 채팅, 메세지, 시간 전송
+    // 채팅 입력 시 같은 룸의 모든 클라이언트에게 입력받은 채팅, 메세지, 시간, 언어 전송
     socket.on('chat', (msg) => {
         console.log('(Room ' + socket.room + ') ' + socket.name + ': ' + msg);
         let config = {
             name: socket.name,
             msg: msg,
-            time: timePrint()
+            time: timePrint(),
+            lang : socket.languege
         };
         io.to(socket.room).emit('chat', config);
     });
