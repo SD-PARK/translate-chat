@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     // 접속 시 소켓 데이터 저장
     socket.on('login', (data) => {
-        console.log('Client logged-in:\n Name: ' + data.name + '\n Userid: ' + data.userid + '\n Languege: ' + data.languege);
+        console.log('Client logged-in:\n Name: ' + data.name + '\n Languege: ' + data.languege);
         socket.name = data.name;
         socket.userid = data.userid;
         socket.languege = data.languege;
@@ -34,17 +34,17 @@ io.on('connection', (socket) => {
     });
 
     // 전송받은 메세지를 번역 후 callback.
-    socket.on('translate', async (msg, callback) => {
+    socket.on('translate', async (data, callback) => {
         let trans_msg;
         try {
-            trans_msg = await papago.lookup(socket.languege, msg);
-            console.log('Translate Complete: ', msg, ' -> ', trans_msg);
+            trans_msg = await papago.lookup(data.source, socket.languege, data.msg);
+            console.log('Translate Complete: ', data.msg, ' -> ', trans_msg);
         } catch(e) {
-            trans_msg = msg;
-            console.log('Translate Failed: ', msg);
+            trans_msg = data.msg;
+            console.log('Translate Failed: ', data.msg);
         }
         callback({
-            trans_msg: trans_msg
+            msg: trans_msg
         });
     });
 

@@ -49,7 +49,6 @@
                 // 서버에 유저 정보 전송
                 socket.emit('login', {
                     name: name,
-                    userid: name + '@gmail.com',
                     languege: languege
                 });
 
@@ -95,8 +94,8 @@
                 // 전송받은 채팅 메시지와 닉네임, 언어, 시간 출력
                 socket.on('chat', (data) => {
                     // 원문 메세지를 번역하여 출력
-                    socket.emit('translate', data.msg, (res) => {
-                        $('#chatLogs').append('<div><strong>' + data.name + '</strong>: ' + res.trans_msg + '<div style="float:right;">(' + data.lang + ') ' + data.time + '</div></div><hr>');
+                    socket.emit('translate', {source: data.lang, msg: data.msg}, (res) => {
+                        $('#chatLogs').append('<div><strong>' + data.name + '</strong>: ' + res.msg + '<div style="float:right;">(' + data.lang + ') ' + data.time + '</div></div><hr>');
                     })
                 });
 
