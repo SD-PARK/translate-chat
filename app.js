@@ -3,6 +3,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const papago = require('./translate');
+const db = require('./config/dbConn');
 
 // 포트 값 지정; localhost:{PORT}
 const PORT = 3000;
@@ -11,6 +12,12 @@ const PORT = 3000;
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
+
+app.get('/db', async (req, res) => {
+    const conn = await db.getConnection();
+    const rows = await conn.query('SELECT * FROM users'); // 쿼리 실행
+    res.send(rows[0]);
+})
 
 io.on('connection', (socket) => {
     // 접속 시 소켓 데이터 저장
