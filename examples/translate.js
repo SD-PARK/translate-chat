@@ -1,6 +1,6 @@
 const axios = require('axios');
 const qs = require('query-string');
-const key = require('./config/key');
+const key = require('./server/config/key');
 
 class Papago {
     async lookup(source, target, term) {
