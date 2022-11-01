@@ -7,7 +7,11 @@ router.post('/', loginController.loginPostMid);
 
 router.get('/success', (req, res) => {
     const { user } = req.session;
-    res.send(user);
-})
+    if (user) {
+        res.send(user);
+    } else {
+        res.redirect('/login');
+    }
+});
 
 module.exports = router;
