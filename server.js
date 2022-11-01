@@ -6,7 +6,7 @@ const MemoryStore = require('memorystore')(session);
 
 const PORT = 3000;
 
-app.use(express.static('public')); // root 지정
+app.use(express.static('view')); // root 지정
 app.use(express.urlencoded({extended: false})); // query-string
 const sessionObj = {
     //httpOnly: true, // true라면 js로 쿠키 조회 불가
