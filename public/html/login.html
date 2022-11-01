@@ -9,20 +9,20 @@
         <div class="signup">
           <h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
           <div class="form-holder">
-            <input type="text" class="input" placeholder="Name" />
-            <input type="email" class="input" placeholder="Email" />
-            <input type="password" class="input" placeholder="Password" />
+            <input type="text" class="input" placeholder="Name" id="signup_name" />
+            <input type="email" class="input" placeholder="Email" id="signup_email" />
+            <input type="password" class="input" placeholder="Password" id="signup_password" />
           </div>
-          <button class="submit-btn">Sign up</button>
+          <button class="submit-btn" onclick="signupSubmit()">Sign up</button>
         </div>
         <div class="login slide-up">
           <div class="center">
             <h2 class="form-title" id="login"><span>or</span>Log in</h2>
             <div class="form-holder">
-              <input type="email" class="input" placeholder="Email" />
-              <input type="password" class="input" placeholder="Password" />
+              <input type="email" class="input" placeholder="Email" id="login_email" />
+              <input type="password" class="input" placeholder="Password" id="login_password" />
             </div>
-            <button class="submit-btn">Log in</button>
+            <button class="submit-btn" onclick="loginSubmit()">Log in</button>
           </div>
         </div>
       </div>
@@ -52,5 +52,41 @@
           }
         });
       });
+
+      // Log in
+      function loginSubmit() {
+          const data = {
+            email: document.getElementById('login_email').value,
+            password: document.getElementById('login_password').value
+          };
+          sendPost('/login', data);
+      };
+
+      // Sign Up
+      function signupSubmit() {
+          const data = {
+            name: document.getElementById('signup_name').value,
+            email: document.getElementById('signup_email').value,
+            password: document.getElementById('signup_password').value
+          };
+          sendPost('/signup', data);
+      };
+
+      // POST 전송
+      function sendPost(url, params) {
+        var form = document.createElement('form');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', url);
+        document.charset = 'utf-8';
+        for (let key in params) {
+          const hiddenField = document.createElement('input');
+          hiddenField.setAttribute('type', 'hidden');
+          hiddenField.setAttribute('name', key);
+          hiddenField.setAttribute('value', params[key]);
+          form.appendChild(hiddenField);
+        }
+        document.body.appendChild(form);
+        form.submit();
+      }
     </script>
 </html>
