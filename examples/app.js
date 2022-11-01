@@ -3,7 +3,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const papago = require('./translate');
-const db = require('../server/config/dbConn');
+const db = require('../server/config/db');
 
 // 포트 값 지정; localhost:{PORT}
 const PORT = 3000;
