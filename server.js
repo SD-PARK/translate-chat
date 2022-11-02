@@ -22,7 +22,7 @@ const sessionObj = {
 
 app.use(session(sessionObj));
 
-const loginRouter = require('./server/loginRouter');
+const loginRouter = require('./server/src/loginRouter');
 app.use('/login', loginRouter);
 
 server.listen(PORT, () => {

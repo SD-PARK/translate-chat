@@ -1,14 +1,14 @@
-const db = require('./config/db');
+const db = require('../config/db');
 const crypto = require('crypto');
 const path = require('path');
 
-const SECRET = require('./config/key').CRYPTO_SECRET;
+const SECRET = require('../config/key').CRYPTO_SECRET;
 
 exports.loginGetMid = (req, res) => {
     if (req.session.user) { // 세션에 user 정보가 있다면 success로 이동
         res.redirect('/login/success');
     } else { // 세션에 user 정보가 없다면 login 페이지로 이동
-        res.sendFile('login.html', {root: path.join(__dirname + '/../view/html/')});
+        res.sendFile('login.html', {root: path.join(__dirname + '/../../view/html/')});
     }
 }
 
