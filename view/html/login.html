@@ -64,12 +64,20 @@
 
       // Sign Up
       function signupSubmit() {
+        let email = document.querySelector('.signup #email').value;
+        let password = document.querySelector('.signup #password').value;
+        let repeatPassword = document.querySelector('.signup #repeatPassword').value;
+        // 오류 검사
+        // email 확인
+
+        // password 확인
+        if (password === repeatPassword) {
           const data = {
-            email: document.querySelector('.signup #email').value,
-            password: document.querySelector('.signup #password').value,
-            repeatPassword: document.querySelector('.signup #repeatPassword').value
+            email: email,
+            password: password,
           };
-          sendPost('/signup', data);
+          sendPost('/login/signup', data);
+        }
       };
 
       // POST 전송

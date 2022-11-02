@@ -5,13 +5,10 @@ router.get('/', loginController.loginGetMid);
 
 router.post('/', loginController.loginPostMid);
 
-router.get('/success', (req, res) => {
-    const { user } = req.session;
-    if (user) {
-        res.send(user);
-    } else {
-        res.redirect('/login');
-    }
-});
+router.get('/signup', loginController.signupGetMid);
+
+router.post('/signup', loginController.signupPostMid);
+
+router.get('/success', loginController.successGetMid);
 
 module.exports = router;

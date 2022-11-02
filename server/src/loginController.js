@@ -37,6 +37,36 @@ exports.loginPostMid = (req, res) => {
     });
 }
 
+exports.signupGetMid = (req, res) => {
+    const { user } = req.session;
+    if (user) {
+        res.send(user);
+    } else {
+        res.redirect('/login');
+    }
+}
+
+exports.signupPostMid = (req, res) => {
+    const { email, password } = req.body;
+    const crypto_password = hash(password);
+
+    db.query(`INSERT INTO USERS(EMAIL, PASSWORD, LANGUEGE) VALUE ("${email}", "${crypto_password}", "ko");`, (err, result) => {
+        if (err) return console.log(err);
+
+        console.log('signup complete');
+        res.redirect('/login');
+    });
+}
+
+exports.successGetMid = (req, res) => {
+    const { user } = req.session;
+    if (user) {
+        res.send(user);
+    } else {
+        res.redirect('/login');
+    }
+}
+
 function hash(password) {
     return crypto.createHmac('SHA256', SECRET).update(password).digest('hex');
 }
