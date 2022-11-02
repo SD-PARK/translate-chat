@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
-      <link rel="stylesheet" href="css/loginStyle.css"/>
+      <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0"> -->
+      <link rel="stylesheet" href="styles/loginStyle.css"/>
     </head>
     <body>
       <div class="form-structor">
         <div class="signup">
           <h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
           <div class="form-holder">
-            <input type="text" class="input" placeholder="Name" id="signup_name" />
-            <input type="email" class="input" placeholder="Email" id="signup_email" />
-            <input type="password" class="input" placeholder="Password" id="signup_password" />
+            <input type="email" class="input" placeholder="Email" id="email" />
+            <input type="password" class="input" placeholder="Password" id="password" />
+            <input type="password" class="input" placeholder="Repeat Password" id="repeatPassword" />
           </div>
           <button class="submit-btn" onclick="signupSubmit()">Sign up</button>
         </div>
@@ -19,8 +19,8 @@
           <div class="center">
             <h2 class="form-title" id="login"><span>or</span>Log in</h2>
             <div class="form-holder">
-              <input type="email" class="input" placeholder="Email" id="login_email" />
-              <input type="password" class="input" placeholder="Password" id="login_password" />
+              <input type="email" class="input" placeholder="Email" id="email" />
+              <input type="password" class="input" placeholder="Password" id="password" />
             </div>
             <button class="submit-btn" onclick="loginSubmit()">Log in</button>
           </div>
@@ -56,8 +56,8 @@
       // Log in
       function loginSubmit() {
           const data = {
-            email: document.getElementById('login_email').value,
-            password: document.getElementById('login_password').value
+            email: document.querySelector('.login #email').value,
+            password: document.querySelector('.login #password').value
           };
           sendPost('/login', data);
       };
@@ -65,9 +65,9 @@
       // Sign Up
       function signupSubmit() {
           const data = {
-            name: document.getElementById('signup_name').value,
-            email: document.getElementById('signup_email').value,
-            password: document.getElementById('signup_password').value
+            email: document.querySelector('.signup #email').value,
+            password: document.querySelector('.signup #password').value,
+            repeatPassword: document.querySelector('.signup #repeatPassword').value
           };
           sendPost('/signup', data);
       };

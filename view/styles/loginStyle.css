@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Fira+Sans");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap");
 html, body {
   position: relative;
   min-height: 100vh;
@@ -9,13 +9,14 @@ html, body {
   font-family: "Fira Sans", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 .form-structor {
   background-color: #222;
-  border-radius: 15px;
-  height: 550px;
-  width: 350px;
+  border-radius: 3vh;
+  height: 100vh;
+  width: 63.63vh;
   position: relative;
   overflow: hidden;
 }
@@ -29,15 +30,15 @@ html, body {
   left: 0;
   background-repeat: no-repeat;
   background-position: left bottom;
-  background-size: 500px;
+  background-size: 100vh;
   background-image: url("https://images.unsplash.com/photo-1503602642458-232111445657?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bf884ad570b50659c5fa2dc2cfb20ecf&auto=format&fit=crop&w=1000&q=100");
 }
 .form-structor .signup {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 52%;
   -webkit-transform: translate(-50%, -50%);
-  width: 65%;
+  width: 75%;
   z-index: 5;
   -webkit-transition: all 0.3s ease;
 }
@@ -47,28 +48,28 @@ html, body {
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .signup h2 {
-  margin-left: -25px;
+  margin-left: -5vh;
 }
 .form-structor .signup.slide-up h2 {
-  margin-left: 0px;
+  margin-left: 0vh;
 }
 .form-structor .signup.slide-up .form-holder, .form-structor .signup.slide-up .submit-btn {
   opacity: 0;
   visibility: hidden;
 }
 .form-structor .signup.slide-up .form-title {
-  font-size: 1em;
+  font-size: 2.8vh;
   cursor: pointer;
 }
 .form-structor .signup.slide-up .form-title span {
-  margin-right: 5px;
+  margin-right: 1vh;
   opacity: 1;
   visibility: visible;
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .signup .form-title {
   color: #fff;
-  font-size: 1.7em;
+  font-size: 4vh;
   text-align: center;
 }
 .form-structor .signup .form-title span {
@@ -78,10 +79,10 @@ html, body {
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .signup .form-holder {
-  border-radius: 15px;
+  border-radius: 3vh;
   background-color: #fff;
   overflow: hidden;
-  margin-top: 50px;
+  margin-top: 10vh;
   opacity: 1;
   visibility: visible;
   -webkit-transition: all 0.3s ease;
@@ -91,12 +92,12 @@ html, body {
   outline: none;
   box-shadow: none;
   display: block;
-  height: 30px;
-  line-height: 30px;
-  padding: 8px 15px;
-  border-bottom: 1px solid #eee;
+  height: 6vh;
+  line-height: 6vh;
+  padding: 0.5vh 3vh;
+  border-bottom: 0.2vh solid #eee;
   width: 100%;
-  font-size: 12px;
+  font-size: 2vh;
 }
 .form-structor .signup .form-holder .input:last-child {
   border-bottom: 0;
@@ -108,12 +109,12 @@ html, body {
   background-color: rgba(0, 0, 0, 0.4);
   color: rgba(255, 255, 255, 0.7);
   border: 0;
-  border-radius: 15px;
+  border-radius: 3vh;
   display: block;
-  margin: 15px auto;
-  padding: 15px 45px;
+  margin: 3vh auto;
+  padding: 2vh 9vh;
   width: 100%;
-  font-size: 13px;
+  font-size: 2.2vh;
   font-weight: bold;
   cursor: pointer;
   opacity: 1;
@@ -138,11 +139,11 @@ html, body {
   content: "";
   position: absolute;
   left: 50%;
-  top: -20px;
+  top: -4vh;
   -webkit-transform: translate(-50%, 0);
   background-color: #fff;
   width: 200%;
-  height: 250px;
+  height: 50vh;
   border-radius: 50%;
   z-index: 4;
   -webkit-transition: all 0.3s ease;
@@ -152,13 +153,13 @@ html, body {
   top: 40%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
-  width: 65%;
+  width: 75%;
   z-index: 5;
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .login .center .form-title {
   color: #000;
-  font-size: 1.7em;
+  font-size: 4vh;
   text-align: center;
 }
 .form-structor .login .center .form-title span {
@@ -168,11 +169,11 @@ html, body {
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .login .center .form-holder {
-  border-radius: 15px;
+  border-radius: 3vh;
   background-color: #fff;
-  border: 1px solid #eee;
+  border: 0.2vh solid #eee;
   overflow: hidden;
-  margin-top: 50px;
+  margin-top: 10vh;
   opacity: 1;
   visibility: visible;
   -webkit-transition: all 0.3s ease;
@@ -182,12 +183,12 @@ html, body {
   outline: none;
   box-shadow: none;
   display: block;
-  height: 30px;
-  line-height: 30px;
-  padding: 8px 15px;
-  border-bottom: 1px solid #eee;
+  height: 6vh;
+  line-height: 6vh;
+  padding: 0.5vh 3vh;
+  border-bottom: 0.2vh solid #eee;
   width: 100%;
-  font-size: 12px;
+  font-size: 2vh;
 }
 .form-structor .login .center .form-holder .input:last-child {
   border-bottom: 0;
@@ -199,12 +200,12 @@ html, body {
   background-color: #6B92A4;
   color: rgba(255, 255, 255, 0.7);
   border: 0;
-  border-radius: 15px;
+  border-radius: 3vh;
   display: block;
-  margin: 15px auto;
-  padding: 15px 45px;
+  margin: 3vh auto;
+  padding: 2vh 9vh;
   width: 100%;
-  font-size: 13px;
+  font-size: 2.2vh;
   font-weight: bold;
   cursor: pointer;
   opacity: 1;
@@ -220,10 +221,10 @@ html, body {
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .login h2 {
-  margin-left: -25px;
+  margin-left: -5vh;
 }
 .form-structor .login.slide-up h2 {
-  margin-left: 0px;
+  margin-left: 0vh;
 }
 .form-structor .login.slide-up .center {
   top: 10%;
@@ -236,14 +237,14 @@ html, body {
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .login.slide-up .form-title {
-  font-size: 1em;
+  font-size: 2.8vh;
   margin: 0;
   padding: 0;
   cursor: pointer;
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .login.slide-up .form-title span {
-  margin-right: 5px;
+  margin-right: 1vh;
   opacity: 1;
   visibility: visible;
   -webkit-transition: all 0.3s ease;
