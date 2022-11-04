@@ -5,7 +5,7 @@ router.get('/', loginController.loginGetMid);
 
 router.post('/', loginController.loginPostMid);
 
-router.get('/signup', loginController.signupGetMid);
+//router.get('/signup', loginController.signupGetMid);
 
 router.post('/signup', loginController.signupPostMid);
 

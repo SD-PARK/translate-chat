@@ -37,14 +37,14 @@ exports.loginPostMid = (req, res) => {
     });
 }
 
-exports.signupGetMid = (req, res) => {
-    const { user } = req.session;
-    if (user) {
-        res.send(user);
-    } else {
-        res.redirect('/login');
-    }
-}
+// exports.signupGetMid = (req, res) => {
+//     const { user } = req.session;
+//     if (user) {
+//         res.send(user);
+//     } else {
+//         res.redirect('/login');
+//     }
+// }
 
 exports.signupPostMid = (req, res) => {
     const { email, password } = req.body;
@@ -59,9 +59,8 @@ exports.signupPostMid = (req, res) => {
 }
 
 exports.successGetMid = (req, res) => {
-    const { user } = req.session;
-    if (user) {
-        res.send(user);
+    if (req.session.user) {
+        res.redirect('/lists');
     } else {
         res.redirect('/login');
     }

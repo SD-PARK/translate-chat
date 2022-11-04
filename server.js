@@ -25,6 +25,9 @@ app.use(session(sessionObj));
 const loginRouter = require('./server/src/loginRouter');
 app.use('/login', loginRouter);
 
+const listsRouter = require('./server/src/listsRouter');
+app.use('/lists', listsRouter);
+
 server.listen(PORT, () => {
     console.log('Server listening on port ' + PORT);
 });
