@@ -17,8 +17,9 @@ body {
 }
 #friends{
   overflow-y:scroll;
-   -ms-overflow-style: none;
   height: 355px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 #friends::-webkit-scrollbar{
   display:none;
