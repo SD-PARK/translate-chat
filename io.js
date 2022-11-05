@@ -1,6 +1,7 @@
 module.exports = (server) => {
     const db = require('./server/config/db');
     const io = require('socket.io')(server, {path: '/socket.io'});
+    
     // Namespace
     const friendsList = io.of('/friendsList');
     // const RoomList = io.of('/RoomList');
@@ -8,6 +9,7 @@ module.exports = (server) => {
     friendsList.on('connection', (socket) => {
         console.log('Socket.io [friendsList] Namespace Connected');
 
+        // FriendsList 로드 시 쿠키 값(user_id) 받아와 친구 목록 조회하고 callback.
         socket.on('view', (user_id, callback) => {
             db.query(`SELECT NAME, EMAIL, IMG_URL FROM users WHERE ID=${user_id}`, (err, user_result) => {
                 if (err) return console.log(err);
