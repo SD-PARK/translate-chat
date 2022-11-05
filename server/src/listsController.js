@@ -11,5 +11,3 @@ exports.friendsListGetMid = (req, res) => {
     res.setHeader('Set-Cookie', 'id='+user.ID);
     res.sendFile('lists.html', {root: path.join(__dirname + '/../../view/html/')});
 }
-
-// 1812105@du.ac.kr

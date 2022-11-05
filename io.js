@@ -6,7 +6,7 @@ module.exports = (server) => {
     // const RoomList = io.of('/RoomList');
     
     friendsList.on('connection', (socket) => {
-        console.log('Socket.io [friendsList] Namespace Connected',);
+        console.log('Socket.io [friendsList] Namespace Connected');
 
         socket.on('view', (user_id, callback) => {
             db.query(`SELECT NAME, EMAIL, IMG_URL FROM users WHERE ID=${user_id}`, (err, user_result) => {

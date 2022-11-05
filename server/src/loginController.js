@@ -21,7 +21,6 @@ exports.loginPostMid = (req, res) => {
         if (err) return console.log(err);
     
         if (result.length) {
-            console.log(result); // RowDataPacket <- 이거 오류아님
             if (result[0].PASSWORD === crypto_password) {
                 req.session.user = result[0];
                 res.redirect('/lists')
