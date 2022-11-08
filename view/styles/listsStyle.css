@@ -1,155 +1,161 @@
-* { margin: 0px; padding: 0px; }
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap");
+* { margin:0px; padding:0px; }
 
 body {
-	background: #c8c8c8;
-	font:12px "Open Sans", sans-serif; 
+	position:relative;
+	min-height:100vh;
+	background-color:#E1E8EE;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	font-family:"Fira Sans", Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale;
+	overflow-x:hidden;
 }
 
 #chatbox{
-	width:290px;
-	background:#c8c8c8;
-	border-radius:6px;
+	background-color:#fff;
+	border-radius:3vh;
+	height:100vh;
+	width:100vw;
+	position:relative;
 	overflow:hidden;
-	height:484px;
-	position:absolute;
-	top:100px;
-	left:50%;
-	margin-left:-155px;
 }
 
 #rows{
-  overflow-y:scroll;
-  height: 355px;
-  -ms-overflow-style: none;
+	overflow-y:scroll;
+	height:71vh;
+	-ms-overflow-style:none;
 }
 #rows::-webkit-scrollbar{
-  display:none;
-}
-
-#rowslist{
-	position:absolute;
-	top:0;
-	left:0; /* -? */
-	width:290px;
-	height:484px;
+	display:none;
 }
 
 #topmenu{
-	height:69px;
-	width:290px;
-	border-bottom:1px solid #d8dfe3;	
-	background-image: url("../img/topMenu.png");
-	background-color: #FFF;
+	height:10vh;
+	border-bottom:1px solid #d8dfe3;
+	background-color:#FFF;
+	display:flex;
 }
 #topmenu span{
-	float:left;	
-	width: 96px;
-    height: 70px;
+	float:left;
+	flex:1;
+    height:10vh;
 }
-#topmenu span.rows{margin-bottom:-1px;}
-#topmenu span.rows:hover{margin-bottom:-1px; cursor:pointer;}
-#topmenu span.chats{background-position:-95px 25px; cursor:pointer;}
-#topmenu span.chats:hover{background-position:-95px -46px; cursor:pointer;}
-#topmenu span.history{background-position:-190px 24px; cursor:pointer;}
-#topmenu span.history:hover{background-position:-190px -47px; cursor:pointer;}
+#topmenu span.friends{background:url('../img/friends_btn.png') no-repeat center; background-size:6vh;}
+#topmenu span.friends:hover{cursor:pointer;}
+#topmenu span.rooms{background:url('../img/rooms_btn.png') no-repeat center; background-size:6vh;}
+#topmenu span.rooms:hover{cursor:pointer;}
+#topmenu span.setting{background:url('../img/setting_btn.png') no-repeat center; background-size:6vh;}
+#topmenu span.setting:hover{cursor:pointer;}
 
 .row{
-	height:70px;
-	border-bottom:1px solid #e7ebee;		
+	height:11vh;
+	border-bottom:0.2vh solid #e7ebee;
 	position:relative;
+	overflow:hidden;
 }
 .row:hover{
 	background:#f1f4f6;
 	cursor:pointer;
 }
 .row img{
-	width:40px;
+	height:8vh;
+	width:8vh;
 	border-radius:50%;
-	margin:15px;
+	margin:1.5vh;
 	float:left;
 }
-.floatingImg{
-	width:40px;
-	border-radius:50%;
-	position:absolute;
-	top:0;
-	left:12px;
-	border:3px solid #fff;
-}
 .row p{
-	padding:15px 0 0 0;			
-	width:220px;
+	padding:2.5vh 0 0 0;
+	line-height:200%;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .friend p{
 	float:left;
 }
 .row p strong{
-  font-weight:600;
-  font-size:15px;
-  color:#597a96;
+	font-weight:600;
+	font-size:2vh;
+	color:#597a96;
 }
 .room p strong{
-	text-align: left;
+	text-align:left;
 }
 .room div{
-    text-align: left;
-	font-size:12px;
+    text-align:left;
+	font-size:1.5vh;
 	font-weight:200;
-	color:#000000;
-	margin-top: 2px;
+	color:#000;
+	width:70vw;
+	padding:1vh 3vh 0 0;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .room p a{
-    float : right;
-    text-align: right;
-	font-size:2px;
+    float:right;
+    text-align:right;
+	font-size:1.7vh;
 	color:#687a90;
-	margin: 0 -25% 0 0;
+	margin:-3vh 2.5vh 0 0;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .row p span{
-	font-size:13px;
+	font-size:1.8vh;
 	font-weight:400;
 	color:#597a90;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 .row .status{
 	background:#26c281;
-	border-radius:50%;	
-	width:9px;
-	height:9px;
+	border-radius:50%;
+	width:1.4vh;
+	height:1.4vh;
 	position:absolute;
-	top:31px;
-	right:17px;
+	top:5vh;
+	right:3vh;
 }
 .row .status.away{background:#ffce54;}
 .row .status.inactive{background:#eaeef0;}
 #friend_search{
-	background:#e3e9ed url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/search.png") -11px 0 no-repeat;
-	height:60px;
-	width:290px;
+	background:#e3e9ed url("../img/search_icon.png") 2vh center no-repeat;
+	background-size:3.5vh;
+	height:8vh;
+	width:100vw;
 	position:absolute;
 	bottom:0;
 	left:0;
 }
 #searchfield{
 	background:#e3e9ed;
-	margin:21px 0 0 55px;
+	margin:3vh 0 0 13.5vw;
 	border:none;
-	padding:0;
-	font-size:14px;
-	font-family:"Open Sans", sans-serif; 
-	font-weight:400px;
-	color:#8198ac;
+	width:80vw;
+	font-size:2.1vh;
+	font-family:"Fira Sans", Helvetica, Arial, sans-serif;
+	font-weight:400;
+	color:#333;
 }
 #searchfield:focus{
-	 outline: 0;
+	outline:0;
 }
 #room_search{
-	background:#fff;
-	height:60px;
-	width:290px;
+	background:#fff url("../img/room_add_btn.png") no-repeat center;
+	background-size:5vh;
+	height:8vh;
+	width:100vw;
 	position:absolute;
 	bottom:0;
-	border-bottom:1px solid #d8dfe3;	
-	border-top:1px solid #d8dfe3;
-	background-image: url("../img/room_add_btn.png") ;
+	border-bottom:0.2vh solid #d8dfe3;
+	border-top:0.2vh solid #d8dfe3;
 	cursor:pointer;
 }

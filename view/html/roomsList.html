@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+    <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'> -->
     <link rel="stylesheet" href="../styles/listsStyle.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> 
     <script src="/socket.io/socket.io.js"></script>
@@ -13,12 +13,20 @@
       <div id="rowslist">
         <div id="topmenu">
           <span class="friends" onclick="location.href='friendsList'"></span>
-          <span class="chats"></span>
-          <span class="history"></span>
+          <span class="rooms"></span>
+          <span class="setting"></span>
         </div>
 
         <div id="rows">
           <!-- room List -->
+          <div class="row room" onclick="location.href='room/:1'">
+            <img src="../img/room_add_btn.png"/>
+            <p>
+                <strong>방제목방제목방제목방제목방제목방제목방제목방제목방제목방제목방제목방제목</strong><br>
+                <a>10:13</a>
+                <div>마지막메세지마지막메세지마지막메세지마지막메세지마지막메세지마지막메세지마지막메세지마지막메세지마지막메세지마지막메세지마지막메세지마지막메세지</div>
+            </p>
+          </div>
 
           <div id="room_search">
             <span class="btn"></span>
