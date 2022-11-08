@@ -8,22 +8,23 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="../event/friendsListEvent.js"></script>
   </head>
-<body>
-  <div id="chatbox">
-	<div id="friendslist">
-    	<div id="topmenu">
-        	<span class="friends"></span>
-            <span class="chats"></span>
-            <span class="history"></span>
+  <body>
+    <div id="chatbox">
+      <div id="rowslist">
+        <div id="topmenu">
+          <span class="friends"></span>
+          <span class="chats" onclick="location.href='roomsList'"></span>
+          <span class="history"></span>
         </div>
-        
-        <div id="friends">
-            <!-- friend List -->
-            
-            <div id="search">
-	            <input type="text" id="searchfield" value="Search contacts..." />
-            </div>
+
+        <div id="rows">
+          <!-- friend List -->
+
+          <div id="friend_search">
+            <input type="text" id="searchfield" placeholder="Search contacts..." />
+          </div>
         </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>

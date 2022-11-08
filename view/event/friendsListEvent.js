@@ -10,7 +10,7 @@ socket.emit('view', (document.cookie.split('=')[1]), (res) => {
 });
 
 function friendPrint(info) {
-    $('#friends').append(`<div class="friend">
+    $('#rows').append(`<div class="row friend" onclick="location.href='profile/${info.ID}'">
                             <img src="../img/${info.IMG_URL}"/>
                             <p>
                                 <strong>${info.NAME}</strong><br>

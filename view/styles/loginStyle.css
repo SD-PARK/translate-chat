@@ -21,6 +21,7 @@ html, body {
   -webkit-appearance: none; /* 화살표 없애기 for chrome*/
   -moz-appearance: none; /* firefox*/
   color: #000;
+  padding-bottom: 1vh;
 }
 
 .form-structor {

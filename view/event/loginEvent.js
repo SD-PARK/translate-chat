@@ -18,22 +18,21 @@ function nextinfo() {
     // Email
     if(emailCheck.test(email)) {
         if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(password)){            
-            alert('숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+            alert('It must be at least 8 characters with a combination of numbers, English, and special characters.');
         }else if(checkNumber <0 || checkEnglish <0){
-            alert("숫자와 영문자를 혼용하여야 합니다.");
+            alert("You must mix letters and numbers.");
         }else if(/(\w)\1\1\1/.test(password)){
-            alert('같은 문자를 4번 이상 사용하실 수 없습니다.');
+            alert('The same character cannot be used more than 4 times.');
         }else if(password != repeatPassword) {
-            alert("Repeat Password Uncorrect");
+            alert("The repeat password is different");
         } else {
             userInfoNext.style.display ='none';
             nextBtn.style.display ='none';
             userInfo.style.display = 'block';
         }
     } else {
-        alert('Email Error');
+        alert('Email format is incorrect.');
     }
-
 }
 
 loginBtn.addEventListener('click', (e) => {

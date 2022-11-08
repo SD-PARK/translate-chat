@@ -26,11 +26,11 @@ exports.loginPostMid = (req, res) => {
                 res.redirect('/lists')
             } else {
                 console.log('login failed: password wrong')
-                res.redirect('/login');
+                res.send("<script>alert('Password wrong.');history.back();</script>");
             }
         } else {
             console.log('login failed: email not found');
-            res.redirect('/login');
+            res.send("<script>alert('Email not found.');history.back();</script>");
         }
     });
 }
@@ -38,20 +38,22 @@ exports.loginPostMid = (req, res) => {
 exports.signupPostMid = (req, res) => {
     const { email, password, name, language, company, img_url } = req.body;
     const crypto_password = hash(password);
-
-    // 필수 사항
-    db.query(`INSERT INTO USERS(EMAIL, PASSWORD, NAME, LANGUEGE, IMG_URL) VALUE
+    // 필수 사항 DB 입력
+    db.query(`INSERT INTO USERS(EMAIL, PASSWORD, NAME, LANGUAGE, IMG_URL) VALUE
             ("${email}", "${crypto_password}", "${name}", "${language}", "${img_url}");`, (err, result) => {
-        if (err) return console.log(err);
-    });
-    // 선택 사항 (NULL값 처리를 위해 필수 사항과 구분하여 UPDATE)
-    if(company) {
-        db.query(`UPDATE USERS SET COMPANY_NAME = "${company}" WHERE EMAIL = "${email}";`, (err, result) => {
-            if (err) return console.log(err);
-        });
-    }
-
-    res.redirect('/login');
+                if (err.code == 'ER_DUP_ENTRY') res.send("<script>alert('Duplicated email.');history.back();</script>"); // 중복되는 이메일이 있을 경우
+                else if (err) return console.log(err);
+                else {
+                    // 선택 사항 DB 입력 (NULL값 처리를 위해 필수 사항과 구분하여 UPDATE)
+                    if(company) {
+                        db.query(`UPDATE USERS SET COMPANY_NAME = "${company}" WHERE EMAIL = "${email}";`, (err, result) => {
+                            if (err) return console.log(err);
+                        });
+                    }
+                    
+                    res.redirect('/login');
+                }
+            });
 }
 
 function hash(password) {

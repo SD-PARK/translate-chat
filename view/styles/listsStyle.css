@@ -4,6 +4,7 @@ body {
 	background: #c8c8c8;
 	font:12px "Open Sans", sans-serif; 
 }
+
 #chatbox{
 	width:290px;
 	background:#c8c8c8;
@@ -15,49 +16,53 @@ body {
 	left:50%;
 	margin-left:-155px;
 }
-#friends{
+
+#rows{
   overflow-y:scroll;
   height: 355px;
   -ms-overflow-style: none;
-  scrollbar-width: none;
 }
-#friends::-webkit-scrollbar{
+#rows::-webkit-scrollbar{
   display:none;
 }
-#friendslist{
+
+#rowslist{
 	position:absolute;
 	top:0;
-	left:0;
+	left:0; /* -? */
 	width:290px;
 	height:484px;
 }
+
 #topmenu{
 	height:69px;
 	width:290px;
 	border-bottom:1px solid #d8dfe3;	
 	background-image: url("../img/topMenu.png");
+	background-color: #FFF;
 }
-
 #topmenu span{
 	float:left;	
 	width: 96px;
     height: 70px;
 }
-#topmenu span.friends{margin-bottom:-1px;}
+#topmenu span.rows{margin-bottom:-1px;}
+#topmenu span.rows:hover{margin-bottom:-1px; cursor:pointer;}
 #topmenu span.chats{background-position:-95px 25px; cursor:pointer;}
 #topmenu span.chats:hover{background-position:-95px -46px; cursor:pointer;}
 #topmenu span.history{background-position:-190px 24px; cursor:pointer;}
 #topmenu span.history:hover{background-position:-190px -47px; cursor:pointer;}
-.friend{
+
+.row{
 	height:70px;
 	border-bottom:1px solid #e7ebee;		
 	position:relative;
 }
-.friend:hover{
+.row:hover{
 	background:#f1f4f6;
 	cursor:pointer;
 }
-.friend img{
+.row img{
 	width:40px;
 	border-radius:50%;
 	margin:15px;
@@ -71,23 +76,41 @@ body {
 	left:12px;
 	border:3px solid #fff;
 }
-.friend p{
+.row p{
 	padding:15px 0 0 0;			
-	float:left;
 	width:220px;
 }
-.friend p strong{
+.friend p{
+	float:left;
+}
+.row p strong{
   font-weight:600;
   font-size:15px;
-  color:#597a96;  
-
+  color:#597a96;
 }
-.friend p span{
+.room p strong{
+	text-align: left;
+}
+.room div{
+    text-align: left;
+	font-size:12px;
+	font-weight:200;
+	color:#000000;
+	margin-top: 2px;
+}
+.room p a{
+    float : right;
+    text-align: right;
+	font-size:2px;
+	color:#687a90;
+	margin: 0 -25% 0 0;
+}
+.row p span{
 	font-size:13px;
 	font-weight:400;
 	color:#597a90;
 }
-.friend .status{
+.row .status{
 	background:#26c281;
 	border-radius:50%;	
 	width:9px;
@@ -96,9 +119,9 @@ body {
 	top:31px;
 	right:17px;
 }
-.friend .status.away{background:#ffce54;}
-.friend .status.inactive{background:#eaeef0;}
-#search{
+.row .status.away{background:#ffce54;}
+.row .status.inactive{background:#eaeef0;}
+#friend_search{
 	background:#e3e9ed url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/search.png") -11px 0 no-repeat;
 	height:60px;
 	width:290px;
@@ -118,4 +141,15 @@ body {
 }
 #searchfield:focus{
 	 outline: 0;
+}
+#room_search{
+	background:#fff;
+	height:60px;
+	width:290px;
+	position:absolute;
+	bottom:0;
+	border-bottom:1px solid #d8dfe3;	
+	border-top:1px solid #d8dfe3;
+	background-image: url("../img/room_add_btn.png") ;
+	cursor:pointer;
 }

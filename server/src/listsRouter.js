@@ -5,4 +5,6 @@ router.get('/', listsController.listsGetMid);
 
 router.get('/friendsList', listsController.friendsListGetMid);
 
+router.get('/roomsList', listsController.roomsListGetMid);
+
 module.exports = router;
