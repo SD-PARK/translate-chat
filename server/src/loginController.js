@@ -36,18 +36,17 @@ exports.loginPostMid = (req, res) => {
 }
 
 exports.signupPostMid = (req, res) => {
-    const { email, password } = req.body;
-    const { name, languege, company_name, img_url } = {name: 'name', languege: 'ko', company_name: null, img_url: 'default_profile.png'};
+    const { email, password, name, language, company, img_url } = req.body;
     const crypto_password = hash(password);
 
     // 필수 사항
     db.query(`INSERT INTO USERS(EMAIL, PASSWORD, NAME, LANGUEGE, IMG_URL) VALUE
-            ("${email}", "${crypto_password}", "${name}", "${languege}", "${img_url}");`, (err, result) => {
+            ("${email}", "${crypto_password}", "${name}", "${language}", "${img_url}");`, (err, result) => {
         if (err) return console.log(err);
     });
     // 선택 사항 (NULL값 처리를 위해 필수 사항과 구분하여 UPDATE)
-    if(company_name) {
-        db.query(`UPDATE USERS SET COMPANY_NAME = "${COMPANY_NAME}" WHERE EMAIL = "${email}";`, (err, result) => {
+    if(company) {
+        db.query(`UPDATE USERS SET COMPANY_NAME = "${company}" WHERE EMAIL = "${email}";`, (err, result) => {
             if (err) return console.log(err);
         });
     }

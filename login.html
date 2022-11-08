@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0"> -->
+  <link rel="stylesheet" href="../css/loginStyle.css" />
+</head>
+
+<body>
+  <div class="form-structor">
+    <!--회원가입 부분-->
+    <div class="signup">
+      <h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
+      <div class="form-holder" id="sign11">
+        <input type="email" class="input" placeholder="Email" id="email" />
+        <input type="password" class="input" placeholder="Password" id="password" />
+        <input type="password" class="input" placeholder="Repeat Password" id="repeatPassword" />
+      </div>
+      <button class="submit-btn" onclick="nextinfo()" id="nextinfo">Next</button>
+      <div class="userinfo" id="userinfo">
+        <div class="form-holder" id="infomation">
+          <input type="text" class="input" placeholder="Name" id="user_name" />
+          <input type="text" class="input" placeholder="Company" id="user_company" />
+          <div class="country_select">
+            <select name="user_country" class="select_country" >
+              <option value="unk" selected disabled>Country</option>
+              <option value="ko">Korea</option>
+              <option value="ja">Japan</option>
+              <option value="zh-cn">zh-cn</option>
+              <option value="zh-tw">zh-tw</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          <!-- <input type="text" class="input" placeholder="Country" id="user_country" /> -->
+          <input type="text" class="input" placeholder="Company Start" onfocus="this.type='time'" id="start_hour">
+          <input type="text" class="input" placeholder="Company End" onfocus="this.type='time'" id="end_hour">
+        </div>
+        <button class="submit-btn" onclick="signupSubmit()">Sign up</button>
+
+      </div>
+    </div>
+
+
+    <!--로그인 부분-->
+    <div class="login slide-up">
+      <div class="center">
+        <h2 class="form-title" id="login"><span>or</span>Log in</h2>
+        <div class="form-holder">
+          <input type="email" class="input" placeholder="Email" id="email" />
+          <input type="password" class="input" placeholder="Password" id="password" />
+        </div>
+        <button class="submit-btn" onclick="loginSubmit()" id="login">Log in</button>
+      </div>
+    </div>
+    <!--회원정보 이름, 나라 회사, 유저이미지 근무시작, 종료 시간-->
+
+
+
+
+  </div>
+</body>
+<script src="../event/loginEvent.js"></script>
+
+</html>

@@ -13,6 +13,16 @@ html,body {
   overflow-x: hidden;
 }
 
+.userinfo{
+  display: none;
+}
+
+.select_Languege{
+  -webkit-appearance: none; /* 화살표 없애기 for chrome*/
+  -moz-appearance: none; /* firefox*/
+  color: #000;
+}
+
 .form-structor {
   background-color: #222;
   border-radius: 3vh;
