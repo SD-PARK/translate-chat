@@ -7,178 +7,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> 
     <script src="/socket.io/socket.io.js"></script>
     <script src="../event/friendsListEvent.js"></script>
+    <script src="../event/chat.js"></script>
   </head>
   <body>
     <div id="chatbox">
       <div id="rowslist">
         <div id="topmenu">
-          <span class="friends"></span>
+          <span class="friends" onclick=""></span>
           <span class="rooms" onclick="location.href='roomsList'"></span>
           <span class="setting"></span>
         </div>
 
         <div id="rows">
           <!-- friend List -->
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
-          <div class="row friend" onclick="location.href='profile/1'">
-            <img src="../img/default_profile.png"/>
-            <p>
-                <strong>NAMENAME NAMENAME NAMENAMENAME</strong><br>
-                <span>EMAILEMAILEMAIL@gmail.com</span>
-            </p>
-            <div class="status inactive"></div>
-          </div>
 
           <div id="friend_search">
             <input type="text" id="searchfield" placeholder="Search contacts..." />

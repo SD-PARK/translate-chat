@@ -1,4 +1,4 @@
-const socket = io.connect('http://localhost:3000/roomsList', {path: '/socket.io'});
+const socket = io.connect(window.location.host + '/roomsList', {path: '/socket.io'});
 
 socket.emit('view', (document.cookie.split('=')[1]), (res) => {
     // 즐겨찾기한 대화방 출력
@@ -22,7 +22,7 @@ function roomPrint(info) {
     if(timeAs >= today) timeAs = timeAs.toLocaleTimeString().slice(-8, -3);
     else timeAs = timeAs.toLocaleDateString().substring(6);
 
-    $('#rows').append(`<div class="row room" onclick="location.href='room/:${info.ROOM_ID}'">
+    $('#rows').append(`<div class="row room" onclick="location.href='room/${info.ROOM_ID}'">
                             <img src="../img/room_add_btn.png"/>
                             <p>
                                 <strong>${info.ROOM_NAME}</strong><br>

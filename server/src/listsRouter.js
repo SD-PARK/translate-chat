@@ -7,4 +7,6 @@ router.get('/friendsList', listsController.friendsListGetMid);
 
 router.get('/roomsList', listsController.roomsListGetMid);
 
+router.get('/room/:room_id', listsController.roomJoinGetMid);
+
 module.exports = router;

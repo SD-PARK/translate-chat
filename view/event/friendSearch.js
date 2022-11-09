@@ -1,19 +1,5 @@
 $(document).ready(function(){
-      
-      $("#sendmessage input").focus(function(){
-          if($(this).val() == "Send message..."){
-              $(this).val("");
-          }
-      });
-      $("#sendmessage input").focusout(function(){
-          if($(this).val() == ""){
-              $(this).val("Send message...");
-              
-          }
-      });
-          
-      
-      $(".friend").each(function(){		
+      $(".row").each(function(){		
           $(this).click(function(){
               var childOffset = $(this).offset();
               var parentOffset = $(this).parent().parent().offset();

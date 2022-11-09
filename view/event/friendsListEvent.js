@@ -1,4 +1,4 @@
-const socket = io.connect('http://localhost:3000/friendsList', {path: '/socket.io'});
+const socket = io.connect(window.location.host + '/friendsList', {path: '/socket.io'});
 
 socket.emit('view', (document.cookie.split('=')[1]), (res) => {
     // 개인 프로필 출력
