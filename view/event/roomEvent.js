@@ -27,7 +27,7 @@ socket.emit('join', user_id, room_id, (res) => {
 });
 
 function datePrint(date) {
-    $('#chat-messages').append(`<label>${new Date(date).toLocaleDateString()}</label>`);
+    $('#chat-messages').append(`<label>${date}</label>`);
 }
 
 function personChat(chat) {
