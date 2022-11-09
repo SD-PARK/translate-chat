@@ -26,8 +26,8 @@ function roomPrint(info) {
                             <img src="../img/room_add_btn.png"/>
                             <p>
                                 <strong>${info.ROOM_NAME}</strong><br>
-                                <a>${timeAs}</a>
                                 <div>${info.MSG}</div>
                             </p>
+                            <a>${timeAs}</a>
                         </div>`);
 }
