@@ -54,23 +54,23 @@ module.exports = (server) => {
     Room.on('connection', (socket) => {
         console.log('Socket.io [Room] Namespace Connected');
 
-        socket.on('join', (user_id, room_id, callback) => {
+        socket.on('join', {data}, callback) => {
             socket.join(room_id);
 
-            db.query(`SELECT * FROM room_info WHERE USER_ID = ${user_id} AND ROOM_ID = ${room_id}`, (err, belong) => { if (err) return console.log(err);
+            db.query(`SELECT * FROM room_info WHERE USER_ID = ${data.user_id} AND ROOM_ID = ${user.room_id}`, (err, belong) => { if (err) return console.log(err);
                 if (belong) { // room에 속한 user일 때.
-                    db.query(`SELECT LANGUAGE FROM users WHERE ID = ${user_id}`, (err, lang) => { if (err) return console.log(err); // 유저 언어 값
+                    db.query(`SELECT LANGUAGE FROM users WHERE ID = ${data.user_id}`, (err, lang) => { if (err) return console.log(err); // 유저 언어 값
                         const user_language = lang[0].LANGUAGE;
                         db.query(`SELECT room.MSG_NUM, room.SEND_USER_ID, users.IMG_URL, room.TO_${user_language} AS MSG, room.FROM_LANGUAGE, room.SEND_TIME
-                                FROM users RIGHT OUTER JOIN room_message_${room_id} AS room
+                                FROM users RIGHT OUTER JOIN room_message_${user.room_id} AS room
                                 ON room.SEND_USER_ID = users.ID`, (err, msg_result) => { if (err) return console.log(err); // room의 메세지 가져옴
 
                             for(let i = msg_result.length - 1; i>=0; i--) { // 가져온 메세지의 NULL 값 체크
                                 if (msg_result[i].MSG == undefined) { // 비어있으면 번역
-                                    db.query(`SELECT ORIGINAL_MSG FROM room_message_${room_id} WHERE MSG_NUM = ${msg_result[i].MSG_NUM}`, (err, msg) => { if (err) return console.log(err);
+                                    db.query(`SELECT ORIGINAL_MSG FROM room_message_${user.room_id} WHERE MSG_NUM = ${msg_result[i].MSG_NUM}`, (err, msg) => { if (err) return console.log(err);
                                         
                                         let trans_msg = papago.lookup(msg_result[i].FROM_LANGUAGE, user_language, msg[0].ORIGINAL_MSG);
-                                        db.query(`UPDATE room_message_${room_id} SET TO_${user_language} = "${trans_msg}" WHERE MSG_NUM = ${msg_result[i].MSG_NUM}`, (err, result) => { if (err) return console.log(err); });
+                                        db.query(`UPDATE room_message_${user.room_id} SET TO_${user_language} = "${trans_msg}" WHERE MSG_NUM = ${msg_result[i].MSG_NUM}`, (err, result) => { if (err) return console.log(err); });
                                         msg_result[i].MSG = trans_msg;
                                     })
                                 }
@@ -98,8 +98,31 @@ module.exports = (server) => {
         });
 
         socket.on('callNewMsg', {data}, (callback) => {
+            db.query(`SELECT LANGUAGE FROM users WHERE ID = ${data.user_id}`, (err, lang) => { if (err) return console.log(err); // 유저 언어 값
+                const user_language = lang[0].LANGUAGE;
+                db.query(`SELECT room.MSG_NUM, room.SEND_USER_ID, users.IMG_URL, room.TO_${user_language} AS MSG, room.FROM_LANGUAGE, room.SEND_TIME
+                        FROM users RIGHT OUTER JOIN room_message_${data.room_id} AS room
+                        ON room.SEND_USER_ID = users.ID`, (err, msg_result) => { if (err) return console.log(err); // room의 메세지 가져옴
 
+                    for(let i = msg_result.length - 1; i>=0; i--) { // 가져온 메세지의 NULL 값 체크
+                        if (msg_result[i].MSG == undefined) { // 비어있으면 번역
+                            db.query(`SELECT ORIGINAL_MSG FROM room_message_${data.room_id} WHERE MSG_NUM = ${msg_result[i].MSG_NUM}`, (err, msg) => { if (err) return console.log(err);
+                                
+                                let trans_msg = papago.lookup(msg_result[i].FROM_LANGUAGE, user_language, msg[0].ORIGINAL_MSG);
+                                db.query(`UPDATE room_message_${data.room_id} SET TO_${user_language} = "${trans_msg}" WHERE MSG_NUM = ${msg_result[i].MSG_NUM}`, (err, result) => { if (err) return console.log(err); });
+                                msg_result[i].MSG = trans_msg;
+                            })
+                        }
+                    }
+                    console.log(msg_result);
+                    callback(msg_result);
+                });
+            });
         });
+
+        function nullIsTranslate(msgData) {
+            
+        }
         
         socket.on('disconnect', () => {
             console.log('[Room] Namespace Disconnected');
