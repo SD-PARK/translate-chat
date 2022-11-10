@@ -2,23 +2,18 @@ const socket = io.connect(window.location.host + '/room', {path: '/socket.io'});
 
 const user_id = get_cookie('id'); // 쿠키에서 user_id 값 추출
 const room_id = window.location.pathname.substring(12); // url에서 room_id 값 추출
+let dateCheck;
 
-socket.emit('join', user_id, room_id, (res) => {
+socket.emit('join', {user_id: user_id, room_id: room_id}, (res) => {
     let msg_length = res.length;
-    let dateCheck;
     let date;
 
     if(res === 'No permissions')
         return alert(res);
 
     for(let i=0; i<msg_length; i++) {
-        date = new Date(res[i].SEND_TIME).toLocaleDateString(); // 날짜 확인
-        if(dateCheck != date) {
-            addSpace(2);
-            datePrint(date);
-            addSpace(1);
-            dateCheck = date;
-        }
+        
+        datePrint(new Date(res[i].SEND_TIME).toLocaleDateString()); // 날짜 확인
 
         if(res[i].SEND_USER_ID == user_id) { // 본인 메세지와 상대 메세지 구분
             selfChat(res[i]);
@@ -27,10 +22,16 @@ socket.emit('join', user_id, room_id, (res) => {
         }
     }
     addSpace(2);
+    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
 });
 
 function datePrint(date) {
-    $('#chat-messages').append(`<label>${date}</label>`);
+    if(dateCheck != date) {
+        addSpace(2);
+        $('#chat-messages').append(`<label>${date}</label>`);
+        addSpace(1);
+        dateCheck = date;
+    }
 }
 
 function personChat(chat) {
@@ -77,7 +78,15 @@ function sendMessage() {
 }
 
 socket.on('tellNewMsg', () => {
-    socket.emit('callNewMsg', {user_id: user_id, room_id: room_id}, (callback) => {
+    socket.emit('callNewMsg', {user_id: user_id, room_id: room_id}, (newMsg) => {
         
+        datePrint(new Date(newMsg.SEND_TIME).toLocaleDateString()); // 날짜 확인
+
+        if (newMsg.SEND_USER_ID == user_id) {
+            selfChat(newMsg);
+        } else {
+            personChat(newMsg);
+        }
+        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
     });
 });

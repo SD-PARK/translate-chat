@@ -15,7 +15,6 @@ exports.loginGetMid = (req, res) => {
 exports.loginPostMid = (req, res) => {
     const { email, password } = req.body;
     const crypto_password = hash(password);
-    
 
     db.query(`SELECT * FROM USERS WHERE EMAIL="${email}"`, (err, result) => {
         if (err) return console.log(err);

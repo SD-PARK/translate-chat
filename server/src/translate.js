@@ -3,7 +3,6 @@ const qs = require('query-string');
 const key = require('../config/key');
 
 class Papago {
-    // async lookup(source, target, term) {
     lookup(source, target, term) {
         // 메세지가 없을 경우 throw 처리.
         if (term == null) {
@@ -26,7 +25,6 @@ class Papago {
             target: target,
             text: term
         });
-        // const response = await axios.post('https://openapi.naver.com/v1/papago/n2mt', params, config);
         const response = axios.post('https://openapi.naver.com/v1/papago/n2mt', params, config);
 
         return response.data.message.result.translatedText;

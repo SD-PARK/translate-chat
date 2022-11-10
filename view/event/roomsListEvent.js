@@ -16,9 +16,6 @@ function roomPrint(info) {
     let timeAs = new Date(info.SEND_TIME); // 가공
     const today = new Date(new Date().toLocaleDateString());
 
-    console.log(timeAs.toLocaleTimeString());
-    console.log(timeAs.toLocaleDateString().substring(6));
-
     if(timeAs >= today) timeAs = timeAs.toLocaleTimeString().slice(-8, -3);
     else timeAs = timeAs.toLocaleDateString().substring(6);
 
