@@ -55,6 +55,7 @@ module.exports = (server) => {
         console.log('Socket.io [Room] Namespace Connected');
 
         socket.on('join', (user_id, room_id, callback) => {
+            socket.join(room_id);
 
             db.query(`SELECT * FROM room_info WHERE USER_ID = ${user_id} AND ROOM_ID = ${room_id}`, (err, belong) => { if (err) return console.log(err);
                 if (belong) { // room에 속한 user일 때.
@@ -79,9 +80,25 @@ module.exports = (server) => {
                         });
                     });
                 } else {
-                    // callback();
+                    callback('No permissions');
                 }
             });
+        });
+
+        socket.on('sendMsg', (data) => {
+            // data.user_id, room_id, msg
+
+            // 메세지 DB 저장, READ_COUNT 제거할 것.
+            db.query(`INSERT INTO room_message_${data.room_id} (SEND_USER_ID, ORIGINAL_MSG, READ_COUNT, SEND_TIME, FROM_LANGUAGE)
+                    VALUE (${data.user_id}, ${data.msg}, 0, ${new Date()}, LANGUAGE)
+                    SELECT LANGUAGE FROM users WHERE id = ${data.user_id};`, (err, result) => { if (err) return console.log(err); });
+
+            // Room에 접속한 Socket에게 전송
+            socket.to(room_id).emit('tellNewMsg');
+        });
+
+        socket.on('callNewMsg', {data}, (callback) => {
+
         });
         
         socket.on('disconnect', () => {
