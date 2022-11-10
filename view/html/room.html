@@ -3,10 +3,9 @@
   <head>
     <meta charset="utf-8">
     <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'> -->
-    <link rel="stylesheet" href="../../styles/roomStyle.css"/>
+    <link rel="stylesheet" href="../styles/roomStyle.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="../../event/roomEvent.js"></script>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
   </head>
   <body>
     <div id="chatbox">
@@ -22,10 +21,11 @@
             </div>
                 
             <div id="sendmessage">
-                <input type="text" placeholder="Send message..." />
-                <button id="send"></button>
+                <input id="msgInput" type="text" placeholder="Send message..." />
+                <button id="sendBtn" onclick="sendMessage()"></button>
             </div>
         </div>        
     </div>
+    <script src="../event/roomEvent.js"></script>
   </body>
 </html>
