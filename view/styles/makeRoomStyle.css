@@ -3,7 +3,7 @@
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 10vh; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -13,6 +13,16 @@
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+/* Modal Button */
+#myBtn {
+  background:#fff url("../img/room_add_btn.png") no-repeat center;
+	background-size:5vh;
+  width:5vh;
+  height:5vh;
+  border-style:none;
+  margin:1.5vh 0;
+}
+
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
@@ -20,15 +30,16 @@
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
-  height: 80%;
+  height: 80vh;
 }
 
 /* The Close Button */
 .close {
-  color: #aaaaaa;
+  color: #d8dfe3;
   float: right;
-  font-size: 28px;
+  font-size: 5vh;
   font-weight: bold;
+  margin-right:1.5vh;
 }
 
 .close:hover,
@@ -36,4 +47,14 @@
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+#modalTitle {
+  color: #c8c8c8;
+  float: left;
+  font-size: 2.5vh;
+  font-weight: bold;
+  height:5vh;
+  line-height:5vh;
+  margin-left: 1.5vh;
 }
