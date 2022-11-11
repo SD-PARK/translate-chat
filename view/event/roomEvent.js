@@ -27,7 +27,7 @@ socket.emit('join', {user_id: user_id, room_id: room_id}, (res) => {
 
 function datePrint(date) {
     if(dateCheck != date) {
-        addSpace(2);
+        addSpace(1);
         $('#chat-messages').append(`<label>${date}</label>`);
         addSpace(1);
         dateCheck = date;

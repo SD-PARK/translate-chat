@@ -52,7 +52,7 @@ body {
 #topmenu span.setting:hover{cursor:pointer;}
 
 .row{
-	height:200px; /* 11vh */
+	height:90px; /* 11vh */
 	border-bottom:1px solid #e7ebee;
 	position:relative;
 	overflow:hidden;
@@ -62,38 +62,37 @@ body {
 	cursor:pointer;
 }
 .row img{
-	height:150px;
-	width:150px;
+	height:65px;
+	width:65px;
 	border-radius:50%;
-	margin:25px;
+	margin:13.5px;
 	float:left;
 }
 .row p{
-	padding:45px 0 0 0;
+	padding:20px 0 0 0;
 	width:60vw;
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:ellipsis;
 }
 .friend p{
-	padding:50px 0 0 0;
-	line-height:300%;
+	padding:22.5px 0 0 0;
+	line-height:150%;
 }
 .row p strong{
-	font-weight:500;
-	font-size:50px;
+	font-size:20px;
 	color:#597a96;
 }
 .room p strong{
-	font-size:42px;
+	font-size:19px;
 	text-align:left;
 }
 .room div{
     text-align:left;
-	font-size:35px;
+	font-size:16px;
 	color:#000;
 	width:70vw;
-	padding:15px 0 0 0;
+	padding:6.75px 0 0 0;
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:ellipsis;
@@ -101,12 +100,12 @@ body {
 .room a{
     float:right;
     text-align:right;
-	font-size:38px;
+	font-size:17px;
 	color:#687a90;
-	margin:-160px 50px 0 0;
+	margin:-72px 22.5px 0 0;
 }
 .row p span{
-	font-size:34px;
+	font-size:15.3px;
 	font-weight:400;
 	color:#597a90;
 	white-space:nowrap;
@@ -116,11 +115,11 @@ body {
 .row .status{
 	background:#26c281;
 	border-radius:50%;
-	width:30px;
-	height:30px;
+	width:13px;
+	height:13px;
 	position:absolute;
-	top:85px;
-	right:40px;
+	top:38px;
+	right:18px;
 }
 .row .status.away{background:#ffce54;}
 .row .status.inactive{background:#eaeef0;}
