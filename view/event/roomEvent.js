@@ -12,9 +12,7 @@ socket.emit('join', {user_id: user_id, room_id: room_id}, (res) => {
         return alert(res);
 
     for(let i=0; i<msg_length; i++) {
-        
         datePrint(new Date(res[i].SEND_TIME).toLocaleDateString()); // 날짜 확인
-
         if(res[i].SEND_USER_ID == user_id) { // 본인 메세지와 상대 메세지 구분
             selfChat(res[i]);
         } else {
@@ -77,16 +75,15 @@ function sendMessage() {
     }
 }
 
-socket.on('tellNewMsg', () => {
-    socket.emit('callNewMsg', {user_id: user_id, room_id: room_id}, (newMsg) => {
-        
-        datePrint(new Date(newMsg.SEND_TIME).toLocaleDateString()); // 날짜 확인
+socket.on('tellNewMsg', (MSG_NUM) => {
+    socket.emit('callNewMsg', {user_id: user_id, room_id: room_id, MSG_NUM: MSG_NUM}, (newMsg) => {
 
+        datePrint(new Date(newMsg.SEND_TIME).toLocaleDateString()); // 날짜 확인
         if (newMsg.SEND_USER_ID == user_id) {
             selfChat(newMsg);
         } else {
             personChat(newMsg);
         }
-        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight); // 스크롤 맨 아래로
     });
 });

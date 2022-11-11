@@ -1,8 +1,8 @@
 // Server
 const express = require('express');
-const app = express(); 
+const app = express();
 const server = require('http').createServer(app);
-const io = require('./io')(server);
+const io = require('./server/config/io')(server);
 const PORT = 3000;
 
 // Session Connect
