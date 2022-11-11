@@ -29,11 +29,27 @@ function roomPrint(info) {
                         </div>`);
 }
 
-function modalClick() {
-    alert('click');
+// Modal Event
+
+// When the user clicks the button, open the modal 
+function modalBtnClick() {
+    $("#myModal").css('display', 'block');
 }
 
-// function modal_wrapClick(e) {
-//     e.stopPropagation();
-//     alert('wrap click');
+// When the user clicks on <span> (x), close the modal
+function modalClose() {
+    $("#myModal").css('display', 'none');
+}
+
+// When the user clicks anywhere outside of the modal, close it
+// window.onclick = function(event) {
+//     alert(event.target);
+//     if (event.target == $("#myModal")) {
+//         $("#myModal").css('display', "none");
+//     }
 // }
+$(window).click((e) => {
+    if ($(e.target).is($('#myModal'))) {
+        $("#myModal").css('display', "none");
+    }
+});

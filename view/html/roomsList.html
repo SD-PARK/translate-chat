@@ -23,14 +23,13 @@
 
         </div>
         <div id="room_search">
-          <!-- Room Box Button -->
-          <input class="modal-btn" type="checkbox" id="modal-btn" name="modal-btn"/>
-          <label for="modal-btn"></label>
-          <!-- Make Room Box -->
-          <div class="modal" onclick="modalClick()">
-            <div class="modal-wrap" onclick="modal_wrapClick()">
-              <img src="https://assets.codepen.io/1462889/sl3.jpg" alt="">
-              <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</p>
+          <!-- Open The Make Room Box -->
+          <button id="myBtn" onclick="modalBtnClick()">Open Modal</button>
+          <!-- Make Room Box The Modal -->
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+            <span class="close" onclick="modalClose()">&times;</span>
+            <p>Some text in the Modal..</p>
             </div>
           </div>
           <!--  -->
