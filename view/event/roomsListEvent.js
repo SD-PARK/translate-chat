@@ -28,3 +28,12 @@ function roomPrint(info) {
                             <a>${timeAs}</a>
                         </div>`);
 }
+
+function modalClick() {
+    alert('click');
+}
+
+// function modal_wrapClick(e) {
+//     e.stopPropagation();
+//     alert('wrap click');
+// }

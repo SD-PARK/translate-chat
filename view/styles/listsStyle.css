@@ -147,8 +147,6 @@ body {
 	outline:0;
 }
 #room_search{
-	background:#fff url("../img/room_add_btn.png") no-repeat center;
-	background-size:5vh;
 	height:8vh;
 	width:100vw;
 	position:absolute;

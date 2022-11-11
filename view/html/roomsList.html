@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'> -->
     <link rel="stylesheet" href="../styles/listsStyle.css"/>
+    <link rel="stylesheet" href="../styles/makeRoomStyle.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> 
     <script src="/socket.io/socket.io.js"></script>
     <script src="../event/roomsListEvent.js"></script>
@@ -18,11 +19,21 @@
         </div>
 
         <div id="rows">
-          <!-- room List -->
+          <!-- Room List -->
 
-          <div id="room_search">
-            <span class="btn"></span>
+        </div>
+        <div id="room_search">
+          <!-- Room Box Button -->
+          <input class="modal-btn" type="checkbox" id="modal-btn" name="modal-btn"/>
+          <label for="modal-btn"></label>
+          <!-- Make Room Box -->
+          <div class="modal" onclick="modalClick()">
+            <div class="modal-wrap" onclick="modal_wrapClick()">
+              <img src="https://assets.codepen.io/1462889/sl3.jpg" alt="">
+              <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</p>
+            </div>
           </div>
+          <!--  -->
         </div>
       </div>
     </div>

@@ -70,6 +70,12 @@ body {
 	opacity:1;
 	margin-top:0;
 }
+#chat-messages label#Untranslated{
+	width: auto;
+	height: auto;
+	line-height: 84vh;
+	text-align: center;
+}
 #chat-messages div#space{
 	padding:20px 0;
 }
