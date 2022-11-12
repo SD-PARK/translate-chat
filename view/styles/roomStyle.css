@@ -34,10 +34,12 @@ body {
 	height:4vh;
 	margin:2vh 1vh 2vh 3vh;
 }
-#topmenu span.name{
-	margin:3vh;
+#topmenu input.title{
+	height:4vh;
+	margin:2vh;
 	font-size:2vh;
 	text-align:center;
+	border-style:none;
 	flex:1;
 }
 #topmenu span.plus{

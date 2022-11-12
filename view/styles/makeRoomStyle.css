@@ -27,7 +27,7 @@
 .modal-content {
   background-color: #fefefe;
   margin: auto;
-  padding: 9px;
+  padding: 2%;
   border: 1px solid #888;
   width: 80%;
   height: 80vh;
@@ -92,13 +92,55 @@
   width:2vh;
 }
 
+/* Choose List Field */
+#chooseList {
+  width: 92%;
+  height: 5vh;
+  overflow-x:scroll;
+  white-space: nowrap;
+	-ms-overflow-style:none;
+  margin:1.5vh 3% 0 3%;
+  padding: 0.5vh;
+}
+#chooseList::-webkit-scrollbar {
+	display:none;
+}
+.chooseRow {
+  position:relative;
+  display:inline-block;
+  width: 5vh;
+  height: 5vh;
+}
+.chooseRow span {
+  position:absolute;
+  top:-8px;
+  right:5px;
+  color: #333;
+  font-size:1.5vh;
+}
+.chooseRow img {
+  width: 3vh;
+  height: 3vh;
+  margin: 0 1vh;
+}
+.chooseRow p {
+  width: 4vh;
+  height: 1.5vh;
+  margin-top: -0.5vh;
+  padding: 0 0.5vh;
+  text-align:center;
+  font-size: 1vh;
+  overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+
 /* Select Field */
 #modalSelect {
   background-color:#fff;
 	overflow-y:scroll;
-	height:60vh;
+	height:54vh;
 	-ms-overflow-style:none;
-  margin-top:2vh;
 }
 #modalSelect::-webkit-scrollbar {
 	display:none;

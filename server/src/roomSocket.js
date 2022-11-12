@@ -73,6 +73,10 @@ module.exports = (io, db) => {
             }, 2);
         });
         
+        socket.on('roomTitleChange', (room_name) => {
+            db.query(`UPDATE room_info SET ROOM_NAME = '${room_name}' WHERE ROOM_ID = ${socket.room_id} AND USER_ID = ${socket.user_id};`, (err, res) => { if (err) return console.log(err); });
+        });
+
         socket.on('disconnect', () => {
             console.log('[Room] Namespace Disconnected');
         });

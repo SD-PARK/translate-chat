@@ -1,9 +1,14 @@
 const socket = io.connect(window.location.host + '/room', {path: '/socket.io'});
 
 const user_id = get_cookie('id'); // 쿠키에서 user_id 값 추출
+function get_cookie(name) {
+    var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return value? value[2] : null;
+}
 const room_id = window.location.pathname.substring(12); // url에서 room_id 값 추출
 let dateCheck;
 
+// Room 입장 이벤트
 socket.emit('join', {user_id: user_id, room_id: room_id}, (res) => {
     let msg_length = res.length;
     let date;
@@ -25,6 +30,7 @@ socket.emit('join', {user_id: user_id, room_id: room_id}, (res) => {
     $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
 });
 
+/** 입력받은 날짜가 이전 대화의 날짜와 다르면 날짜 출력 */
 function datePrint(date) {
     if(dateCheck != date) {
         addSpace(1);
@@ -33,7 +39,7 @@ function datePrint(date) {
         dateCheck = date;
     }
 }
-
+/** 다른 사람의 대화 (좌측 말풍선) */
 function personChat(chat) {
     $('#chat-messages').append(`<div class="message">
         <img src="../../img/${chat.IMG_URL}"/>
@@ -42,7 +48,7 @@ function personChat(chat) {
         </div>
     </div>`);
 }
-
+/** 본인의 대화 (우측 말풍선) */
 function selfChat(chat) {
     $('#chat-messages').append(`<div class="message right">
         <img src="../../img/${chat.IMG_URL}" />
@@ -51,15 +57,10 @@ function selfChat(chat) {
         </div>
     </div>`);
 }
-
+/** 여백 추가(여백 길이, 자연수) */
 function addSpace(num) {
     for(let i=0; i<num; i++)
         $('#chat-messages').append(`<div id="space"></div>`);
-}
-
-function get_cookie(name) {
-    var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-    return value? value[2] : null;
 }
 
 const msgInput = document.querySelector('#msgInput');
@@ -69,7 +70,7 @@ msgInput.addEventListener('keypress', (e) => {
     sendMessage();
   }
 });
-
+/** 메세지 전송 */
 function sendMessage() {
     if(msgInput.value.trim()) {
         socket.emit('sendMsg', (msgInput.value));
@@ -87,4 +88,9 @@ socket.on('tellNewMsg', (MSG_NUM) => {
         }
         $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight); // 스크롤 맨 아래로
     });
+});
+
+/** Room 제목 변경 */
+$('#topmenu input.title').change(() => {
+    socket.emit('roomTitleChange', $('#topmenu input.title').value);
 });
