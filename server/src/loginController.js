@@ -37,9 +37,7 @@ exports.loginPostMid = (req, res) => {
 
 exports.signupPostMid = (req, res) => {
     const { email, password, name, language, company, company_start, company_end} = req.body;
-    console.log(req.body);
     const crypto_password = hash(password);
-    console.log(req.file);
 
     // 필수 사항 DB 입력
     

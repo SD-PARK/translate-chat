@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400');
 * { margin:0px; padding:0px; }
 
 body {
@@ -9,7 +10,7 @@ body {
 	display:flex;
 	align-items:center;
 	justify-content:center;
-	font-family:"Fira Sans", Helvetica, Arial, sans-serif;
+	font-family:"Fira Sans", "Nanum Gothic", Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing:antialiased;
 	-moz-osx-font-smoothing:grayscale;
 	overflow-x:hidden;
@@ -134,11 +135,11 @@ body {
 }
 #searchfield{
 	background:#e3e9ed;
-	margin:3vh 0 0 13.5vw;
+	margin:3vh 0 0 15vw;
 	border:none;
 	width:80vw;
 	font-size:2.1vh;
-	font-family:"Fira Sans", Helvetica, Arial, sans-serif;
+	font-family:"Fira Sans", "Nanum Gothic", Helvetica, Arial, sans-serif;
 	font-weight:400;
 	color:#333;
 }

@@ -9,27 +9,38 @@ function get_cookie(name) {
 // 대화방 목록 요청
 socket.emit('view', (user_id), (res) => {
     console.log(res);
-    let res_len = res.length;
-    for(let i=0; i<res_len; i++) { // 즐겨찾기한 대화방 출력
-        if(res[i].FAVORITES == 1)
-            roomPrint(res[i]);
-    }
-    for(let i=0; i<res_len; i++) { // 그 외의 대화방 출력
-        if(res[i].FAVORITES == 0)
-            roomPrint(res[i]);
-    }
+    roomPrintMid(res);
 });
+
+function roomPrintMid(list) {
+    let list_len = list.length;
+    $('#rows').empty();
+    for(let i=0; i<list_len; i++) { // 즐겨찾기한 대화방 출력
+        if(list[i].FAVORITES == 1)
+            roomPrint(list[i]);
+    }
+    for(let i=0; i<list_len; i++) { // 그 외의 대화방 출력
+        if(list[i].FAVORITES == 0)
+            roomPrint(list[i]);
+    }
+}
 /** 대화방 출력 */
 function roomPrint(info) {
     // ROOM_ID, ROOM_NAME, SEND_TIME, MSG
-    let timeAs = new Date(info.SEND_TIME); // 가공
-    const today = new Date(new Date().toLocaleDateString());
-
-    if(timeAs >= today) timeAs = timeAs.toLocaleTimeString().slice(-8, -3);
-    else timeAs = timeAs.toLocaleDateString().substring(6);
+    console.log(info.SEND_TIME);
+    let timeAs;
+    if(info.SEND_TIME != "") { // 시간 값 확인
+        timeAs = new Date(info.SEND_TIME); // 가공
+        const today = new Date(new Date().toLocaleDateString());
+    
+        if(timeAs >= today) timeAs = timeAs.toLocaleTimeString().slice(-8, -3);
+        else timeAs = timeAs.toLocaleDateString().substring(6);
+    } else {
+        timeAs = info.SEND_TIME;
+    }
 
     $('#rows').append(`<div class="row room" onclick="location.href='room/${info.ROOM_ID}'">
-                            <img src="../img/room_add_btn.png"/>
+                            <img src="../img/profiles/default_profile.jpg"/>
                             <p>
                                 <strong>${info.ROOM_NAME}</strong><br>
                                 <div>${info.MSG}</div>
@@ -110,4 +121,15 @@ function inviteRemove(id) { // Invite Event
     inviteIdArr = inviteIdArr.filter((element) => element !== id); // 값 제거
     $(`#chooseList .chooseRow:nth-child(${index+1})`).remove();
     modalUpdate(window.list);
+}
+
+// ======= Submit Event ======= //
+function makeRoom() {
+    socket.emit('makeRoom', inviteIdArr, (callback) => {
+        // 채팅방 목록 갱신
+        socket.emit('view', (user_id), (res) => {
+            console.log(res);
+            roomPrintMid(res);
+        });
+    });
 }

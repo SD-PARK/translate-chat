@@ -14,28 +14,25 @@ function nextinfo() {
     const checkNumber = password.search(/[0-9]/g);
     const checkEnglish = password.search(/[a-z]/ig);
     const emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
- 
-    userInfoNext.style.display ='none';
-    nextBtn.style.display ='none';
-    userInfo.style.display = 'block';
-    // // Email
-    // if(emailCheck.test(email)) {
-    //     if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(password)){            
-    //         alert('It must be at least 8 characters with a combination of numbers, English, and special characters.');
-    //     }else if(checkNumber <0 || checkEnglish <0){
-    //         alert("You must mix letters and numbers.");
-    //     }else if(/(\w)\1\1\1/.test(password)){
-    //         alert('The same character cannot be used more than 4 times.');
-    //     }else if(password != repeatPassword) {
-    //         alert("The repeat password is different");
-    //     } else {
-    //         userInfoNext.style.display ='none';
-    //         nextBtn.style.display ='none';
-    //         userInfo.style.display = 'block';
-    //     }
-    // } else {
-    //     alert('Email format is incorrect.');
-    // }
+
+    // Email
+    if(emailCheck.test(email)) {
+        if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(password)){            
+            alert('It must be at least 8 characters with a combination of numbers, English, and special characters.');
+        }else if(checkNumber <0 || checkEnglish <0){
+            alert("You must mix letters and numbers.");
+        }else if(/(\w)\1\1\1/.test(password)){
+            alert('The same character cannot be used more than 4 times.');
+        }else if(password != repeatPassword) {
+            alert("The repeat password is different");
+        } else {
+            userInfoNext.style.display ='none';
+            nextBtn.style.display ='none';
+            userInfo.style.display = 'block';
+        }
+    } else {
+        alert('Email format is incorrect.');
+    }
 }
 
 loginBtn.addEventListener('click', (e) => {
@@ -87,11 +84,8 @@ function sendPost(url, params) {
 function PreviewImage() {
     var preview = new FileReader();
     preview.onload = (e) => {
-        document.getElementById("user_image").src = e.target.result; // img id 값 
+        document.getElementById("user_image").src = e.target.result; // img id 값
         console.log(e.target.result);
     };
     preview.readAsDataURL(document.getElementById("user_profile_img").files[0]); // input id 값
-    // console.log(preview.readAsDataURL(document.getElementById("user_profile_img").files[0])); //data: image/png
-    //  // http://localhost:3000/img/default_profile.jpg
-    //  (document.getElementById("user_image").src).substr(26);
 };

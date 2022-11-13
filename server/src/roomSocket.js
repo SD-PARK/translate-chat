@@ -30,7 +30,7 @@ module.exports = (io, db) => {
 
             db.query(`SELECT users.LANGUAGE, info.ROOM_NAME FROM room_info AS info, users
                     WHERE info.USER_ID = ${socket.user_id} AND info.ROOM_ID = ${socket.room_id} AND info.USER_ID = users.ID`, async (err, userCheck) => { if (err) return console.log(err);
-                if (userCheck) { // room에 속한 user일 때.
+                if (userCheck[0]) { // room에 속한 user일 때.
                     console.log('userCheck = ', userCheck[0].LANGUAGE);
                     socket.language = userCheck[0].LANGUAGE;
                     

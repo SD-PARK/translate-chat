@@ -93,5 +93,6 @@ socket.on('tellNewMsg', (MSG_NUM) => {
 
 /** Room 제목 변경 */
 $('#topmenu input.title').change(() => {
-    socket.emit('roomTitleChange', $('#topmenu input.title').value);
+    console.log($('#topmenu input.title').val());
+    socket.emit('roomTitleChange', $('#topmenu input.title').val());
 });

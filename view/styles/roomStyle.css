@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400');
 * { margin: 0px;padding: 0px;}
 
 body {
@@ -9,7 +10,7 @@ body {
 	display:flex;
 	align-items:center;
 	justify-content:center;
-	font-family:"Fira Sans", Helvetica, Arial, sans-serif;
+	font-family:"Fira Sans", "Nanum Gothic", Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing:antialiased;
 	-moz-osx-font-smoothing:grayscale;
 }
@@ -38,7 +39,9 @@ body {
 	height:4vh;
 	margin:2vh;
 	font-size:2vh;
+	font-weight:bold;
 	text-align:center;
+	font-family:"Fira Sans", "Nanum Gothic", Helvetica, Arial, sans-serif;
 	border-style:none;
 	flex:1;
 }
@@ -102,6 +105,7 @@ body {
 	margin-left: -50px;
 	border-radius: 50%;
 	width: 40px;
+	height: 40px;
 	margin-top: -5px;
 }
 #chat-messages div.message.right img{
@@ -111,7 +115,7 @@ body {
 }
 .message .bubble{
 	background:#f0f4f7;
-	font-size:13px;
+	font-size:14px;
 	padding:8px 9px;
 	margin-bottom:27px;
 	border-radius:0 5px 5px 5px;

@@ -17,18 +17,11 @@ html, body {
   display: none;
 }
 
-.select_Languege {
-  -webkit-appearance: none; /* 화살표 없애기 for chrome*/
-  -moz-appearance: none; /* firefox*/
-  color: #000;
-  padding-bottom: 1vh;
-}
-
 .form-structor {
   background-color: #222;
   border-radius: 3vh;
   height: 100vh;
-  width: 63.63vh;
+  width: 100vw;
   position: relative;
   overflow: hidden;
 }
@@ -116,6 +109,13 @@ html, body {
 }
 .form-structor .signup .form-holder .input::-webkit-input-placeholder {
   color: rgba(0, 0, 0, 0.4);
+}
+.form-structor .signup .form-holder .select {
+  -webkit-appearance: none; /* 화살표 없애기 for chrome*/
+  -moz-appearance: none; /* firefox*/
+  color: #000;
+  height: 7vh;
+  line-height: 5.5vh;
 }
 .form-structor .signup .submit-btn {
   background-color: rgba(0, 0, 0, 0.4);
@@ -271,9 +271,9 @@ html, body {
   position: static;
   border: 1px solid #eee;
   border-radius: 50%;
-  margin: 0 25% -20% 25%;
-  width: 50%;
-  height: 50%;
+  margin: 0 23vw -7vh 23vw;
+  width: 25vw;
+  height: 25vw;
 }
 
 /*# sourceMappingURL=loginStyle.css.map */
