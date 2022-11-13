@@ -45,7 +45,7 @@ html,body {
   
   .signup {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 52%;
     -webkit-transform: translate(-50%, -50%);
     width: 75%;
@@ -291,4 +291,18 @@ html,body {
       -webkit-transition: all .3s ease;
     }
   }
+}
+
+.input-file-button{
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.profil{
+  position: static;
+  border:1px solid #eee;
+  border-radius: 50%;
+  margin: 0 25% -20% 25%;
+  width: 50%;
+  height: 50%;
 }

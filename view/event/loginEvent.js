@@ -15,24 +15,27 @@ function nextinfo() {
     const checkEnglish = password.search(/[a-z]/ig);
     const emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
  
-    // Email
-    if(emailCheck.test(email)) {
-        if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(password)){            
-            alert('It must be at least 8 characters with a combination of numbers, English, and special characters.');
-        }else if(checkNumber <0 || checkEnglish <0){
-            alert("You must mix letters and numbers.");
-        }else if(/(\w)\1\1\1/.test(password)){
-            alert('The same character cannot be used more than 4 times.');
-        }else if(password != repeatPassword) {
-            alert("The repeat password is different");
-        } else {
-            userInfoNext.style.display ='none';
-            nextBtn.style.display ='none';
-            userInfo.style.display = 'block';
-        }
-    } else {
-        alert('Email format is incorrect.');
-    }
+    userInfoNext.style.display ='none';
+    nextBtn.style.display ='none';
+    userInfo.style.display = 'block';
+    // // Email
+    // if(emailCheck.test(email)) {
+    //     if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(password)){            
+    //         alert('It must be at least 8 characters with a combination of numbers, English, and special characters.');
+    //     }else if(checkNumber <0 || checkEnglish <0){
+    //         alert("You must mix letters and numbers.");
+    //     }else if(/(\w)\1\1\1/.test(password)){
+    //         alert('The same character cannot be used more than 4 times.');
+    //     }else if(password != repeatPassword) {
+    //         alert("The repeat password is different");
+    //     } else {
+    //         userInfoNext.style.display ='none';
+    //         nextBtn.style.display ='none';
+    //         userInfo.style.display = 'block';
+    //     }
+    // } else {
+    //     alert('Email format is incorrect.');
+    // }
 }
 
 loginBtn.addEventListener('click', (e) => {
@@ -63,25 +66,6 @@ function loginSubmit() {
     };
     sendPost('/login', data);
 };
-
-// Sign Up
-function signupSubmit() {
-    const name = document.querySelector('.signup #name').value;
-    const language = document.querySelector('.signup #language').value;
-    const company = document.querySelector('.signup #company').value;
-
-    const data = {
-        email : email,
-        password : password,
-        name: name,
-        language: language,
-        company: company,
-        img_url: 'default_profile.png'
-    }
-
-    sendPost('/login/signup', data);
-};
-
 // POST 전송
 function sendPost(url, params) {
     var form = document.createElement('form');
@@ -98,3 +82,16 @@ function sendPost(url, params) {
     document.body.appendChild(form);
     form.submit();
 }
+
+/** 이미지 업로드 */
+function PreviewImage() {
+    var preview = new FileReader();
+    preview.onload = (e) => {
+        document.getElementById("user_image").src = e.target.result; // img id 값 
+        console.log(e.target.result);
+    };
+    preview.readAsDataURL(document.getElementById("user_profile_img").files[0]); // input id 값
+    // console.log(preview.readAsDataURL(document.getElementById("user_profile_img").files[0])); //data: image/png
+    //  // http://localhost:3000/img/default_profile.jpg
+    //  (document.getElementById("user_image").src).substr(26);
+};

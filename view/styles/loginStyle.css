@@ -47,7 +47,7 @@ html, body {
 }
 .form-structor .signup {
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 52%;
   -webkit-transform: translate(-50%, -50%);
   width: 75%;
@@ -260,6 +260,20 @@ html, body {
   opacity: 1;
   visibility: visible;
   -webkit-transition: all 0.3s ease;
+}
+
+.input-file-button {
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.profil {
+  position: static;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  margin: 0 25% -20% 25%;
+  width: 50%;
+  height: 50%;
 }
 
 /*# sourceMappingURL=loginStyle.css.map */

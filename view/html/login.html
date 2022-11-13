@@ -6,19 +6,21 @@
     </head>
     <body>
       <div class="form-structor">
-        <div class="signup">
+        <form class="signup" action="/login/signup" method="post" enctype="multipart/form-data">
           <h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
           <div class="form-holder" id="firstInfo">
-            <input type="email" class="input" placeholder="Email" id="email" />
-            <input type="password" class="input" placeholder="Password" id="password" />
+            <input type="email" class="input" placeholder="Email" id="email" name="email"/>
+            <input type="password" class="input" placeholder="Password" id="password" name="password"/>
             <input type="password" class="input" placeholder="Repeat Password" id="repeatPassword" />
           </div>
-          <button class="submit-btn" onclick="nextinfo()" id="signup_next">Next</button>
+          <button class="submit-btn" onclick="nextinfo()" id="signup_next" type="button">Next</button>
           <div class="userinfo" id="secondInfo">
+            <label class="input-file-button form-title" for="user_profile_img"><img class="profil" id="user_image" src="../img/profiles/default_profile.jpg"></label>
+            <input type="file" id="user_profile_img" onchange="PreviewImage()" style="display:none;" name="img_file">
             <div class="form-holder" id="infomation">
-              <input type="text" class="input" placeholder="Name" id="name" />
-              <input type="text" class="input" placeholder="Company" id="company" />
-              <select name="user_Language" class="select_Language input" id="language">
+              <input type="text" class="input" placeholder="Name" id="name" name="name"/>
+              <input type="text" class="input" placeholder="Company" id="company" name="company"/>
+              <select name="language" class="select_Language input" id="language">
                 <option value="unk" selected disabled>Language</option>
                 <option value="ko">한국어</option>
                 <option value="ja">日本語</option>
@@ -26,13 +28,13 @@
                 <option value="zh-TW">繁體中文</option>
                 <option value="en">English</option>
               </select>
-              <input type="text" class="input" placeholder="Company Start" onfocus="this.type='time'" id="start_hour">
-              <input type="text" class="input" placeholder="Company End" onfocus="this.type='time'" id="end_hour">
+              <input type="text" class="input" placeholder="Company Start" onfocus="this.type='time'" id="start_hour" name="company_start">
+              <input type="text" class="input" placeholder="Company End" onfocus="this.type='time'" id="end_hour" name="company_end">
             </div>
 
-            <button class="submit-btn" onclick="signupSubmit()">Sign up</button>
+            <button class="submit-btn" onclick="signupSubmit()" type="submit">Sign up</button>
           </div>
-        </div>
+        </form>
 
         <div class="login slide-up">
           <div class="center">

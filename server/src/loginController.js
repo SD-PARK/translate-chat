@@ -1,6 +1,7 @@
 const db = require('../config/db');
 const crypto = require('crypto');
 const path = require('path');
+const sharp = require('sharp'); const fs = require('fs');
 
 const SECRET = require('../config/key').CRYPTO_SECRET;
 
@@ -35,24 +36,44 @@ exports.loginPostMid = (req, res) => {
 }
 
 exports.signupPostMid = (req, res) => {
-    const { email, password, name, language, company, img_url } = req.body;
+    const { email, password, name, language, company, company_start, company_end} = req.body;
+    console.log(req.body);
     const crypto_password = hash(password);
+    console.log(req.file);
+
     // 필수 사항 DB 입력
-    db.query(`INSERT INTO USERS(EMAIL, PASSWORD, NAME, LANGUAGE, IMG_URL) VALUE
-            ("${email}", "${crypto_password}", "${name}", "${language}", "${img_url}");`, (err, result) => {
-                if (err.code == 'ER_DUP_ENTRY') res.send("<script>alert('Duplicated email.');history.back();</script>"); // 중복되는 이메일이 있을 경우
-                else if (err) return console.log(err);
-                else {
-                    // 선택 사항 DB 입력 (NULL값 처리를 위해 필수 사항과 구분하여 UPDATE)
-                    if(company) {
-                        db.query(`UPDATE USERS SET COMPANY_NAME = "${company}" WHERE EMAIL = "${email}";`, (err, result) => {
-                            if (err) return console.log(err);
-                        });
-                    }
-                    
-                    res.redirect('/login');
+    
+    db.query(`INSERT INTO USERS(EMAIL, PASSWORD, NAME, LANGUAGE) VALUE
+            ("${email}", "${crypto_password}", "${name}", "${language}");`, (err, result) => {
+        
+        if (err) {
+            if (err.code == 'ER_DUP_ENTRY') res.send("<script>alert('Duplicated email.');history.back();</script>"); // 중복되는 이메일이 있을 경우
+            return console.log(err);
+        } else {
+            // 선택 사항 DB 입력 (NULL값 처리를 위해 필수 사항과 구분하여 UPDATE)
+            if(req.file) {
+                try {
+                    sharp(req.file.path).resize({width:600}).withMetadata().toBuffer((err, buffer) => { // 이미지 리사이징
+                        if (err) throw err;
+                        fs.writeFile(req.file.path, buffer, (err) => {if (err) throw err});
+                    })
+                    db.query(`UPDATE USERS SET IMG_URL = "${req.file.filename}" WHERE EMAIL = "${email}";`, (err, result) => { if (err) return console.log(err); });
+                } catch (err) {
+                    console.log(err);
                 }
-            });
+            }
+            if(company) {
+                db.query(`UPDATE USERS SET COMPANY_NAME = "${company}" WHERE EMAIL = "${email}";`, (err, result) => { if (err) return console.log(err); });
+            }
+            if(company_start) {
+                db.query(`UPDATE USERS SET COMPANY_START = "${company_start}" WHERE EMAIL = "${email}";`, (err, result) => { if (err) return console.log(err); });
+            }
+            if(company_end) {
+                db.query(`UPDATE USERS SET COMPANY_END = "${company_end}" WHERE EMAIL = "${email}";`, (err, result) => { if (err) return console.log(err); });
+            }
+        }
+        res.redirect('/login');
+    });
 }
 
 function hash(password) {

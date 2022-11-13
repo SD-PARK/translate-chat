@@ -28,17 +28,19 @@ module.exports = (io, db) => {
             socket.join(data.room_id);
             console.log('[Room: ' + data.room_id + '] join, ', socket.user_id, socket.room_id);
 
-            db.query(`SELECT users.LANGUAGE FROM room_info AS info, users
-                    WHERE info.USER_ID = ${socket.user_id} AND info.ROOM_ID = ${socket.room_id} AND info.USER_ID = users.ID`, async (err, userLanguage) => { if (err) return console.log(err);
-                if (userLanguage) { // room에 속한 user일 때.
-                    console.log('userLanguage = ', userLanguage[0].LANGUAGE);
-                    socket.language = userLanguage[0].LANGUAGE;
+            db.query(`SELECT users.LANGUAGE, info.ROOM_NAME FROM room_info AS info, users
+                    WHERE info.USER_ID = ${socket.user_id} AND info.ROOM_ID = ${socket.room_id} AND info.USER_ID = users.ID`, async (err, userCheck) => { if (err) return console.log(err);
+                if (userCheck) { // room에 속한 user일 때.
+                    console.log('userCheck = ', userCheck[0].LANGUAGE);
+                    socket.language = userCheck[0].LANGUAGE;
                     
+                    const title = userCheck[0].ROOM_NAME;
+
                     console.log(await nullIsTranslate(socket.room_id, socket.language), '\n\n\n\n\n');
                     db.query(`SELECT msg.SEND_USER_ID, IFNULL(users.IMG_URL, "default_profile.png") AS IMG_URL, msg.TO_${socket.language} AS MSG, msg.SEND_TIME
                                     FROM users RIGHT OUTER JOIN room_message_${socket.room_id} AS msg
                                     ON users.ID = msg.SEND_USER_ID`, (err, msgResult) => { if (err) return console.log(err);
-                                        callback(msgResult);
+                                        callback(title, msgResult);
                     });
                 } else {
                     callback('No permissions');

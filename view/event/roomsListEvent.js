@@ -80,7 +80,7 @@ function modalUpdate(list) {
     for(let i=0; i<len; i++) {
         let checked = (inviteIdArr.indexOf(list[i].ID) == -1) ? '' : 'checked';
         $('#modalSelect').append(`<div class="selectField">
-                                    <img src="../img/${list[i].IMG_URL}"/>
+                                    <img src="../img/profiles/${list[i].IMG_URL}"/>
                                     <p>
                                         <strong>${list[i].NAME}</strong><br>
                                         <span>${list[i].EMAIL}</span>
@@ -95,7 +95,7 @@ function addInvite(id, i) {
         inviteIdArr.push(id); // 값 추가
         $('#chooseList').append(`<div class="chooseRow" onclick="inviteRemove(${id})">
                                         <span class="chooseCancel">&times;</span>
-                                        <img src="../img/${window.list[i].IMG_URL}">
+                                        <img src="../img/profiles/${window.list[i].IMG_URL}">
                                         <p>${window.list[i].NAME}</p>
                                     </div>`)
     } else { // 이미 체크된 상태라면

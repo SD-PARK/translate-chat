@@ -9,13 +9,14 @@ const room_id = window.location.pathname.substring(12); // url에서 room_id 값
 let dateCheck;
 
 // Room 입장 이벤트
-socket.emit('join', {user_id: user_id, room_id: room_id}, (res) => {
+socket.emit('join', {user_id: user_id, room_id: room_id}, (title, res) => {
     let msg_length = res.length;
     let date;
 
     if(res === 'No permissions')
         return alert(res);
 
+    $('#topmenu input.title').attr('value', title);
     $("#Untranslated").css('display', 'none');
     
     for(let i=0; i<msg_length; i++) {
@@ -42,7 +43,7 @@ function datePrint(date) {
 /** 다른 사람의 대화 (좌측 말풍선) */
 function personChat(chat) {
     $('#chat-messages').append(`<div class="message">
-        <img src="../../img/${chat.IMG_URL}"/>
+        <img src="../../img/profiles/${chat.IMG_URL}"/>
         <div class="bubble">${chat.MSG}<div class="corner"></div>
             <span>${new Date(chat.SEND_TIME).toLocaleTimeString().slice(0, -3)}</span>
         </div>
@@ -51,7 +52,7 @@ function personChat(chat) {
 /** 본인의 대화 (우측 말풍선) */
 function selfChat(chat) {
     $('#chat-messages').append(`<div class="message right">
-        <img src="../../img/${chat.IMG_URL}" />
+        <img src="../../img/profiles/${chat.IMG_URL}" />
         <div class="bubble">${chat.MSG}<div class="corner"></div>
             <span>${new Date(chat.SEND_TIME).toLocaleTimeString().slice(0, -3)}</span>
         </div>
