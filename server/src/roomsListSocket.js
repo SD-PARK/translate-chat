@@ -40,6 +40,7 @@ module.exports = (io, db) => {
         });
 
         socket.on('makeRoom', (list, callback) => {
+            const user_id = socket.user_id;
             list_len = list.length;
             console.log('insert');
             db.query(`INSERT INTO ROOM_LIST () VALUE ()`, (err, res) => { if (err) return console.log(err) }); // ROOM_ID 생성
@@ -48,7 +49,7 @@ module.exports = (io, db) => {
                 room_id[0].ROOM_ID
 
                 console.log('insert2');
-                db.query(`INSERT INTO room_info (ROOM_ID, USER_ID) VALUE (${room_id[0].ROOM_ID}, ${socket.user_id});`, (err, res) => { if (err) return console.log(err) }); // 생성할 방에 본인 초대
+                db.query(`INSERT INTO room_info (ROOM_ID, USER_ID) VALUE (${room_id[0].ROOM_ID}, ${user_id});`, (err, res) => { if (err) return console.log(err) }); // 생성할 방에 본인 초대
                 for(let i=0; i<list_len; i++) { // 생성할 방에 유저 초대
                     db.query(`INSERT INTO room_info (ROOM_ID, USER_ID) VALUE (${room_id[0].ROOM_ID}, ${list[i]});`, (err, res) => { if (err) return console.log(err) });
                 }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'> -->
     <link rel="stylesheet" href="../styles/listsStyle.css"/>
+    <link rel="stylesheet" href="../styles/addFriendStyle.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> 
     <script src="/socket.io/socket.io.js"></script>
     <script src="../event/friendsListEvent.js"></script>
@@ -22,7 +23,28 @@
           <!-- friend List -->
 
         </div>
-        
+
+        <div id="addFriend">
+          <!-- Open The Make Room Box -->
+          <button id="myBtn" onclick="modalBtnClick()"></button>
+          <!-- Make Room Box The Modal -->
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span class="close" onclick="modalClose()">&times;</span>
+              <p id="modalTitle">Add Contact</p>
+              <div id="modalSearch">
+                <input type="text" placeholder="Search Email" id="searchText">
+                <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
+              </div>
+              <div id="modalSelect">
+                <!-- selectField -->
+                
+              </div>
+            </div>
+          </div>
+          <!--  -->
+        </div>
+
         <div id="friend_search">
           <input type="text" id="searchfield" placeholder="Search contacts..." />
         </div>

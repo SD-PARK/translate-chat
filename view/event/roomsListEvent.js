@@ -55,7 +55,8 @@ function modalBtnClick() {
     $("#myModal").css('display', 'block');
     // 친구 목록 로드
     socket.emit('friendsSearch', {user_id: user_id, factor: ""}, (list) => {
-        modalUpdate(list);
+        window.list = list;
+        modalUpdate();
     });
 }
 /** Modal 닫기 */
@@ -75,7 +76,8 @@ $(document).ready(() => {
     // 검색 창에 입력 시
     $('#searchText').keyup(() => {
         socket.emit('friendsSearch', {user_id: user_id, factor: $('#searchText').val()}, (list) => {
-            modalUpdate(list);
+            window.list = list;
+            modalUpdate();
         });
     });
 });
@@ -84,19 +86,18 @@ $(document).ready(() => {
 let list = [];
 let inviteIdArr = [];
 /** Select Field 갱신 */
-function modalUpdate(list) {
+function modalUpdate() {
     $('#modalSelect').empty(); // 기존 검색 내용 제거
-    window.list = list;
-    let len = list.length;
+    let len = window.list.length;
     for(let i=0; i<len; i++) {
-        let checked = (inviteIdArr.indexOf(list[i].ID) == -1) ? '' : 'checked';
+        let checked = (inviteIdArr.indexOf(window.list[i].ID) == -1) ? '' : 'checked';
         $('#modalSelect').append(`<div class="selectField">
-                                    <img src="../img/profiles/${list[i].IMG_URL}"/>
+                                    <img src="../img/profiles/${window.list[i].IMG_URL}"/>
                                     <p>
-                                        <strong>${list[i].NAME}</strong><br>
-                                        <span>${list[i].EMAIL}</span>
+                                        <strong>${window.list[i].NAME}</strong><br>
+                                        <span>${window.list[i].EMAIL}</span>
                                     </p>
-                                    <input type="checkbox" onclick="addInvite(${list[i].ID}, ${i})" ${checked}></div>`);
+                                    <input type="checkbox" onclick="addInvite(${window.list[i].ID}, ${i})" ${checked}></div>`);
     }
 }
 /** Invite 추가 */

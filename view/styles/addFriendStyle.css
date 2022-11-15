@@ -1,0 +1,230 @@
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 17vh; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  #addFriend {
+    position:relative;
+  }
+  /* Modal Button */
+  #myBtn {
+    position: absolute;
+    top:-70px;
+    right:20px;
+    background:url("../img/room_add_btn.png") no-repeat center;
+    background-size:50px;
+    width:50px;
+    height:50px;
+    border-style:none;
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 2%;
+    border: 1px solid #888;
+    width: 80%;
+    height: 60vh;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #d8dfe3;
+    float: right;
+    font-size:5vh;
+    font-weight: bold;
+    margin-right:1.5vh;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  /* Title */
+  #modalTitle {
+    color: #d8dfe3;
+    float: left;
+    font-size: 2.5vh;
+    font-weight: bold;
+    height:6vh;
+    line-height:6vh;
+    margin-left: 1.5vh;
+  }
+  
+  /* Search Field */
+  #modalSearch {
+    position:relative;
+    clear:both;
+    width:100%;
+    height:5vh;
+    margin:3vh 0 2vh 0;
+    text-align:center;
+  }
+  
+  #modalSearch input {
+    width: 81%;
+    height: 4vh;
+    margin-top: 0.5vh;
+    font-size: 1.5vh;
+    border-style: none;
+    border-radius:3vh;
+    background-color:#d8dfe3;
+    color:#fff;
+    padding-left:14%;
+  }
+  #modalSearch input:focus {
+    background-color:#fff;
+    color:#000;
+  }
+  #modalSearch img {
+    filter: opacity(0.3) drop-shadow(0 0 0 #d8dfe3);
+    position:absolute;
+    top:1.5vh;
+    left:7%;
+    width:2vh;
+  }
+  
+  /* Choose List Field */
+  #chooseList {
+    width: 92%;
+    height: 5vh;
+    overflow-x:scroll;
+    white-space: nowrap;
+      -ms-overflow-style:none;
+    margin:1.5vh 3% 0 3%;
+    padding: 0.5vh;
+  }
+  #chooseList::-webkit-scrollbar {
+      display:none;
+  }
+  .chooseRow {
+    position:relative;
+    display:inline-block;
+    width: 5vh;
+    height: 5vh;
+  }
+  .chooseRow span {
+    position:absolute;
+    top:-8px;
+    right:5px;
+    color: #333;
+    font-size:1.5vh;
+  }
+  .chooseRow img {
+    border-radius: 50%;
+    width: 3vh;
+    height: 3vh;
+    margin: 0 1vh;
+  }
+  .chooseRow p {
+    width: 4vh;
+    height: 1.5vh;
+    margin-top: -0.5vh;
+    padding: 0 0.5vh;
+    text-align:center;
+    font-size: 1vh;
+    overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+  }
+  
+  /* Select Field */
+  #modalSelect {
+    background-color:#fff;
+      overflow-y:scroll;
+      height:45vh;
+      -ms-overflow-style:none;
+  }
+  #modalSelect::-webkit-scrollbar {
+      display:none;
+  }
+  
+  .selectField {
+      height:60px; /* 11vh */
+      position:relative;
+      overflow:hidden;
+  }
+  .selectField:hover{
+      background:#d8dfe3;
+      cursor:pointer;
+  }
+  .selectField img{
+    height:41px;
+    width:41px;
+    border-radius:50%;
+    margin:9px;
+    float:left;
+  }
+  .selectField p{
+      padding:11px 0 0 0;
+      line-height:120%;
+      width:65%;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      text-align:left;
+  }
+  .selectField p img{
+    width: 15px;
+    height: 10px;
+    object-fit: cover;
+    margin:4px 3px 4px 0;
+    border-radius:0;
+  }
+  .selectField p strong{
+      font-weight:bold;
+      font-size:16px;
+      color:#333;
+  }
+  .selectField p span{
+      font-size:13px;
+      color:#597a90;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+  }
+  .selectField button{
+    position:absolute;
+    top:0;
+    right:0;
+    width:25px;
+    height:25px;
+    border:1px solid #999;
+    border-radius: 50%;
+    margin:17.5px;
+  }
+  .selectField button:hover{
+    border-style:none;
+    background:url('../img/check.png') no-repeat center;
+    filter: invert(48%) sepia(15%) saturate(829%) hue-rotate(161deg) brightness(91%) contrast(89%);
+    background-size: 20px;
+  }
+  
+  /* Make Room Button */
+  #makeRoomBtn {
+    width:20vw;
+    height:4vh;
+    margin:2vh;
+    background-color:#fff;
+    border:1px solid #999;
+    border-radius:10%;
+    box-shadow:none;
+    font-size:1.7vh;
+  }
+  #makeRoomBtn:active {
+    background-color:#d8dfe3;
+  }
