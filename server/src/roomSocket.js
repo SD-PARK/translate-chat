@@ -37,7 +37,7 @@ module.exports = (io, db) => {
                     const title = userCheck[0].ROOM_NAME;
 
                     console.log(await nullIsTranslate(socket.room_id, socket.language), '\n\n\n\n\n');
-                    db.query(`SELECT msg.SEND_USER_ID, IFNULL(users.IMG_URL, "default_profile.png") AS IMG_URL, msg.TO_${socket.language} AS MSG, msg.SEND_TIME
+                    db.query(`SELECT msg.MSG_NUM, msg.SEND_USER_ID, IFNULL(users.IMG_URL, "default_profile.png") AS IMG_URL, msg.ORIGINAL_MSG, msg.TO_${socket.language} AS MSG, msg.SEND_TIME
                                     FROM users RIGHT OUTER JOIN room_message_${socket.room_id} AS msg
                                     ON users.ID = msg.SEND_USER_ID`, (err, msgResult) => { if (err) return console.log(err);
                                         callback(title, msgResult);
@@ -52,7 +52,7 @@ module.exports = (io, db) => {
             console.log('socket: sendMsg');
             // DB에 메세지 저장
             db.query(`INSERT INTO room_message_${socket.room_id} (SEND_USER_ID, ORIGINAL_MSG, FROM_LANGUAGE)
-                    SELECT ${socket.user_id}, "${msg}", LANGUAGE
+                    SELECT ID, "${msg}", LANGUAGE
                     FROM users WHERE id = ${socket.user_id};`, (err, result) => { if (err) return console.log(err); });
 
             db.query(`SELECT MSG_NUM FROM room_message_${socket.room_id} ORDER BY MSG_NUM DESC LIMIT 1`, (err, num) => { if (err) return console.log(err);
@@ -65,7 +65,7 @@ module.exports = (io, db) => {
             console.log('socket: callNewMsg');
             console.log(await nullIsTranslate(socket.room_id, socket.language), '\n\n\n\n\n');
             setTimeout(() => {
-                db.query(`SELECT msg.SEND_USER_ID, IFNULL(users.IMG_URL, "default_profile.png") AS IMG_URL, msg.TO_${socket.language} AS MSG, msg.SEND_TIME
+                db.query(`SELECT msg.MSG_NUM, msg.SEND_USER_ID, IFNULL(users.IMG_URL, "default_profile.png") AS IMG_URL, msg.ORIGINAL_MSG, msg.TO_${socket.language} AS MSG, msg.SEND_TIME
                 FROM users RIGHT OUTER JOIN room_message_${socket.room_id} AS msg
                 ON users.ID = msg.SEND_USER_ID
                 WHERE msg.MSG_NUM = ${msg_num}`, (err, msg) => { if (err) return console.log(err);

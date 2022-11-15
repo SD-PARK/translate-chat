@@ -11,7 +11,8 @@ module.exports = (io, db) => {
 
                 db.query(`SELECT users.ID, users.NAME, users.EMAIL, users.LANGUAGE, users.IMG_URL
                     FROM users, relations
-                    WHERE relations.USER_ID=${user_id} AND users.ID = relations.TARGET_ID AND relations.RELATION_TYPE = "FRIEND"`, (err, friends_result) => { if (err) return console.log(err);
+                    WHERE relations.USER_ID=${user_id} AND users.ID = relations.TARGET_ID AND relations.RELATION_TYPE = "FRIEND"
+                    ORDER BY users.NAME`, (err, friends_result) => { if (err) return console.log(err);
                     
                     callback({user_result: user_result[0], friends_result: friends_result});
                 });

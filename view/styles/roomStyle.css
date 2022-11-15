@@ -127,7 +127,7 @@ body {
 	float:right;
 	border-radius:5px 0px 5px 5px;
 }
-.bubble .corner{
+.bubble .corner {
 	background:url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/bubble-corner.png") 0 0 no-repeat;
 	background-size:3px;
 	transform:scaleY(-1);
@@ -137,6 +137,16 @@ body {
 	height:3px;
 	left:-2.8px;
 	top:0;
+}
+div.message .originalBtn {
+	position:absolute;
+	bottom:-5px;
+	right:-10px;
+	width:20px;
+	height:20px;
+	background:url("../img/original_text_btn.png") no-repeat;
+	background-size:cover;
+	border-style:none;
 }
 div.message.right .corner{
 	background:url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/bubble-cornerR.png") 0 0 no-repeat;

@@ -8,23 +8,26 @@ function get_cookie(name) {
 const room_id = window.location.pathname.substring(12); // url에서 room_id 값 추출
 let dateCheck;
 
+let msg = [];
 // Room 입장 이벤트
 socket.emit('join', {user_id: user_id, room_id: room_id}, (title, res) => {
     let msg_length = res.length;
     let date;
-
     if(res === 'No permissions')
         return alert(res);
 
     $('#topmenu input.title').attr('value', title);
     $("#Untranslated").css('display', 'none');
-    
+    msg = res;
     for(let i=0; i<msg_length; i++) {
-        datePrint(new Date(res[i].SEND_TIME).toLocaleDateString()); // 날짜 확인
+        if (res[i].SEND_TIME) {
+            date = new Date(res[i].SEND_TIME).toLocaleTimeString().slice(0, -3);
+            datePrint(new Date(res[i].SEND_TIME).toLocaleDateString()); // 날짜 확인
+        } else { date = '' }
         if(res[i].SEND_USER_ID == user_id) { // 본인 메세지와 상대 메세지 구분
-            selfChat(res[i]);
+            selfChat(res[i], date);
         } else {
-            personChat(res[i]);
+            personChat(res[i], date);
         }
     }
     addSpace(2);
@@ -41,20 +44,21 @@ function datePrint(date) {
     }
 }
 /** 다른 사람의 대화 (좌측 말풍선) */
-function personChat(chat) {
+function personChat(chat, date) {
     $('#chat-messages').append(`<div class="message">
         <img src="../../img/profiles/${chat.IMG_URL}"/>
-        <div class="bubble">${chat.MSG}<div class="corner"></div>
-            <span>${new Date(chat.SEND_TIME).toLocaleTimeString().slice(0, -3)}</span>
+        <div class="bubble"><div id="msg_${chat.MSG_NUM}">${chat.MSG}</div><div class="corner"></div>
+            <span>${date}</span>
+            <button id="btn_${chat.MSG_NUM}" class="originalBtn" onclick="textSwitch(${chat.MSG_NUM})"></button>
         </div>
     </div>`);
 }
 /** 본인의 대화 (우측 말풍선) */
-function selfChat(chat) {
+function selfChat(chat, date) {
     $('#chat-messages').append(`<div class="message right">
         <img src="../../img/profiles/${chat.IMG_URL}" />
-        <div class="bubble">${chat.MSG}<div class="corner"></div>
-            <span>${new Date(chat.SEND_TIME).toLocaleTimeString().slice(0, -3)}</span>
+        <div class="bubble"><div id="msg_${chat.MSG_NUM}">${chat.MSG}</div><div class="corner"></div>
+            <span>${date}</span>
         </div>
     </div>`);
 }
@@ -81,6 +85,7 @@ function sendMessage() {
 
 socket.on('tellNewMsg', (MSG_NUM) => {
     socket.emit('callNewMsg', (MSG_NUM), (newMsg) => {
+        window.msg.push(newMsg);
         datePrint(new Date(newMsg.SEND_TIME).toLocaleDateString()); // 날짜 확인
         if (newMsg.SEND_USER_ID == user_id) {
             selfChat(newMsg);
@@ -96,3 +101,20 @@ $('#topmenu input.title').change(() => {
     console.log($('#topmenu input.title').val());
     socket.emit('roomTitleChange', $('#topmenu input.title').val());
 });
+
+/** 메세지 원문/번역문 전환 */
+function textSwitch(msgNum) {
+    let originalMsg = msg[msgNum-1].ORIGINAL_MSG; // 원문
+    let translateMsg = msg[msgNum-1].MSG; // 번역문
+    if (msg[msgNum-1].switch) {
+        $(`#msg_${msgNum}`).empty();
+        $(`#msg_${msgNum}`).append(translateMsg);
+        $(`#btn_${msgNum}`).css('background-image', 'url("../../img/original_text_btn.png")');
+        msg[msgNum-1].switch = 0;
+    } else {
+        $(`#msg_${msgNum}`).empty();
+        $(`#msg_${msgNum}`).append(originalMsg);
+        $(`#btn_${msgNum}`).css('background-image', 'url("../../img/translate_text_btn.png")');
+        msg[msgNum-1].switch = 1;
+    }
+}
