@@ -4,9 +4,9 @@ const key = require('../config/key');
 
 class Papago {
     async lookup(source, target, term) {
-        if (term == null) { // 메세지가 없을 경우, '검색 용어 조회 인수로 제공되어야 합니다.'
+        if (!term) { // 메세지가 없을 경우, '검색 용어 조회 인수로 제공되어야 합니다.'
             throw new Error('Search term should be provided as lookup arguments');
-        } else if (source == target) { // 'source 언어와 target 언어는 달라야합니다.'
+        } else if (source === target) { // 'source 언어와 target 언어는 달라야합니다.'
             console.log('The source language and the target language must be different.');
             return term;
         } else {

@@ -18,19 +18,16 @@ socket.emit('join', {user_id: user_id, room_id: room_id}, (title, res) => {
 
     $('#topmenu input.title').attr('value', title);
     $("#Untranslated").css('display', 'none');
+    console.log(res);
     msg = res;
     for(let i=0; i<msg_length; i++) {
-        if (res[i].SEND_TIME) {
-            date = new Date(res[i].SEND_TIME).toLocaleTimeString().slice(0, -3);
-            datePrint(new Date(res[i].SEND_TIME).toLocaleDateString()); // 날짜 확인
-        } else { date = '' }
+        datePrint(new Date(res[i].SEND_TIME).toLocaleDateString()); // 날짜 확인
         if(res[i].SEND_USER_ID == user_id) { // 본인 메세지와 상대 메세지 구분
             selfChat(res[i], date);
         } else {
             personChat(res[i], date);
         }
     }
-    addSpace(2);
     $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
 });
 
@@ -44,7 +41,8 @@ function datePrint(date) {
     }
 }
 /** 다른 사람의 대화 (좌측 말풍선) */
-function personChat(chat, date) {
+function personChat(chat) {
+    date = new Date(chat.SEND_TIME).toLocaleTimeString().slice(0, -3);
     $('#chat-messages').append(`<div class="message">
         <img src="../../img/profiles/${chat.IMG_URL}"/>
         <div class="bubble"><div id="msg_${chat.MSG_NUM}">${chat.MSG}</div><div class="corner"></div>
@@ -54,7 +52,8 @@ function personChat(chat, date) {
     </div>`);
 }
 /** 본인의 대화 (우측 말풍선) */
-function selfChat(chat, date) {
+function selfChat(chat) {
+    date = new Date(chat.SEND_TIME).toLocaleTimeString().slice(0, -3);
     $('#chat-messages').append(`<div class="message right">
         <img src="../../img/profiles/${chat.IMG_URL}" />
         <div class="bubble"><div id="msg_${chat.MSG_NUM}">${chat.MSG}</div><div class="corner"></div>
@@ -85,7 +84,7 @@ function sendMessage() {
 
 socket.on('tellNewMsg', (MSG_NUM) => {
     socket.emit('callNewMsg', (MSG_NUM), (newMsg) => {
-        window.msg.push(newMsg);
+        msg.push(newMsg);
         datePrint(new Date(newMsg.SEND_TIME).toLocaleDateString()); // 날짜 확인
         if (newMsg.SEND_USER_ID == user_id) {
             selfChat(newMsg);

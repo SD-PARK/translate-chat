@@ -6,12 +6,12 @@ module.exports = (io, db) => {
     const nullIsTranslate = (room_id, userLanguage) => {
         return new Promise((resolve, reject) => {
             console.log('func: nullIsTranslate');
-            db.query(`SELECT MSG_NUM, ORIGINAL_MSG, FROM_LANGUAGE FROM room_message_${room_id} WHERE TO_${userLanguage} IS NULL`, async (err, nullMsg) => { if (err) return console.log(err);
-                const len = nullMsg.length;
+            db.query(`CALL GET_NULLTEXT(${room_id}, '${userLanguage}');`, async (err, nullList) => { if (err) return console.log(err);
+                const len = nullList[0].length;
                 for(let i=0; i<len; i++) {
-                    console.log(nullMsg[i]);
-                    let transMsg = await papago.lookup(nullMsg[i].FROM_LANGUAGE, userLanguage, nullMsg[i].ORIGINAL_MSG);
-                    db.query(`UPDATE room_message_${room_id} SET TO_${userLanguage} = "${transMsg}" WHERE MSG_NUM = ${nullMsg[i].MSG_NUM};`, (err, res) => { if (err) return console.log(err); });
+                    console.log(nullList[0][i].FROM_LANGUAGE, userLanguage, nullList[0][i].ORIGINAL_MSG);
+                    let transMsg = await papago.lookup(nullList[0][i].FROM_LANGUAGE, userLanguage, nullList[0][i].ORIGINAL_MSG);
+                    db.query(`CALL UPDATE_TRANSLATION(${room_id}, ${nullList[0][i].MSG_NUM}, '${userLanguage}', '${transMsg}');`, (err, res) => { if (err) return console.log(err); });
                 }
                 resolve();
             });
@@ -50,14 +50,11 @@ module.exports = (io, db) => {
 
         socket.on('sendMsg', (msg) => {
             console.log('socket: sendMsg');
-            // DB에 메세지 저장
-            db.query(`INSERT INTO room_message_${socket.room_id} (SEND_USER_ID, ORIGINAL_MSG, FROM_LANGUAGE)
-                    SELECT ID, "${msg}", LANGUAGE
-                    FROM users WHERE id = ${socket.user_id};`, (err, result) => { if (err) return console.log(err); });
-
-            db.query(`SELECT MSG_NUM FROM room_message_${socket.room_id} ORDER BY MSG_NUM DESC LIMIT 1`, (err, num) => { if (err) return console.log(err);
-                Room.to(socket.room_id).emit('tellNewMsg', num[0].MSG_NUM); // Room에 접속한 Socket에게 MSG_NUM과 함께 전송
-                console.log('socket: sendMsg -> tellNewMsg', num[0].MSG_NUM);
+            // DB에 메세지 저장 후 마지막 메세지의 MSG_NUM 가져옴.
+            db.query(`CALL SEND_MESSAGE(${socket.room_id}, ${socket.user_id}, '${msg}');`, (err, msgNum) => { if (err) return console.log(err);
+                console.log(msgNum[0][0].MSG_NUM);
+                Room.to(socket.room_id).emit('tellNewMsg', msgNum[0][0].MSG_NUM); // Room에 접속한 Socket에게 MSG_NUM과 함께 전송
+                console.log('socket: sendMsg -> tellNewMsg', msgNum[0][0].MSG_NUM);
             });
         });
 

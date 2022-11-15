@@ -27,23 +27,22 @@ function roomPrintMid(list) {
 /** 대화방 출력 */
 function roomPrint(info) {
     // ROOM_ID, ROOM_NAME, SEND_TIME, MSG
-    console.log(info.SEND_TIME);
     let timeAs;
-    if(info.SEND_TIME != "") { // 시간 값 확인
-        timeAs = new Date(info.SEND_TIME); // 가공
+    if(!!info.LAST_SEND_TIME) { // 시간 값 확인
+        timeAs = new Date(info.LAST_SEND_TIME); // 가공
         const today = new Date(new Date().toLocaleDateString());
     
         if(timeAs >= today) timeAs = timeAs.toLocaleTimeString().slice(-8, -3);
         else timeAs = timeAs.toLocaleDateString().substring(6);
     } else {
-        timeAs = info.SEND_TIME;
+        timeAs = info.LAST_SEND_TIME;
     }
 
     $('#rows').append(`<div class="row room" onclick="location.href='room/${info.ROOM_ID}'">
                             <img src="../img/profiles/default_profile.jpg"/>
                             <p>
                                 <strong>${info.ROOM_NAME}</strong><br>
-                                <div>${info.MSG}</div>
+                                <div>${info.LAST_MSG}</div>
                             </p>
                             <a>${timeAs}</a>
                         </div>`);
@@ -134,3 +133,12 @@ function makeRoom() {
         });
     });
 }
+
+updateCheck = setInterval(() => {
+    socket.emit('updateCheck', (user_id), (callback) => {
+        socket.emit('view', (user_id), (res) => {
+            console.log(res);
+            roomPrintMid(res);
+        });
+    });
+}, 1000);
