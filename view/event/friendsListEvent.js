@@ -86,13 +86,14 @@ function modalUpdate() {
                                         <strong>${window.list[i].NAME}</strong><br>
                                         <span>${window.list[i].EMAIL}</span>
                                     </p>
-                                    <button type="checkbox" onclick="friendRegister(${window.list[i].ID})"></button></div>`);
+                                    <input type="checkbox" onclick="friendRegister(${window.list[i].ID}, ${i})"></input></div>`);
     }
 }
 /** 친구 등록 */
-function friendRegister(id) {
+function friendRegister(id, i) {
     if(reg_list.indexOf(id) == -1) {
         socket.emit('friendRegister', id);
         reg_list.push(id);
+        $(`.selectField:nth-child(${i+1}) input`).attr('disabled', true);
     }
 }

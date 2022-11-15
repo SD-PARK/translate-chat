@@ -197,34 +197,20 @@
       overflow:hidden;
       text-overflow:ellipsis;
   }
-  .selectField button{
+  .selectField input{
     position:absolute;
     top:0;
     right:0;
     width:25px;
     height:25px;
     border:1px solid #999;
+    appearance: none;
     border-radius: 50%;
     margin:17.5px;
   }
-  .selectField button:hover{
+  .selectField input:checked{
     border-style:none;
     background:url('../img/check.png') no-repeat center;
     filter: invert(48%) sepia(15%) saturate(829%) hue-rotate(161deg) brightness(91%) contrast(89%);
     background-size: 20px;
-  }
-  
-  /* Make Room Button */
-  #makeRoomBtn {
-    width:20vw;
-    height:4vh;
-    margin:2vh;
-    background-color:#fff;
-    border:1px solid #999;
-    border-radius:10%;
-    box-shadow:none;
-    font-size:1.7vh;
-  }
-  #makeRoomBtn:active {
-    background-color:#d8dfe3;
   }
