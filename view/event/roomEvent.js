@@ -45,8 +45,9 @@ function personChat(chat) {
     date = new Date(chat.SEND_TIME).toLocaleTimeString().slice(0, -3);
     $('#chat-messages').append(`<div class="message">
         <img src="../../img/profiles/${chat.IMG_URL}"/>
+        <strong>${chat.NAME}</strong>
         <div class="bubble"><div id="msg_${chat.MSG_NUM}">${chat.MSG}</div><div class="corner"></div>
-            <span>${date}</span>
+            <span class="dateLeft">${date}</span>
             <button id="btn_${chat.MSG_NUM}" class="originalBtn" onclick="textSwitch(${chat.MSG_NUM})"></button>
         </div>
     </div>`);
@@ -115,5 +116,104 @@ function textSwitch(msgNum) {
         $(`#msg_${msgNum}`).append(originalMsg);
         $(`#btn_${msgNum}`).css('background-image', 'url("../../img/translate_text_btn.png")');
         msg[msgNum-1].switch = 1;
+    }
+}
+
+/** 메뉴 버튼 클릭 시 모달 On/Off */
+function modalBtnClick() {
+    if ($('#menuModal').css('display') == 'none') {
+        $('#menuModal').show();
+    } else {
+        $('#menuModal').hide();
+    }
+}
+
+/** 친구 초대 */
+function inviteBtnClick() {
+    $('.modal').show();
+    socket.emit('friendsSearch', ($('#searchText').val()), (list) => {
+        window.list = list;
+        modalUpdate();
+    });
+}
+
+/** Modal 닫기 */
+function modalClose() {
+    $(".modal").css('display', 'none');
+}
+// 팝업 창 외부 영역 클릭 시
+$(window).click((e) => {
+    if ($(e.target).is($('.modal'))) {
+        $(".modal").css('display', "none");
+    }
+});
+
+// ======= Search Event ======= //
+$(document).ready(() => {
+    // 검색 창에 입력 시
+    $('#searchText').keyup(() => {
+        socket.emit('friendsSearch', ($('#searchText').val()), (list) => {
+            window.list = list;
+            modalUpdate();
+        });
+    });
+});
+
+// ======= Select Event ======= //
+let list = [];
+let inviteIdArr = [];
+/** Select Field 갱신 */
+function modalUpdate() {
+    $('#modalSelect').empty(); // 기존 검색 내용 제거
+    let len = window.list.length;
+    for(let i=0; i<len; i++) {
+        let checked = (inviteIdArr.indexOf(window.list[i].ID) == -1) ? '' : 'checked';
+        $('#modalSelect').append(`<div class="selectField">
+                                    <img src="../../img/profiles/${window.list[i].IMG_URL}"/>
+                                    <p>
+                                        <strong>${window.list[i].NAME}</strong><br>
+                                        <span>${window.list[i].EMAIL}</span>
+                                    </p>
+                                    <input type="checkbox" onclick="addInvite(${window.list[i].ID}, ${i})" ${checked}></div>`);
+    }
+}
+/** Invite 추가 */
+function addInvite(id, i) {
+    let index = inviteIdArr.indexOf(id);
+    if(index == -1) { // 체크되지 않았다면
+        inviteIdArr.push(id); // 값 추가
+        $('#chooseList').append(`<div class="chooseRow" onclick="inviteRemove(${id})">
+                                        <span class="chooseCancel">&times;</span>
+                                        <img src="../../img/profiles/${window.list[i].IMG_URL}">
+                                        <p>${window.list[i].NAME}</p>
+                                    </div>`)
+    } else { // 이미 체크된 상태라면
+        inviteIdArr = inviteIdArr.filter((element) => element !== id); // 값 제거
+        $(`#chooseList .chooseRow:nth-child(${index+1})`).remove();
+    }
+    console.log(inviteIdArr);
+}
+/** Invite 상단 X 버튼 눌렀을 때, Invite 제거 */
+function inviteRemove(id) { // Invite Event
+    let index = inviteIdArr.indexOf(id);
+    inviteIdArr = inviteIdArr.filter((element) => element !== id); // 값 제거
+    $(`#chooseList .chooseRow:nth-child(${index+1})`).remove();
+    modalUpdate(window.list);
+}
+
+// ======= Submit Event ======= //
+function inviteRoom() {
+    if(inviteIdArr.length) {
+        socket.emit('inviteRoom', inviteIdArr, (callback) => {
+            // Modal 닫기
+            modalClose();
+            // 채팅방 목록 갱신
+            socket.emit('view', (user_id), (res) => {
+                console.log(res);
+                roomPrintMid(res);
+            });
+        });
+    } else {
+        alert('You must invite at least one person.');
     }
 }

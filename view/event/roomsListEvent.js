@@ -48,6 +48,15 @@ function roomPrint(info) {
                         </div>`);
 }
 
+updateCheck = setInterval(() => { // 1초마다 서버에 업데이트 여부 확인
+    socket.emit('updateCheck', (user_id), (callback) => {
+        socket.emit('view', (user_id), (res) => {
+            console.log(res);
+            roomPrintMid(res);
+        });
+    });
+}, 1000);
+
 // ======= Modal Event ======= //
 /** 하단 Modal 버튼 클릭 */
 function modalBtnClick() {
@@ -125,20 +134,17 @@ function inviteRemove(id) { // Invite Event
 
 // ======= Submit Event ======= //
 function makeRoom() {
-    socket.emit('makeRoom', inviteIdArr, (callback) => {
-        // 채팅방 목록 갱신
-        socket.emit('view', (user_id), (res) => {
-            console.log(res);
-            roomPrintMid(res);
+    if(inviteIdArr.length) {
+        socket.emit('makeRoom', inviteIdArr, (callback) => {
+            // Modal 닫기
+            modalClose();
+            // 채팅방 목록 갱신
+            socket.emit('view', (user_id), (res) => {
+                console.log(res);
+                roomPrintMid(res);
+            });
         });
-    });
+    } else {
+        alert('You must invite at least one person.');
+    }
 }
-
-updateCheck = setInterval(() => {
-    socket.emit('updateCheck', (user_id), (callback) => {
-        socket.emit('view', (user_id), (res) => {
-            console.log(res);
-            roomPrintMid(res);
-        });
-    });
-}, 1000);

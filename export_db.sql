@@ -17,6 +17,38 @@
 CREATE DATABASE IF NOT EXISTS `chat` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `chat`;
 
+-- 프로시저 chat.GET_NULLTEXT 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `GET_NULLTEXT`( IN roomId INT, IN lang VARCHAR(5) )
+BEGIN
+	SET @sqlQuery = CONCAT('SELECT MSG_NUM, ORIGINAL_MSG, FROM_LANGUAGE FROM room_message_', roomId, ' WHERE TO_', lang, ' IS NULL');
+	PREPARE printNullText FROM @sqlQuery;
+	EXECUTE printNullText;
+	DEALLOCATE PREPARE printNullText;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.GET_PERMISSION_CHECK 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `GET_PERMISSION_CHECK`( IN roomId INT, IN userID INT )
+BEGIN
+	SELECT users.LANGUAGE, info.ROOM_NAME FROM room_info AS info, users
+	WHERE info.USER_ID = userId AND info.ROOM_ID = roomId AND info.USER_ID = users.ID;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.GET_ROOMUPDATE 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `GET_ROOMUPDATE`(
+	IN `userID` INT
+)
+BEGIN
+	SELECT UPDATE_CHECK FROM room_info
+	WHERE UPDATE_CHECK = 1 AND USER_id = userid
+	GROUP BY UPDATE_CHECK;
+END//
+DELIMITER ;
+
 -- 테이블 chat.relations 구조 내보내기
 CREATE TABLE IF NOT EXISTS `relations` (
   `USER_ID` int(11) NOT NULL,
@@ -25,31 +57,59 @@ CREATE TABLE IF NOT EXISTS `relations` (
   PRIMARY KEY (`USER_ID`,`TARGET_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- 테이블 데이터 chat.relations:~4 rows (대략적) 내보내기
+-- 테이블 데이터 chat.relations:~16 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `relations` DISABLE KEYS */;
 INSERT INTO `relations` (`USER_ID`, `TARGET_ID`, `RELATION_TYPE`) VALUES
 	(1, 2, 'FRIEND'),
 	(1, 3, 'FRIEND'),
+	(1, 4, 'FRIEND'),
+	(1, 5, 'FRIEND'),
+	(1, 6, 'FRIEND'),
+	(1, 7, 'FRIEND'),
+	(1, 8, 'FRIEND'),
 	(2, 1, 'FRIEND'),
-	(3, 1, 'FRIEND');
+	(2, 7, 'FRIEND'),
+	(3, 1, 'FRIEND'),
+	(4, 1, 'FRIEND'),
+	(5, 1, 'FRIEND'),
+	(6, 1, 'FRIEND'),
+	(7, 1, 'FRIEND'),
+	(7, 2, 'FRIEND'),
+	(8, 1, 'FRIEND');
 /*!40000 ALTER TABLE `relations` ENABLE KEYS */;
 
 -- 테이블 chat.room_info 구조 내보내기
 CREATE TABLE IF NOT EXISTS `room_info` (
   `ROOM_ID` int(11) NOT NULL,
   `USER_ID` int(11) NOT NULL,
-  `ROOM_NAME` varchar(15) NOT NULL DEFAULT 'Room',
-  `NOTICE_TYPE` varchar(8) NOT NULL DEFAULT 'notice',
+  `ROOM_NAME` varchar(15) CHARACTER SET utf8mb4 NOT NULL DEFAULT 'Room',
+  `NOTICE_TYPE` varchar(8) CHARACTER SET utf8mb4 NOT NULL DEFAULT 'notice',
   `FAVORITES` tinyint(1) NOT NULL DEFAULT 0,
+  `UPDATE_CHECK` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`ROOM_ID`,`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- 테이블 데이터 chat.room_info:~2 rows (대략적) 내보내기
+-- 테이블 데이터 chat.room_info:~3 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `room_info` DISABLE KEYS */;
-INSERT INTO `room_info` (`ROOM_ID`, `USER_ID`, `ROOM_NAME`, `NOTICE_TYPE`, `FAVORITES`) VALUES
-	(1, 1, '변경 후 타이틀', 'notice', 0),
-	(1, 2, 'Room', 'notice', 0);
+INSERT INTO `room_info` (`ROOM_ID`, `USER_ID`, `ROOM_NAME`, `NOTICE_TYPE`, `FAVORITES`, `UPDATE_CHECK`) VALUES
+	(1, 1, 'Room', 'notice', 0, 1),
+	(1, 2, 'Room', 'notice', 0, 1),
+	(1, 3, 'Room', 'notice', 0, 1);
 /*!40000 ALTER TABLE `room_info` ENABLE KEYS */;
+
+-- 테이블 chat.room_list 구조 내보내기
+CREATE TABLE IF NOT EXISTS `room_list` (
+  `ROOM_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `LAST_MSG` varchar(1000) NOT NULL DEFAULT 'No Messages.',
+  `LAST_SEND_TIME` datetime DEFAULT NULL,
+  PRIMARY KEY (`ROOM_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+-- 테이블 데이터 chat.room_list:~1 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `room_list` DISABLE KEYS */;
+INSERT INTO `room_list` (`ROOM_ID`, `LAST_MSG`, `LAST_SEND_TIME`) VALUES
+	(1, '됐다', '2022-11-16 22:48:49');
+/*!40000 ALTER TABLE `room_list` ENABLE KEYS */;
 
 -- 테이블 chat.room_message_1 구조 내보내기
 CREATE TABLE IF NOT EXISTS `room_message_1` (
@@ -64,178 +124,140 @@ CREATE TABLE IF NOT EXISTS `room_message_1` (
   `TO_zh-CN` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
   `TO_zh-TW` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`MSG_NUM`)
-) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3;
 
--- 테이블 데이터 chat.room_message_1:~166 rows (대략적) 내보내기
+-- 테이블 데이터 chat.room_message_1:~21 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `room_message_1` DISABLE KEYS */;
 INSERT INTO `room_message_1` (`MSG_NUM`, `SEND_USER_ID`, `ORIGINAL_MSG`, `SEND_TIME`, `FROM_LANGUAGE`, `TO_ko`, `TO_ja`, `TO_en`, `TO_zh-CN`, `TO_zh-TW`) VALUES
-	(1, 1, '안녕', '2022-11-08 22:22:05', 'ko', '안녕', 'こんにちは', 'Hi.', '你好。', '你好。'),
-	(2, 6, '잘 가', '2022-11-08 22:43:46', 'ko', '잘 가', 'じゃね', 'See you later', '走好。', '走好。'),
-	(3, 1, 'ㅅㄱ', '2022-11-09 22:58:43', 'ko', 'ㅅㄱ', NULL, 'gg', NULL, NULL),
-	(4, 1, '하이요', '2022-11-10 23:21:05', 'ko', '하이요', NULL, 'Hello', NULL, NULL),
-	(5, 1, '뭐지', '2022-11-10 23:24:23', 'ko', '뭐지', NULL, 'What is it?', NULL, NULL),
-	(6, 1, '아오', '2022-11-11 00:20:34', 'ko', '아오', NULL, 'Oh, my', NULL, NULL),
-	(7, 1, '어휴', '2022-11-11 00:21:19', 'ko', '어휴', NULL, 'Oh, my', NULL, NULL),
-	(8, 1, '이번엔', '2022-11-11 00:24:35', 'ko', '이번엔', NULL, 'This time,', NULL, NULL),
-	(9, 1, '어때?', '2022-11-11 00:27:22', 'ko', '어때?', NULL, 'How is it?', NULL, NULL),
-	(10, 1, '이번에야말로', '2022-11-11 00:31:56', 'ko', '이번에야말로', NULL, 'This time,', NULL, NULL),
-	(11, 1, '음..', '2022-11-11 00:33:35', 'ko', '음..', NULL, 'Well ..', NULL, NULL),
-	(12, 1, '다시 한번', '2022-11-11 00:34:36', 'ko', '다시 한번', NULL, 'Once again,', NULL, NULL),
-	(13, 1, '상도야 다시 한번 해보자', '2022-11-11 00:36:18', 'ko', '상도야 다시 한번 해보자', NULL, 'Sangdo, let\'s do it again', NULL, NULL),
-	(14, 1, '이젠', '2022-11-11 00:36:41', 'ko', '이젠', NULL, 'Now', NULL, NULL),
-	(15, 1, '될까나', '2022-11-11 00:36:43', 'ko', '될까나', NULL, 'Will it work?', NULL, NULL),
-	(16, 1, '헤헤 ㅋㅋ', '2022-11-11 00:36:44', 'ko', '헤헤 ㅋㅋ', NULL, 'Hehe', NULL, NULL),
-	(17, 1, '너무 빠른가', '2022-11-11 00:37:02', 'ko', '너무 빠른가', NULL, 'Is it too fast?', NULL, NULL),
-	(18, 1, '그런 것도 아니었나벼', '2022-11-11 00:37:17', 'ko', '그런 것도 아니었나벼', NULL, 'I think it wasn\'t like that', NULL, NULL),
-	(19, 1, '엥', '2022-11-11 00:37:30', 'ko', '엥', NULL, 'What?', NULL, NULL),
-	(20, 1, '뭐지요', '2022-11-11 00:37:32', 'ko', '뭐지요', NULL, 'What is it?', NULL, NULL),
-	(21, 1, '어랍쇼', '2022-11-11 00:37:35', 'ko', '어랍쇼', NULL, 'Come on', NULL, NULL),
-	(22, 1, '이러면', '2022-11-11 00:37:54', 'ko', '이러면', NULL, 'If I do this', NULL, NULL),
-	(23, 1, 'ㅋㅋ', '2022-11-11 00:38:12', 'ko', 'ㅋㅋ', NULL, 'lol', NULL, NULL),
-	(24, 1, '예 뭐', '2022-11-11 00:38:34', 'ko', '예 뭐', NULL, 'Yeah, well.', NULL, NULL),
-	(25, 1, '이번에야말로', '2022-11-11 00:38:35', 'ko', '이번에야말로', NULL, 'This time,', NULL, NULL),
-	(26, 1, '성공했네요', '2022-11-11 00:38:37', 'ko', '성공했네요', NULL, 'I succeeded', NULL, NULL),
-	(27, 1, '예', '2022-11-11 00:38:56', 'ko', '예', NULL, 'Yes', NULL, NULL),
-	(28, 1, '예', '2022-11-11 00:38:56', 'ko', '예', NULL, 'Yes', NULL, NULL),
-	(29, 1, '성공했네요', '2022-11-11 00:38:57', 'ko', '성공했네요', NULL, 'I succeeded', NULL, NULL),
-	(30, 1, '드디어', '2022-11-11 00:38:58', 'ko', '드디어', NULL, 'At last.', NULL, NULL),
-	(31, 1, '아마 버녕ㄱ하는', '2022-11-11 00:39:00', 'ko', '아마 버녕ㄱ하는', NULL, 'I think it\'s Bernyeong-ha', NULL, NULL),
-	(32, 1, '시간이', '2022-11-11 00:39:01', 'ko', '시간이', NULL, 'Time', NULL, NULL),
-	(33, 1, '좀 걸려서', '2022-11-11 00:39:02', 'ko', '좀 걸려서', NULL, 'It took some time', NULL, NULL),
-	(34, 1, '그런 것 같은데', '2022-11-11 00:39:04', 'ko', '그런 것 같은데', NULL, 'I think so', NULL, NULL),
-	(35, 1, 'ㄹㅇ', '2022-11-11 00:39:06', 'ko', 'ㄹㅇ', NULL, 'Really', NULL, NULL),
-	(36, 1, 'ㄴㅁㄹ', '2022-11-11 00:39:06', 'ko', 'ㄴㅁㄹ', NULL, 'ㅁㄹㄴ', NULL, NULL),
-	(37, 1, 'ㅇㄴㅁㄹ', '2022-11-11 00:39:07', 'ko', 'ㅇㄴㅁㄹ', NULL, 'ㄴㅁㄹㅇ', NULL, NULL),
-	(38, 1, 'ㅇㄴㅁ', '2022-11-11 00:39:07', 'ko', 'ㅇㄴㅁ', NULL, 'O and N and M', NULL, NULL),
-	(39, 1, 'ㄹㅇ', '2022-11-11 00:39:07', 'ko', 'ㄹㅇ', NULL, 'Really', NULL, NULL),
-	(40, 1, 'ㄴㅁㄹ', '2022-11-11 00:39:07', 'ko', 'ㄴㅁㄹ', NULL, 'ㅁㄹㄴ', NULL, NULL),
-	(41, 1, 'ㅇㄴㅁ', '2022-11-11 00:39:07', 'ko', 'ㅇㄴㅁ', NULL, 'O and N and M', NULL, NULL),
-	(42, 1, 'ㄹ', '2022-11-11 00:39:07', 'ko', 'ㄹ', NULL, 'L.', NULL, NULL),
-	(43, 1, 'ㅇㄴㅁ', '2022-11-11 00:39:07', 'ko', 'ㅇㄴㅁ', NULL, 'O and N and M', NULL, NULL),
-	(44, 1, 'ㄹㅇㄴ', '2022-11-11 00:39:07', 'ko', 'ㄹㅇㄴ', NULL, 'Really', NULL, NULL),
-	(45, 1, 'ㅁㄹ', '2022-11-11 00:39:08', 'ko', 'ㅁㄹ', NULL, 'Md', NULL, NULL),
-	(46, 1, 'ㅇㄴㅁ', '2022-11-11 00:39:08', 'ko', 'ㅇㄴㅁ', NULL, 'O and N and M', NULL, NULL),
-	(47, 1, 'ㄹㅇㄴ', '2022-11-11 00:39:08', 'ko', 'ㄹㅇㄴ', NULL, 'Really', NULL, NULL),
-	(48, 1, 'ㅁㅎㄹㅇㄴ므힐ㅇ므호ㅠㄹ', '2022-11-11 00:39:08', 'ko', 'ㅁㅎㄹㅇㄴ므힐ㅇ므호ㅠㄹ', NULL, '(Singing Mu-Hil-Mu-Ho)', NULL, NULL),
-	(49, 1, 'ㅇ모ㅠㅜㅎ;.\'ㄹ', '2022-11-11 00:39:09', 'ko', 'ㅇ모ㅠㅜㅎ;.\'ㄹ', NULL, '모ㅠ.\';\'ㄹ', NULL, NULL),
-	(50, 1, 'ㅇ노;', '2022-11-11 00:39:09', 'ko', 'ㅇ노;', NULL, 'No;', NULL, NULL),
-	(51, 1, 'ㅎ\'ㄹ너', '2022-11-11 00:39:09', 'ko', 'ㅎ\'ㄹ너', NULL, 'H\'r', NULL, NULL),
-	(52, 1, '\'ㅎㄹㄴ', '2022-11-11 00:39:09', 'ko', '\'ㅎㄹㄴ', NULL, 'LOL', NULL, NULL),
-	(53, 1, 'ㅓㅎ', '2022-11-11 00:39:09', 'ko', 'ㅓㅎ', NULL, 'ㅎㅓ', NULL, NULL),
-	(54, 1, 'ㄹ너', '2022-11-11 00:39:09', 'ko', 'ㄹ너', NULL, 'You', NULL, NULL),
-	(55, 1, 'ㅎㅇ', '2022-11-11 00:39:10', 'ko', 'ㅎㅇ', NULL, 'H.O', NULL, NULL),
-	(56, 1, '모', '2022-11-11 00:39:10', 'ko', '모', NULL, 'Moe.', NULL, NULL),
-	(57, 1, 'ㄹㅇㅁ', '2022-11-11 00:39:10', 'ko', 'ㄹㅇㅁ', NULL, 'Really', NULL, NULL),
-	(58, 1, '번역하는 시간이번역하는 시간이번역하는 시간이', '2022-11-11 00:39:14', 'ko', '번역하는 시간이번역하는 시간이번역하는 시간이', NULL, 'Translation time... Translation time... Translation time', NULL, NULL),
-	(59, 1, '번역하는 시간이번역하는 시간이', '2022-11-11 00:39:15', 'ko', '번역하는 시간이번역하는 시간이', NULL, 'The translation time... The translation time', NULL, NULL),
-	(60, 1, '번역하는 시간이번역하는 시간이', '2022-11-11 00:39:15', 'ko', '번역하는 시간이번역하는 시간이', NULL, 'The translation time... The translation time', NULL, NULL),
-	(61, 1, '번역하는 시간이', '2022-11-11 00:39:15', 'ko', '번역하는 시간이', NULL, 'Translation time', NULL, NULL),
-	(62, 1, '번역하는 시간이', '2022-11-11 00:39:16', 'ko', '번역하는 시간이', NULL, 'Translation time', NULL, NULL),
-	(63, 1, '번역하는 시간이번역하는 시간이번역하는 시간이번역하는 시간이', '2022-11-11 00:39:17', 'ko', '번역하는 시간이번역하는 시간이번역하는 시간이번역하는 시간이', NULL, 'Translating time... Translating time... Translating time... Translating time', NULL, NULL),
-	(64, 1, '번역하는 시간이', '2022-11-11 00:39:17', 'ko', '번역하는 시간이', NULL, 'Translation time', NULL, NULL),
-	(65, 1, '번역하는 시간이', '2022-11-11 00:39:17', 'ko', '번역하는 시간이', NULL, 'Translation time', NULL, NULL),
-	(66, 1, '번역하는 시간이', '2022-11-11 00:39:18', 'ko', '번역하는 시간이', NULL, 'Translation time', NULL, NULL),
-	(67, 1, '번역하는 시간이', '2022-11-11 00:39:18', 'ko', '번역하는 시간이', NULL, 'Translation time', NULL, NULL),
-	(68, 1, '번역하는 시간이', '2022-11-11 00:39:18', 'ko', '번역하는 시간이', NULL, 'Translation time', NULL, NULL),
-	(69, 1, '번역하는 시간이', '2022-11-11 00:39:19', 'ko', '번역하는 시간이', NULL, 'Translation time', NULL, NULL),
-	(70, 1, '번역하는 시간이', '2022-11-11 00:39:19', 'ko', '번역하는 시간이', NULL, 'Translation time', NULL, NULL),
-	(71, 1, '이제 안정권인 듯', '2022-11-11 00:39:21', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(72, 1, '이제 안정권인 듯', '2022-11-11 00:39:44', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(73, 1, '이제 안정권인 듯', '2022-11-11 00:39:45', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(74, 1, '이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯', '2022-11-11 00:39:46', 'ko', '이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯', NULL, 'As if it\'s a stabilization zone, as if it\'s a stabilization zone, as if it\'s a stabilization zone', NULL, NULL),
-	(75, 1, '이제 안정권인 듯', '2022-11-11 00:39:46', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(76, 1, '이제 안정권인 듯', '2022-11-11 00:39:46', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(77, 1, '이제 안정권인 듯', '2022-11-11 00:39:47', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(78, 1, '이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯', '2022-11-11 00:39:48', 'ko', '이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯', NULL, 'Now, as if it\'s a stable area, as if it\'s a stable area, as if it\'s a stable area, as if it\'s a stable zone, as if it\'s a stable zone', NULL, NULL),
-	(79, 1, '이제 안정권인 듯', '2022-11-11 00:39:48', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(80, 1, '이제 안정권인 듯', '2022-11-11 00:39:49', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(81, 1, '이제 안정권인 듯', '2022-11-11 00:39:49', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(82, 1, '이제 안정권인 듯', '2022-11-11 00:39:49', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(83, 1, '이제 안정권인 듯', '2022-11-11 00:39:49', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(84, 1, '이제 안정권인 듯', '2022-11-11 00:39:50', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(85, 1, '이제 안정권인 듯', '2022-11-11 00:39:50', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(86, 1, '이제 안정권인 듯', '2022-11-11 00:39:50', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(87, 1, '이제 안정권인 듯', '2022-11-11 00:39:50', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(88, 1, '이제 안정권인 듯', '2022-11-11 00:39:50', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(89, 1, '이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯', '2022-11-11 00:39:51', 'ko', '이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯이제 안정권인 듯', NULL, 'As if it\'s a stabilization zone, as if it\'s a stabilization zone, as if it\'s a stabilization zone', NULL, NULL),
-	(90, 1, '이제 안정권인 듯', '2022-11-11 00:39:52', 'ko', '이제 안정권인 듯', NULL, 'I think I\'m in the stable zone now', NULL, NULL),
-	(91, 1, '휴', '2022-11-11 01:17:02', 'ko', '휴', NULL, 'Phew', NULL, NULL),
-	(92, 2, 'what?', '2022-11-11 01:17:41', 'en', '라고', NULL, 'what?', NULL, NULL),
-	(93, 2, 'who', '2022-11-11 01:18:44', 'en', 'who', NULL, 'who', NULL, NULL),
-	(94, 1, '?', '2022-11-11 01:18:49', 'ko', '?', NULL, '?', NULL, NULL),
-	(95, 2, 'ggg', '2022-11-11 01:20:17', 'en', 'g', NULL, 'ggg', NULL, NULL),
-	(96, 1, '왜그래', '2022-11-11 01:20:39', 'ko', '왜그래', NULL, 'You\'re acting strange.', NULL, NULL),
-	(97, 2, 'ibun', '2022-11-11 01:21:22', 'en', '우', NULL, 'ibun', NULL, NULL),
-	(98, 2, 'fuck', '2022-11-11 01:21:32', 'en', '길', NULL, 'fuck', NULL, NULL),
-	(99, 1, '다시 해보자', '2022-11-11 01:24:01', 'ko', '다시 해보자', NULL, 'Let\'s do it again', NULL, NULL),
-	(100, 1, '진짜 다시', '2022-11-11 01:25:33', 'ko', '진짜 다시', NULL, 'Really, again', NULL, NULL),
-	(101, 1, '대체 언제쯤', '2022-11-11 01:26:39', 'ko', '대체 언제쯤', NULL, 'When on earth?', NULL, NULL),
-	(102, 1, '크아아악', '2022-11-11 01:27:38', 'ko', '크아아악', NULL, '(Screaming)', NULL, NULL),
-	(103, 1, '아니', '2022-11-11 01:28:22', 'ko', '아니', NULL, 'No.', NULL, NULL),
-	(104, 1, '뭔데', '2022-11-11 01:29:30', 'ko', '뭔데', NULL, 'What is it', NULL, NULL),
-	(105, 1, '대체', '2022-11-11 01:29:31', 'ko', '대체', NULL, 'substitution', NULL, NULL),
-	(106, 1, '언제쯤', '2022-11-11 01:33:29', 'ko', '언제쯤', NULL, 'When', NULL, NULL),
-	(107, 1, '되는거야잇', '2022-11-11 01:33:37', 'ko', '되는거야잇', NULL, 'It\'s working', NULL, NULL),
-	(108, 2, 'fgdsa', '2022-11-11 13:54:38', 'en', 'fgdsa', NULL, 'fgdsa', NULL, NULL),
-	(109, 2, 'what??', '2022-11-11 13:54:45', 'en', '뭐?', NULL, 'what??', NULL, NULL),
-	(110, 2, 'ggg', '2022-11-11 14:23:13', 'en', 'ggg', NULL, 'ggg', NULL, NULL),
-	(111, 2, '헤헤', '2022-11-11 14:23:14', 'en', '헤헤', NULL, '헤헤', NULL, NULL),
-	(112, 2, 'hey', '2022-11-11 14:25:09', 'en', '이봐.', NULL, 'hey', NULL, NULL),
-	(113, 1, '왜?', '2022-11-11 14:25:11', 'ko', '왜?', NULL, 'Why?', NULL, NULL),
-	(114, 2, 'nothing', '2022-11-11 14:25:21', 'en', '아무 것도 없어요.', NULL, 'nothing', NULL, NULL),
-	(115, 1, '아무것도 아니라고?', '2022-11-11 14:25:25', 'ko', '아무것도 아니라고?', NULL, 'Nothing?', NULL, NULL),
-	(116, 2, 'yes', '2022-11-11 14:25:28', 'en', '네.', NULL, 'yes', NULL, NULL),
-	(117, 1, '알았다잉', '2022-11-11 14:25:32', 'ko', '알았다잉', NULL, 'I got it', NULL, NULL),
-	(118, 1, '와 진짜', '2022-11-11 14:25:49', 'ko', '와 진짜', NULL, 'Wow, seriously', NULL, NULL),
-	(119, 1, '개잘해ㅋㅋ', '2022-11-11 14:25:51', 'ko', '개잘해ㅋㅋ', NULL, 'He\'s so good', NULL, NULL),
-	(120, 1, '미친놈', '2022-11-11 14:25:53', 'ko', '미친놈', NULL, 'Lunatic.', NULL, NULL),
-	(121, 2, 'fantastic', '2022-11-11 14:25:58', 'en', '환상적이에요.', NULL, 'fantastic', NULL, NULL),
-	(122, 1, '그러니깐 ㅋㅋ', '2022-11-11 14:26:02', 'ko', '그러니깐 ㅋㅋ', NULL, 'That\'s what I\'m saying', NULL, NULL),
-	(123, 1, '유후', '2022-11-11 14:35:30', 'ko', '유후', NULL, 'yoo-hoo', NULL, NULL),
-	(124, 1, 'ㅇㄹㅇㄴㅁ', '2022-11-11 14:35:30', 'ko', 'ㅇㄹㅇㄴㅁ', NULL, 'It\'s true', NULL, NULL),
-	(125, 1, 'ㄹㅇ', '2022-11-11 14:35:30', 'ko', 'ㄹㅇ', NULL, 'Really', NULL, NULL),
-	(126, 1, 'ㄴㅁㄹ', '2022-11-11 14:35:30', 'ko', 'ㄴㅁㄹ', NULL, 'ㅁㄹㄴ', NULL, NULL),
-	(127, 1, 'ㅇㄴㅁ', '2022-11-11 14:35:30', 'ko', 'ㅇㄴㅁ', NULL, 'O and N and M', NULL, NULL),
-	(128, 1, 'ㄹㅇㄴ', '2022-11-11 14:35:30', 'ko', 'ㄹㅇㄴ', NULL, 'Really', NULL, NULL),
-	(129, 1, 'ㅁㄹ', '2022-11-11 14:35:30', 'ko', 'ㅁㄹ', NULL, 'Md', NULL, NULL),
-	(130, 1, 'ㅇㄴㅁ', '2022-11-11 14:35:31', 'ko', 'ㅇㄴㅁ', NULL, 'O and N and M', NULL, NULL),
-	(131, 1, 'ㄹㅇ', '2022-11-11 14:35:31', 'ko', 'ㄹㅇ', NULL, 'Really', NULL, NULL),
-	(132, 1, 'ㄴㅁㄹ', '2022-11-11 14:35:31', 'ko', 'ㄴㅁㄹ', NULL, 'ㅁㄹㄴ', NULL, NULL),
-	(133, 1, 'ㅇㅁ', '2022-11-11 14:35:31', 'ko', 'ㅇㅁ', NULL, 'O and M', NULL, NULL),
-	(134, 1, 'ㄹㅇ', '2022-11-11 14:35:31', 'ko', 'ㄹㅇ', NULL, 'Really', NULL, NULL),
-	(135, 1, 'ㄴㅁㄹ', '2022-11-11 14:35:31', 'ko', 'ㄴㅁㄹ', NULL, 'ㅁㄹㄴ', NULL, NULL),
-	(136, 1, 'ㅇ', '2022-11-11 14:35:31', 'ko', 'ㅇ', NULL, 'H', NULL, NULL),
-	(137, 2, 'fdhsapofzdksaf', '2022-11-11 14:35:38', 'en', 'fdhsapofzdksaf', NULL, 'fdhsapofzdksaf', NULL, NULL),
-	(138, 2, 'dsa', '2022-11-11 14:35:38', 'en', 'dsa', NULL, 'dsa', NULL, NULL),
-	(139, 2, 'fds', '2022-11-11 14:35:38', 'en', 'Fds.', NULL, 'fds', NULL, NULL),
-	(140, 2, 'af', '2022-11-11 14:35:38', 'en', 'af의', NULL, 'af', NULL, NULL),
-	(141, 2, 'dsa', '2022-11-11 14:35:38', 'en', 'dsa', NULL, 'dsa', NULL, NULL),
-	(142, 2, 'fd', '2022-11-11 14:35:38', 'en', 'fd', NULL, 'fd', NULL, NULL),
-	(143, 2, 'sa', '2022-11-11 14:35:38', 'en', '사', NULL, 'sa', NULL, NULL),
-	(144, 2, 'fdsa', '2022-11-11 14:35:38', 'en', 'fdsa', NULL, 'fdsa', NULL, NULL),
-	(145, 2, 'fd', '2022-11-11 14:35:38', 'en', 'fd', NULL, 'fd', NULL, NULL),
-	(146, 2, 'af', '2022-11-11 14:35:38', 'en', 'af의', NULL, 'af', NULL, NULL),
-	(147, 2, 'd', '2022-11-11 14:35:38', 'en', 'd', NULL, 'd', NULL, NULL),
-	(148, 2, 'fdsa', '2022-11-11 14:41:26', 'en', 'fdsa', NULL, 'fdsa', NULL, NULL),
-	(149, 2, 'fdsa', '2022-11-11 14:41:26', 'en', 'fdsa', NULL, 'fdsa', NULL, NULL),
-	(150, 2, 'fdsa', '2022-11-11 14:41:26', 'en', 'fdsa', NULL, 'fdsa', NULL, NULL),
-	(151, 2, 'fdsaf', '2022-11-11 14:41:27', 'en', 'fdsaf', NULL, 'fdsaf', NULL, NULL),
-	(152, 2, 'dsa', '2022-11-11 14:41:27', 'en', 'dsa', NULL, 'dsa', NULL, NULL),
-	(153, 2, 'fdsa', '2022-11-11 14:41:27', 'en', 'fdsa', NULL, 'fdsa', NULL, NULL),
-	(154, 2, 'fdsafdsaf', '2022-11-11 14:41:28', 'en', 'fdsafdsaf', NULL, 'fdsafdsaf', NULL, NULL),
-	(155, 1, '와우', '2022-11-11 14:41:56', 'ko', '와우', NULL, 'Wow!', NULL, NULL),
-	(156, 1, '워우', '2022-11-11 14:41:57', 'ko', '워우', NULL, 'Wow', NULL, NULL),
-	(157, 1, '효', '2022-11-11 14:41:57', 'ko', '효', NULL, 'filial duty', NULL, NULL),
-	(158, 1, '우휴', '2022-11-11 14:41:58', 'ko', '우휴', NULL, 'Whoo-hoo!', NULL, NULL),
-	(159, 1, '우휴', '2022-11-11 14:41:59', 'ko', '우휴', NULL, 'Whoo-hoo!', NULL, NULL),
-	(160, 1, '유후', '2022-11-11 14:42:00', 'ko', '유후', NULL, 'yoo-hoo', NULL, NULL),
-	(161, 1, '헤헤헤헤ㅔ', '2022-11-11 14:42:01', 'ko', '헤헤헤헤ㅔ', NULL, 'Hehehehe', NULL, NULL),
-	(162, 2, 'ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', '2022-11-11 23:37:18', 'en', 'ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', NULL, 'ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', NULL, NULL),
-	(163, 2, '여긴 어디여', '2022-11-11 23:43:13', 'en', '여긴 어디여', NULL, '여긴 어디여', NULL, NULL),
-	(164, 2, '갸앙아악', '2022-11-12 00:01:32', 'en', '갸앙아악', NULL, '갸앙아악', NULL, NULL),
-	(165, 2, '어휴', '2022-11-12 00:01:37', 'en', '어휴', NULL, '어휴', NULL, NULL),
-	(166, 1, '안 되나요', '2022-11-12 17:40:01', 'ko', '안 되나요', NULL, NULL, NULL, NULL);
+	(1, 1, '옘병', '2022-11-16 22:00:07', 'ko', '옘병', '鋭敏病', NULL, NULL, NULL),
+	(2, 1, 'say&#39;', '2022-11-16 22:00:13', 'ko', 'say&#39;', 'say&#39;', NULL, NULL, NULL),
+	(3, 1, '&quot;&quot;&quot;', '2022-11-16 22:00:20', 'ko', '&quot;&quot;&quot;', '&quot;&quot;&quot;', NULL, NULL, NULL),
+	(4, 1, 'ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', '2022-11-16 22:01:20', 'ko', 'ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', 'ㅁㅁㅁㅁㅁㅁ', NULL, NULL, NULL),
+	(5, 1, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2022-11-16 22:01:24', 'ko', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', NULL, NULL, NULL),
+	(6, 3, '?', '2022-11-16 22:02:32', 'ja', '?', '?', NULL, NULL, NULL),
+	(7, 3, 'メッセージが移るんですよ。メッセージが移るんですよ。メッセージが移るんですよ。メッセージが移るんですよ。メッセージが移るんですよ。', '2022-11-16 22:02:47', 'ja', '문자가 넘어가거든요.문자가 넘어가거든요.문자가 넘어가거든요.문자가 넘어가거든요.문자가 넘어가거든요.', 'メッセージが移るんですよ。メッセージが移るんですよ。メッセージが移るんですよ。メッセージが移るんですよ。メッセージが移るんですよ。', NULL, NULL, NULL),
+	(8, 1, 'I guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just English', '2022-11-16 22:03:07', 'ko', 'I guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just English', 'I guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just English', NULL, NULL, NULL),
+	(9, 1, '??', '2022-11-16 22:03:10', 'ko', '??', '??', NULL, NULL, NULL),
+	(10, 1, 'cmdslkafmdklsafm;dlsamfkdlsamfkld;samfdsanfjkldsnajklfdnsajkl', '2022-11-16 22:03:17', 'ko', 'cmdslkafmdklsafm;dlsamfkdlsamfkld;samfdsanfjkldsnajklfdnsajkl', 'cmdslkafmdklsafm;dlsamfkdlsamfkld;samfdsanfjkldsnajklfdnsajkl', NULL, NULL, NULL),
+	(11, 1, 'I guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just English', '2022-11-16 22:03:21', 'ko', 'I guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just English', 'I guess it&#39;s just EnglishI guess it&#39;s just EnglishI guess it&#39;s just English', NULL, NULL, NULL),
+	(12, 1, 'I guess it&#39;s just English?? I guess it&#39;s just English?? I guess it&#39;s just English??', '2022-11-16 22:03:43', 'ko', 'I guess it&#39;s just English?? I guess it&#39;s just English?? I guess it&#39;s just English??', 'I guess it&#39;s just English?? I guess it&#39;s just English?? I guess it&#39;s just English??', NULL, NULL, NULL),
+	(13, 1, 'fdsmaklfdmslka fmdkslafmkdlsa fdsal', '2022-11-16 22:03:50', 'ko', 'fdsmaklfdmslka fmdkslafmkdlsa fdsal', 'fdsmaklfdmslka fmdkslafmkdlsa fdsal', NULL, NULL, NULL),
+	(14, 1, 'mflkdsamfkldsmalkfdmsalkfdmkslafmdlksa', '2022-11-16 22:03:52', 'ko', 'mflkdsamfkldsmalkfdmsalkfdmkslafmdlksa', 'mflkdsamfkldsmalkfdmsalkfdmkslafmdlksa', NULL, NULL, NULL),
+	(15, 1, 'fmdklsamfdklsamflkdsamfkldsmalkfdsa ', '2022-11-16 22:03:54', 'ko', 'fmdklsamfdklsamflkdsamfkldsmalkfdsa ', 'fmdklsamfdklsamflkdsamfkldsmalkfdsa', NULL, NULL, NULL),
+	(16, 1, 'fmdslkafmdklsamfdklsamflkdsamfkldsmaklfdmsaklfmdsklafmdkslafmdklsamfdk ', '2022-11-16 22:03:57', 'ko', 'fmdslkafmdklsamfdklsamflkdsamfkldsmaklfdmsaklfmdsklafmdkslafmdklsamfdk ', 'fmdslkafmdklsamfdklsamflkdsamfkldsmaklfdmsaklfmdsklafmdkslafmdklsamfdk', NULL, NULL, NULL),
+	(17, 1, 'fdmsklaf fdmsklafmdkslafmdklsamfkldsamfkldsamfkldsmaklfdmsaklfdsa', '2022-11-16 22:04:01', 'ko', 'fdmsklaf fdmsklafmdkslafmdklsamfkldsamfkldsamfkldsmaklfdmsaklfdsa', 'fdmsklaf fdmsklafmdkslafmdklsamfkldsamfkldsamfkldsmaklfdmsaklfdsa', NULL, NULL, NULL),
+	(18, 1, 'fdmsklafmdklsafmkdlsamflkdsamflkdsmalkfdmsaklfdmsaklfmdsaklfmdkslafmdklsafmdlksamfdklsamfdlksamfkldsmafkldsmalkfdmsaklfmdkslafd', '2022-11-16 22:04:06', 'ko', 'fdmsklafmdklsafmkdlsamflkdsamflkdsmalkfdmsaklfdmsaklfmdsaklfmdkslafmdklsafmdlksamfdklsamfdlksamfkldsmafkldsmalkfdmsaklfmdkslafd', 'fdmsklafmdklsafmkdlsamflkdsamflkdsmalkfdmsaklfdmsaklfmdsaklfmdkslafmdklsafmdlksamfdklsamfdlksamfkldsmafkldsmalkfdmsaklfmdkslafd', NULL, NULL, NULL),
+	(19, 1, 'fmkldsamfkdls fmdklsafmdklsamfdklsafm mfkdlsamfdklsamfdklsa fmdkslafmdlksa', '2022-11-16 22:04:11', 'ko', 'fmkldsamfkdls fmdklsafmdklsamfdklsafm mfkdlsamfdklsamfdklsa fmdkslafmdlksa', 'fmkldsamfkdls fmdklsafmdklsamfdklsafm mfkdlsamfdklsamfdklsa fmdkslafmdlksa', NULL, NULL, NULL),
+	(20, 1, '휴', '2022-11-16 22:48:48', 'ko', '휴', 'ヒュー', NULL, NULL, NULL),
+	(21, 1, '됐다', '2022-11-16 22:48:49', 'ko', '됐다', 'よし。', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `room_message_1` ENABLE KEYS */;
+
+-- 프로시저 chat.SEND_MESSAGE 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `SEND_MESSAGE`(
+	IN `roomId` INT,
+	IN `userId` INT,
+	IN `msg` VARCHAR(1000) CHARACTER SET utf8mb4
+)
+BEGIN
+	SET @sqlQuery = CONCAT('INSERT INTO room_message_', roomId, ' (SEND_USER_ID, ORIGINAL_MSG, FROM_LANGUAGE) '
+						, 'SELECT ID, "', msg, '", LANGUAGE FROM users WHERE ID = ', userId);
+	PREPARE addMsg FROM @sqlQuery;
+	EXECUTE addMsg;
+	DEALLOCATE PREPARE addMsg;
+	
+	SET @sqlQuery = CONCAT('UPDATE room_list AS a, (SELECT ORIGINAL_MSG AS msg, SEND_TIME FROM room_message_', roomId, ' AS b ORDER BY MSG_NUM DESC LIMIT 1) AS b'
+						, ' SET a.LAST_MSG = b.msg, a.LAST_SEND_TIME = b.SEND_TIME WHERE a.ROOM_ID = ', roomId);
+	PREPARE updatePreview FROM @sqlQuery;
+	EXECUTE updatePreview;
+	DEALLOCATE PREPARE updatePreview;
+	
+	SET @sqlQuery = CONCAT('SELECT MSG_NUM FROM room_message_', roomId, ' ORDER BY MSG_NUM DESC LIMIT 1');
+	PREPARE getLastMsg FROM @sqlQuery;
+	EXECUTE getLastMsg;
+	DEALLOCATE PREPARE getLastMsg;
+	
+	CALL UPDATE_CHANGES(roomId);
+END//
+DELIMITER ;
+
+-- 프로시저 chat.UPDATE_CHANGES 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `UPDATE_CHANGES`( IN roomId INT )
+BEGIN
+	UPDATE room_info SET UPDATE_CHECK = 1
+	WHERE ROOM_ID = roomId;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.UPDATE_CONFIRM 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `UPDATE_CONFIRM`( IN userId INT )
+BEGIN
+	UPDATE room_info SET UPDATE_CHECK = 0
+	WHERE USER_ID = userId;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.UPDATE_FRIEND_REGISTER 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `UPDATE_FRIEND_REGISTER`( IN userId INT, IN targetId INT )
+BEGIN
+	INSERT INTO relations (USER_ID, TARGET_ID)
+	VALUE (userId, targetId), (targetId, userId);
+END//
+DELIMITER ;
+
+-- 프로시저 chat.UPDATE_INVITE_ROOM 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `UPDATE_INVITE_ROOM`( IN roomId INT, IN userId INT )
+BEGIN
+	INSERT INTO room_info (ROOM_ID, USER_ID) VALUE (roomId, userId);
+END//
+DELIMITER ;
+
+-- 프로시저 chat.UPDATE_MAKEROOM 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `UPDATE_MAKEROOM`()
+BEGIN
+	INSERT INTO room_list () VALUE ();
+	SELECT @roomId := ROOM_ID AS ROOM_ID FROM room_list ORDER BY ROOM_ID DESC LIMIT 1;
+	SET @sqlQuery = CONCAT('CREATE TABLE room_message_', @roomId, ' ('
+									'MSG_NUM int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,',
+									'SEND_USER_ID int(11) NOT NULL,',
+	                        'ORIGINAL_MSG varchar(1000) CHARACTER SET utf8mb4 NOT NULL,',
+	                        'SEND_TIME datetime NOT NULL DEFAULT current_timestamp(),',
+	                        'FROM_LANGUAGE varchar(5) NOT NULL,',
+	                        'TO_ko varchar(1000) CHARACTER SET utf8mb4,',
+	                        'TO_ja varchar(1000) CHARACTER SET utf8mb4,',
+	                        'TO_en varchar(1000) CHARACTER SET utf8mb4,',
+	                        '`TO_zh-CN` varchar(1000) CHARACTER SET utf8mb4,',
+	                        '`TO_zh-TW` varchar(1000) CHARACTER SET utf8mb4) CHARSET=utf8;');
+	PREPARE MAKE_ROOM FROM @sqlQuery;
+	EXECUTE MAKE_ROOM;
+	DEALLOCATE PREPARE MAKE_ROOM;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.UPDATE_ROOM_TITLE 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `UPDATE_ROOM_TITLE`( IN roomId INT, IN userId INT, IN title VARCHAR(15) CHARSET UTF8MB4 )
+BEGIN
+	UPDATE room_info SET ROOM_NAME = title
+	WHERE ROOM_ID = roomId AND USER_ID = userId;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.UPDATE_TRANSLATION 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `UPDATE_TRANSLATION`( IN roomId INT, IN msgNum INT, IN lang VARCHAR(5), IN translation VARCHAR(1000) CHARACTER SET UTF8MB4)
+BEGIN
+	SET @sqlQuery = CONCAT('UPDATE room_message_', roomId, ' SET TO_', lang, ' = "', translation, '" WHERE MSG_NUM = ', msgNum);
+	PREPARE updateText FROM @sqlQuery;
+	EXECUTE updateText;
+	DEALLOCATE PREPARE updateText;
+END//
+DELIMITER ;
 
 -- 테이블 chat.users 구조 내보내기
 CREATE TABLE IF NOT EXISTS `users` (
@@ -250,15 +272,116 @@ CREATE TABLE IF NOT EXISTS `users` (
   `COMPANY_END` time DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `EMAIL` (`EMAIL`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
--- 테이블 데이터 chat.users:~3 rows (대략적) 내보내기
+-- 테이블 데이터 chat.users:~8 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`ID`, `EMAIL`, `PASSWORD`, `NAME`, `LANGUAGE`, `COMPANY_NAME`, `IMG_URL`, `COMPANY_START`, `COMPANY_END`) VALUES
 	(1, '1812105@du.ac.kr', 'acd202bb391b4712518fe87bb26775053b3d55171a80bcb6b5ab7a9e44a914f9', '박상도', 'ko', NULL, 'default_profile.jpg', NULL, NULL),
 	(2, 'tkdeh129@naver.com', 'acd202bb391b4712518fe87bb26775053b3d55171a80bcb6b5ab7a9e44a914f9', '상도박', 'en', NULL, 'default_profile.jpg', NULL, NULL),
-	(3, 'aa55235490@gmail.com', '55daf76ebb48896ce06ae11eac5cf86dc975ced67f0ab9ce1c57efe6a5ca010b', '박상도', 'ja', NULL, '1668317182850KakaoTalk_20221113_141205219.jpg', NULL, NULL);
+	(3, 'aa55235490@gmail.com', '55daf76ebb48896ce06ae11eac5cf86dc975ced67f0ab9ce1c57efe6a5ca010b', '박상도', 'ja', NULL, '1668317182850KakaoTalk_20221113_141205219.jpg', NULL, NULL),
+	(4, 'test1', 'test', 'test1', 'en', NULL, 'default_profile.jpg', NULL, NULL),
+	(5, 'test2', 'test', 'test2', 'ko', NULL, 'default_profile.jpg', NULL, NULL),
+	(6, 'test3', 'test', 'test3', 'ja', NULL, 'default_profile.jpg', NULL, NULL),
+	(7, 'test4', 'test', 'test4', 'zh-CN', NULL, 'default_profile.jpg', NULL, NULL),
+	(8, 'test5', 'test', 'test5', 'zh-TW', NULL, 'default_profile.jpg', NULL, NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+
+-- 프로시저 chat.VIEW_ALL_MESSAGES 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `VIEW_ALL_MESSAGES`( IN roomId INT, IN lang VARCHAR(5) )
+BEGIN
+	SET @sqlQuery = CONCAT('SELECT msg.MSG_NUM, msg.SEND_USER_ID, users.NAME, users.IMG_URL, ',
+									'msg.ORIGINAL_MSG, msg.TO_', lang, ' AS MSG, msg.SEND_TIME FROM users ', 
+									'RIGHT OUTER JOIN room_message_', roomId, ' AS msg ON users.ID = msg.SEND_USER_ID');
+	PREPARE CALL_MESSAGES FROM @sqlQuery;
+	EXECUTE CALL_MESSAGES;
+	DEALLOCATE PREPARE CALL_MESSAGES;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.VIEW_FRIENDS 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `VIEW_FRIENDS`( IN userId INT )
+BEGIN
+	SELECT ID, NAME, EMAIL, LANGUAGE, IMG_URL FROM users
+	WHERE ID = userId;
+	
+	SELECT u.ID, u.NAME, u.EMAIL, u.LANGUAGE, u.IMG_URL FROM users AS u, relations AS r
+	WHERE r.USER_ID = userId AND u.ID = r.TARGET_ID AND r.RELATION_TYPE = 'FRIEND';
+END//
+DELIMITER ;
+
+-- 프로시저 chat.VIEW_JOINROOM 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `VIEW_JOINROOM`( IN userId INT )
+BEGIN
+	SET @sqlQuery = CONCAT('SELECT room_info.ROOM_ID, ROOM_NAME, FAVORITES, LAST_MSG, LAST_SEND_TIME FROM '
+						, 'room_info, room_list WHERE room_info.ROOM_ID = room_list.ROOM_ID AND USER_ID = ', userId
+						, ' ORDER BY LAST_SEND_TIME DESC');
+	PREPARE viewJoinRoom FROM @sqlQuery;
+	EXECUTE viewJoinRoom;
+	DEALLOCATE PREPARE viewJoinRoom;
+
+	CALL UPDATE_CONFIRM(userId);
+END//
+DELIMITER ;
+
+-- 프로시저 chat.VIEW_SEARCH_EMAIL 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `VIEW_SEARCH_EMAIL`( IN userId INT, IN factor VARCHAR(1000) CHARACTER SET UTF8MB4 )
+BEGIN
+	SET @sqlQuery = CONCAT('SELECT ID, EMAIL, NAME, LANGUAGE, IMG_URL FROM users ',
+					'LEFT OUTER JOIN (SELECT * FROM relations WHERE USER_ID = 1) AS relations ',
+					'ON ID = TARGET_ID WHERE EMAIL LIKE "%', factor, '%" AND ID != ', userId, ' AND TARGET_ID IS NULL');
+	PREPARE SEARCH_EMAIL FROM @sqlQuery;
+	EXECUTE SEARCH_EMAIL;
+	DEALLOCATE PREPARE SEARCH_EMAIL;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.VIEW_SEARCH_FRIENDS 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `VIEW_SEARCH_FRIENDS`( IN userId INT, IN factor VARCHAR(1000) CHARACTER SET UTF8MB4 )
+BEGIN
+	SET @sqlQuery = CONCAT('SELECT users.ID, users.EMAIL, users.NAME, users.IMG_URL FROM users, relations ',
+                    'WHERE ((users.EMAIL LIKE "%', factor, '%") OR (users.NAME LIKE "%', factor, '%")) ',
+                    'AND (users.ID = relations.TARGET_ID AND RELATION_TYPE = "FRIEND" AND USER_ID = ', userId, ')');
+	PREPARE SEARCH_FRIENDS FROM @sqlQuery;
+	EXECUTE SEARCH_FRIENDS;
+	DEALLOCATE PREPARE SEARCH_FRIENDS;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.VIEW_SEARCH_NOTINVITED 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `VIEW_SEARCH_NOTINVITED`( IN roomId INT, IN userId INT, IN factor VARCHAR(1000) CHARACTER SET UTF8MB4 )
+BEGIN
+	SET @sqlQuery = CONCAT('SELECT u.ID, u.EMAIL, u.NAME, u.IMG_URL ',
+								'FROM users AS u, relations AS r ',
+								'LEFT OUTER JOIN (SELECT * FROM room_info WHERE ROOM_ID = ', roomId,') AS i ',
+								'ON r.TARGET_ID = i.USER_ID ',
+								'WHERE (u.EMAIL LIKE "%', factor,'%" OR u.NAME LIKE "%', factor,'%") AND r.USER_ID = ', userId,
+								' AND (u.ID = r.TARGET_ID AND r.RELATION_TYPE = "FRIEND" AND i.USER_ID IS NULL)');
+	PREPARE SEARCH_FRIENDS FROM @sqlQuery;
+	EXECUTE SEARCH_FRIENDS;
+	DEALLOCATE PREPARE SEARCH_FRIENDS;
+END//
+DELIMITER ;
+
+-- 프로시저 chat.VIEW_SINGLE_MESSAGE 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `VIEW_SINGLE_MESSAGE`( IN roomId INT, IN lang VARCHAR(5), IN msgNum INT )
+BEGIN
+	SET @sqlQuery = CONCAT('SELECT msg.MSG_NUM, msg.SEND_USER_ID, users.NAME, users.IMG_URL, ',
+									'msg.ORIGINAL_MSG, msg.TO_', lang, ' AS MSG, msg.SEND_TIME FROM users ', 
+									'RIGHT OUTER JOIN room_message_', roomId, ' AS msg ON users.ID = msg.SEND_USER_ID ',
+									'WHERE msg.MSG_NUM = ', msgNum);
+	PREPARE CALL_MESSAGES FROM @sqlQuery;
+	EXECUTE CALL_MESSAGES;
+	DEALLOCATE PREPARE CALL_MESSAGES;
+END//
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;

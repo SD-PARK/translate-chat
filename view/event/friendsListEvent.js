@@ -7,15 +7,25 @@ function get_cookie(name) {
 }
 
 socket.emit('view', (user_id), (res) => {
+    printMid(res);
+});
+
+function printMid(res) {
     const res_len = res.friends_result.length;
     $('#rows').empty();
     // 개인 프로필 출력
-    friendPrint(res.user_result);
+    selfPrint(res.user_result);
     // 친구 프로필 출력
     for(let i=0; i<res_len; i++) {
         friendPrint(res.friends_result[i]);
     }
-});
+}
+
+function selfPrint(info) {
+    $('#rows').append('<div class="divide"><strong>My Profile</strong></div>');
+    friendPrint(info);
+    $('#rows').append('<div class="divide"><strong>Friends Profile</strong></div>');
+}
 
 function friendPrint(info) {
     $('#rows').append(`<div class="row friend" onclick="location.href='profile/${info.ID}'">
@@ -40,12 +50,7 @@ function modalBtnClick() {
 function modalClose() {
     $("#myModal").css('display', 'none');
     socket.emit('view', (user_id), (res) => { // 친구 목록 갱신
-        const res_len = res.friends_result.length;
-        $('#rows').empty();
-        friendPrint(res.user_result);
-        for(let i=0; i<res_len; i++) {
-            friendPrint(res.friends_result[i]);
-        }
+        printMid(res);
     });
 }
 // 팝업 창 외부 영역 클릭 시

@@ -45,14 +45,15 @@ body {
 	border-style:none;
 	flex:1;
 }
-#topmenu span.plus{
-	background: url("../img/calendar.png") no-repeat;
+#topmenu button.menu{
+	background: url("../img/menu_btn.png") no-repeat;
 	background-size:contain;
 	cursor:pointer;
 	float:right;
 	width:4vh;
 	height:4vh;
 	margin:2vh 3vh 2vh 1.5vh;
+	border-style:none;
 }
 #chat-messages{
 	opacity:1;
@@ -88,11 +89,11 @@ body {
 	color:#8495a3;
 	font-size:14.5px;
 	text-align:center;
-	margin:15px 0 25px 0;
+	margin:15px 0 25px 10px;
 	display:block;
 }
 #chat-messages div.message{
-	padding:0 0 17px 0;
+	padding:0 0 27px 0;
 	clear:both;
 	margin-bottom:45px;
 }
@@ -107,21 +108,36 @@ body {
 	width: 40px;
 	height: 40px;
 	margin-top: -5px;
+	margin-bottom: 10px;
 }
 #chat-messages div.message.right img{
 	float: right;
 	margin-left: 0;
 	margin-right: -50px;
 }
+.message strong {
+	float:left;
+	position:relative;
+	top:-5px;
+	width:100px;
+	margin-right: 100%;
+	font-size:15px;
+	color:#8495a3;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
 .message .bubble{
 	background:#f0f4f7;
 	font-size:14px;
 	padding:8px 9px;
+	margin-top: -2px;
 	margin-bottom:27px;
 	border-radius:0 5px 5px 5px;
 	color:#8495a3;
 	position:relative;
 	float:left;
+	word-break:break-all;
 }
 #chat-messages div.message.right .bubble{
 	float:right;
@@ -153,13 +169,18 @@ div.message.right .corner{
 	left:auto;
 	right:-2.8px;
 }
-.bubble span{
+div.message .bubble span{
 	color: #aab8c2;
 	white-space:nowrap;
 	font-size: 12px;
 	position: absolute;
-	right: 0;
 	bottom: -17px;
+}
+div.message .bubble span.dateLeft{
+	left: 0;
+}
+div.message.right .bubble span{
+	right: 0;
 }
 #sendmessage{
 	height:8vh;

@@ -5,13 +5,42 @@
     <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="../../styles/roomStyle.css"/>
+    <link rel="stylesheet" href="../../styles/menuStyle.css">
   </head>
   <body>
     <div id="chatbox">
         <div id="topmenu">
             <span class="out" onclick="location.href='../'"></span>
             <input class="title" type="text" value="Name">
-            <span class="plus" onclick="location.href='cal.html'"></span>
+            <!-- Open The Make Room Box -->
+            <button class="menu" onclick="modalBtnClick()"></button>
+            <!-- Make Room Box The Modal -->
+            <div id="menuModal">
+              <!-- <span class="plus" ></span> -->
+              <button id="calendar" onclick="location.href='cal.html'"></button>
+              <button id="invite" onclick="inviteBtnClick()"></button>
+              <button id="exit"></button>
+            </div>
+            <div class="modal">
+              <div class="modal-content invite">
+                <span class="close" onclick="modalClose()">&times;</span>
+                <p id="modalTitle">Select a contact</p>
+                <div id="modalSearch">
+                  <input type="text" placeholder="Search name" id="searchText">
+                  <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
+                </div>
+                <div id="chooseList">
+                  <!-- chooseRow -->
+
+                </div>
+                <div id="modalSelect">
+                  <!-- selectField -->
+                  
+                </div>
+                <button id="inviteRoomBtn" type="submit" onclick="inviteRoom()">Invite</button>
+              </div>
+            </div>
+            <!--  -->
         </div>
         <div id="chatview">
             <div id="chat-messages">

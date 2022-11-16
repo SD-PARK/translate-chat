@@ -1,36 +1,60 @@
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 10vh; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+/* ======= Menu ======= */
+#menuModal {
+	display:none;
+	position: absolute;
+	top:8vh;
+	right: 0;
+	width: 10vh;
+	height: 27vh;
+	border:1px solid #d8dfe3;
+	background:#fff;
+	z-index: 1;
 }
 
-/* Modal Button */
-#myBtn {
-  background:#fff url("../img/room_add_btn.png") no-repeat center;
-	background-size:5vh;
-  width:5vh;
-  height:5vh;
-  border-style:none;
-  margin:1.5vh 0;
+#menuModal > button {
+	width: 4vh;
+	height: 5vh;
+	margin: 2vh 3vh;
+	border-style: none;
+}
+#menuModal > button#calendar {
+	background:url('../img/calendar.png') no-repeat;
+	background-size: 4vh;
+}
+#menuModal > button#invite {
+	background:url('../img/invite.png') no-repeat;
+	background-size: 4vh;
+}
+#menuModal > button#exit {
+	background:url('../img/exit.png') no-repeat;
+	background-size: 4vh;
+}
+
+/* Menu in Button Click */
+
+/* background */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 2; /* Sit on top */
+	padding-top: 18vh; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 2%;
-  border: 1px solid #888;
-  width: 80%;
-  height: 80vh;
+.modal-content.invite{
+	background-color: #fefefe;
+	margin: auto;
+	padding: 2%;
+	border: 1px solid #888;
+	width: 80%;
+	height: 55vh;
+  text-align:center;
 }
 
 /* The Close Button */
@@ -140,7 +164,7 @@
 #modalSelect {
   background-color:#fff;
 	overflow-y:scroll;
-	height:54vh;
+	height:29vh;
 	-ms-overflow-style:none;
 }
 #modalSelect::-webkit-scrollbar {
@@ -201,7 +225,7 @@
 }
 
 /* Make Room Button */
-#makeRoomBtn {
+#inviteRoomBtn {
   width:20vw;
   height:4vh;
   margin:2vh;
@@ -211,6 +235,6 @@
   box-shadow:none;
   font-size:1.7vh;
 }
-#makeRoomBtn:active {
+#inviteRoomBtn:active {
   background-color:#d8dfe3;
 }

@@ -52,6 +52,13 @@ body {
 #topmenu span.setting{background:url('../img/setting_btn.png') no-repeat center; background-size:6vh;}
 #topmenu span.setting:hover{cursor:pointer;}
 
+.divide{
+	padding: 15px 0;
+	text-align: center;
+	line-height: 15px;
+	border-bottom:1px solid #e7ebee;
+}
+
 .row{
 	height:90px; /* 11vh */
 	border-bottom:1px solid #e7ebee;
@@ -142,7 +149,7 @@ body {
 }
 #searchfield{
 	background:#e3e9ed;
-	margin:3vh 0 0 15vw;
+	margin:2.8vh 0 0 16vw;
 	border:none;
 	width:80vw;
 	font-size:2.1vh;
