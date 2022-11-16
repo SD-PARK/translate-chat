@@ -35,7 +35,7 @@ function roomPrint(info) {
         if(timeAs >= today) timeAs = timeAs.toLocaleTimeString().slice(-8, -3);
         else timeAs = timeAs.toLocaleDateString().substring(6);
     } else {
-        timeAs = info.LAST_SEND_TIME;
+        timeAs = "";
     }
 
     $('#rows').append(`<div class="row room" onclick="location.href='room/${info.ROOM_ID}'">
