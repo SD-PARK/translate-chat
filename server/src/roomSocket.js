@@ -1,6 +1,7 @@
 module.exports = (io, db) => {
     const Room = io.of('/room');
     const papago = require('../src/translate');
+    const escapeMap = require('../config/escapeMap');
 
     /** NULL인 각 언어 메세지 번역 처리 */
     const nullIsTranslate = (room_id, userLanguage) => {
@@ -48,29 +49,13 @@ module.exports = (io, db) => {
         socket.on('sendMsg', (msg) => {
             console.log('socket: sendMsg');
             // DB에 메세지 저장 후 마지막 메세지의 MSG_NUM 가져옴.
-            const escapeMsg = escapeHtml(msg); // 이스케이프 문자 처리
-            db.query(`CALL SEND_MESSAGE(${socket.room_id}, ${socket.user_id}, "${escapeMsg}");`, (err, msgNum) => { if (err) return console.log(err);
+            const eMsg = escapeMap(msg); // 이스케이프 문자 처리
+            db.query(`CALL UPDATE_SEND_MESSAGE(${socket.room_id}, ${socket.user_id}, "${eMsg}");`, (err, msgNum) => { if (err) return console.log(err);
                 console.log(msgNum[0][0].MSG_NUM);
                 Room.to(socket.room_id).emit('tellNewMsg', msgNum[0][0].MSG_NUM); // Room에 접속한 Socket에게 MSG_NUM과 함께 전송
                 console.log('socket: sendMsg -> tellNewMsg', msgNum[0][0].MSG_NUM);
             });
         });
-
-        const entityMap = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;',
-            '/': '&#x2F;',
-            '`': '&#x60;',
-            '=': '&#x3D;'
-        };
-        function escapeHtml (string) {
-            return String(string).replace(/[&<>"'`=\/]/g, function (s) {
-              return entityMap[s];
-            });
-        }
 
         socket.on('callNewMsg', async (msg_num, callback) => {
             console.log('socket: callNewMsg');
@@ -84,13 +69,15 @@ module.exports = (io, db) => {
         });
         
         socket.on('roomTitleChange', (room_name) => {
-            db.query(`CALL UPDATE_ROOM_TITLE(${socket.room_id}, ${socket.user_id}, '${room_name}');`, (err, res) => { if (err) return console.log(err); });
+            const eRoom_name = room_name;
+            db.query(`CALL UPDATE_ROOM_TITLE(${socket.room_id}, ${socket.user_id}, '${eRoom_name}');`, (err, res) => { if (err) return console.log(err); });
         });
 
         socket.on('friendsSearch', (factor, callback) => {
             const roomId = socket.room_id;
             const userId = socket.user_id;
-            db.query(`CALL VIEW_SEARCH_NOTINVITED(${roomId}, ${userId}, '${factor}');`, (err, res) => { if (err) return console.log(err);
+            const eFactor = escapeMap(factor);
+            db.query(`CALL VIEW_SEARCH_NOTINVITED(${roomId}, ${userId}, '${eFactor}');`, (err, res) => { if (err) return console.log(err);
                         callback(res[0]);
             })
         });

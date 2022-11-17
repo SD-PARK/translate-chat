@@ -7,14 +7,14 @@ function get_cookie(name) {
 }
 
 socket.emit('view', (user_id), (res) => {
-    printMid(res);
+    printMid(res, 1);
 });
 
-function printMid(res) {
+function printMid(res, i) {
     const res_len = res.friends_result.length;
     $('#rows').empty();
     // 개인 프로필 출력
-    selfPrint(res.user_result);
+    if(i) { selfPrint(res.user_result); }
     // 친구 프로필 출력
     for(let i=0; i<res_len; i++) {
         friendPrint(res.friends_result[i]);
@@ -40,7 +40,6 @@ function friendPrint(info) {
                         // status = (available, away, inactive)
 }
 
-
 // ======= Modal Event ======= //
 /** 하단 Modal 버튼 클릭 */
 function modalBtnClick() {
@@ -62,7 +61,21 @@ $(window).click((e) => {
 
 // ======= Search Event ======= //
 $(document).ready(() => {
-    // 검색 창에 입력 시
+    // 친구 목록 내 검색
+    $('#searchfield').keyup(() => {
+        let text = $('#searchfield').val();
+        if(text) {
+            socket.emit('friendSearch', (text), (res) => {
+                console.log(res);
+                printMid({friends_result: res}, 0);
+            });
+        } else {
+            socket.emit('view', (user_id), (res) => {
+                printMid(res, 1);
+            });
+        }
+    });
+    // 친구 목록 외 검색
     $('#searchText').keyup(() => {
         let text = $('#searchText').val();
         if(text) {

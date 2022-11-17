@@ -62,7 +62,7 @@ updateCheck = setInterval(() => { // 1초마다 서버에 업데이트 여부 �
 function modalBtnClick() {
     $("#myModal").css('display', 'block');
     // 친구 목록 로드
-    socket.emit('friendsSearch', {user_id: user_id, factor: ""}, (list) => {
+    socket.emit('friendsSearch', (''), (list) => {
         window.list = list;
         modalUpdate();
     });
@@ -83,7 +83,7 @@ $(window).click((e) => {
 $(document).ready(() => {
     // 검색 창에 입력 시
     $('#searchText').keyup(() => {
-        socket.emit('friendsSearch', {user_id: user_id, factor: $('#searchText').val()}, (list) => {
+        socket.emit('friendsSearch', ($('#searchText').val()), (list) => {
             window.list = list;
             modalUpdate();
         });

@@ -1,5 +1,6 @@
 module.exports = (io, db) => {
     const roomsList = io.of('/roomsList');
+    const escapeMap = require('../config/escapeMap');
 
     roomsList.on('connection', (socket) => {
         console.log('Socket.io [RoomList] Namespace Connected');
@@ -14,8 +15,10 @@ module.exports = (io, db) => {
             });
         });
 
-        socket.on('friendsSearch', (data, callback) => {
-            db.query(`CALL VIEW_SEARCH_FRIENDS(${data.user_id}, '${data.factor}');`, (err, res) => { if (err) return console.log(err);
+        socket.on('friendsSearch', (factor, callback) => {
+            const userId = socket.user_id;
+            const eFactor = escapeMap(factor);
+            db.query(`CALL VIEW_SEARCH_FRIENDS(${userId}, '${eFactor}');`, (err, res) => { if (err) return console.log(err);
                         callback(res[0]);
             })
         });

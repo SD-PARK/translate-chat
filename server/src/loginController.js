@@ -41,8 +41,7 @@ exports.signupPostMid = (req, res) => {
 
     // 필수 사항 DB 입력
     
-    db.query(`INSERT INTO USERS(EMAIL, PASSWORD, NAME, LANGUAGE) VALUE
-            ("${email}", "${crypto_password}", "${name}", "${language}");`, (err, result) => {
+    db.query(`CALL UPDATE_USER_REGISTER('${email}', '${crypto_password}', '${name}', '${language}');`, (err, result) => {
         
         if (err) {
             if (err.code == 'ER_DUP_ENTRY') res.send("<script>alert('Duplicated email.');history.back();</script>"); // 중복되는 이메일이 있을 경우
