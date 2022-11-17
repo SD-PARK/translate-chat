@@ -45,19 +45,19 @@ function friendPrint(info) {
 function modalBtnClick() {
     $("#myModal").css('display', 'block');
 }
+// 팝업 창 외부 영역 클릭 시
+$(window).click((e) => {
+    if ($(e.target).is($('#myModal'))) {
+        modalClose();
+    }
+});
 /** Modal 닫기 */
 function modalClose() {
     $("#myModal").css('display', 'none');
     socket.emit('view', (user_id), (res) => { // 친구 목록 갱신
-        printMid(res);
+        printMid(res, 1);
     });
 }
-// 팝업 창 외부 영역 클릭 시
-$(window).click((e) => {
-    if ($(e.target).is($('#myModal'))) {
-        madalClose();
-    }
-});
 
 // ======= Search Event ======= //
 $(document).ready(() => {
