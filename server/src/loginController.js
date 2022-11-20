@@ -69,8 +69,8 @@ exports.signupPostMid = (req, res) => {
                 db.query(`CALL UPDATE_USER_REGISTER_cEnd("${email}", "${company_end}");`, (err, result) => { if (err) return console.log(err); });
             }
         }
-        res.redirect('/login');
-        alert('Signup Complete');
+        res.write("<script>alert('Signup Complete');</script>");
+        res.write('<script>window.location=\"/login\"</script>');
     });
 }
 

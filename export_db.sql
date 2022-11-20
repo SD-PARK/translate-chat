@@ -35,9 +35,12 @@ DELIMITER ;
 
 -- 프로시저 chat.GET_NULLTEXT 구조 내보내기
 DELIMITER //
-CREATE PROCEDURE `GET_NULLTEXT`( IN roomId INT, IN lang VARCHAR(5) )
+CREATE PROCEDURE `GET_NULLTEXT`(
+	IN `roomId` INT,
+	IN `lang` VARCHAR(5)
+)
 BEGIN
-	SET @sqlQuery = CONCAT('SELECT MSG_NUM, ORIGINAL_MSG, FROM_LANGUAGE FROM room_message_', roomId, ' WHERE TO_', lang, ' IS NULL');
+	SET @sqlQuery = CONCAT('SELECT MSG_NUM, ORIGINAL_MSG, FROM_LANGUAGE FROM room_message_', roomId, ' WHERE `TO_', lang, '` IS NULL AND SEND_USER_ID != 0');
 	PREPARE printNullText FROM @sqlQuery;
 	EXECUTE printNullText;
 	DEALLOCATE PREPARE printNullText;
@@ -73,13 +76,25 @@ CREATE TABLE IF NOT EXISTS `relations` (
   PRIMARY KEY (`USER_ID`,`TARGET_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- 테이블 데이터 chat.relations:~4 rows (대략적) 내보내기
+-- 테이블 데이터 chat.relations:~16 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `relations` DISABLE KEYS */;
 INSERT INTO `relations` (`USER_ID`, `TARGET_ID`, `RELATION_TYPE`) VALUES
 	(1, 2, 'FRIEND'),
 	(1, 3, 'FRIEND'),
+	(1, 4, 'FRIEND'),
+	(1, 5, 'FRIEND'),
+	(1, 8, 'FRIEND'),
 	(2, 1, 'FRIEND'),
-	(3, 1, 'FRIEND');
+	(3, 1, 'FRIEND'),
+	(4, 1, 'FRIEND'),
+	(5, 1, 'FRIEND'),
+	(5, 7, 'FRIEND'),
+	(5, 8, 'FRIEND'),
+	(7, 5, 'FRIEND'),
+	(7, 8, 'FRIEND'),
+	(8, 1, 'FRIEND'),
+	(8, 5, 'FRIEND'),
+	(8, 7, 'FRIEND');
 /*!40000 ALTER TABLE `relations` ENABLE KEYS */;
 
 -- 테이블 chat.room_info 구조 내보내기
@@ -93,12 +108,19 @@ CREATE TABLE IF NOT EXISTS `room_info` (
   PRIMARY KEY (`ROOM_ID`,`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- 테이블 데이터 chat.room_info:~3 rows (대략적) 내보내기
+-- 테이블 데이터 chat.room_info:~10 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `room_info` DISABLE KEYS */;
 INSERT INTO `room_info` (`ROOM_ID`, `USER_ID`, `ROOM_NAME`, `NOTICE_TYPE`, `FAVORITES`, `UPDATE_CHECK`) VALUES
-	(1, 1, 'Room', 'notice', 0, 0),
-	(1, 2, 'Room', 'notice', 0, 0),
-	(1, 3, 'Room', 'notice', 0, 0);
+	(1, 1, '테스트 룸 2', 'notice', 0, 0),
+	(1, 2, 'Room', 'notice', 0, 1),
+	(1, 3, 'Room', 'notice', 0, 1),
+	(1, 4, 'Room', 'notice', 0, 1),
+	(1, 5, 'Room', 'notice', 0, 1),
+	(2, 1, '테스트 룸 1', 'notice', 0, 0),
+	(3, 1, '테스트 룸 3', 'notice', 0, 0),
+	(3, 5, '테스트방', 'notice', 0, 0),
+	(3, 7, 'Room', 'notice', 0, 1),
+	(3, 8, 'ROOM@@@', 'notice', 0, 0);
 /*!40000 ALTER TABLE `room_info` ENABLE KEYS */;
 
 -- 테이블 chat.room_list 구조 내보내기
@@ -107,12 +129,14 @@ CREATE TABLE IF NOT EXISTS `room_list` (
   `LAST_MSG` varchar(1000) NOT NULL DEFAULT 'No Messages.',
   `LAST_SEND_TIME` datetime DEFAULT NULL,
   PRIMARY KEY (`ROOM_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- 테이블 데이터 chat.room_list:~1 rows (대략적) 내보내기
+-- 테이블 데이터 chat.room_list:~3 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `room_list` DISABLE KEYS */;
 INSERT INTO `room_list` (`ROOM_ID`, `LAST_MSG`, `LAST_SEND_TIME`) VALUES
-	(1, '들어도 모르실걸요?', '2022-11-17 22:08:28');
+	(1, '아 됐다', '2022-11-20 00:28:04'),
+	(2, 'No Messages.', NULL),
+	(3, 'hi', '2022-11-20 16:49:19');
 /*!40000 ALTER TABLE `room_list` ENABLE KEYS */;
 
 -- 테이블 chat.room_message_1 구조 내보내기
@@ -128,9 +152,9 @@ CREATE TABLE IF NOT EXISTS `room_message_1` (
   `TO_zh-CN` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
   `TO_zh-TW` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`MSG_NUM`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
 
--- 테이블 데이터 chat.room_message_1:~8 rows (대략적) 내보내기
+-- 테이블 데이터 chat.room_message_1:~10 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `room_message_1` DISABLE KEYS */;
 INSERT INTO `room_message_1` (`MSG_NUM`, `SEND_USER_ID`, `ORIGINAL_MSG`, `SEND_TIME`, `FROM_LANGUAGE`, `TO_ko`, `TO_ja`, `TO_en`, `TO_zh-CN`, `TO_zh-TW`) VALUES
 	(1, 3, 'Hello.', '2022-11-17 21:48:31', 'en', '안녕하세요.', 'お早う。', 'Hello.', NULL, NULL),
@@ -140,8 +164,67 @@ INSERT INTO `room_message_1` (`MSG_NUM`, `SEND_USER_ID`, `ORIGINAL_MSG`, `SEND_T
 	(5, 1, '어디사세요?', '2022-11-17 22:05:52', 'ko', '어디사세요?', 'どこに住んでいますか？', 'Where do you live?', NULL, NULL),
 	(6, 3, 'I live in Brighton.', '2022-11-17 22:07:24', 'en', '저는 브라이튼에 살아요.', '私はブライトンに住んでいます。', 'I live in Brighton.', NULL, NULL),
 	(7, 3, 'How about you?', '2022-11-17 22:08:03', 'en', '당신은요?', 'あなたはどう？', 'How about you?', NULL, NULL),
-	(8, 1, '들어도 모르실걸요?', '2022-11-17 22:08:28', 'ko', '들어도 모르실걸요?', '聞いても分からないと思いますよ？', 'You won&#39;t know even if you hear it', NULL, NULL);
+	(8, 1, '들어도 모르실걸요?', '2022-11-17 22:08:28', 'ko', '들어도 모르실걸요?', '聞いても分からないと思いますよ？', 'You won&#39;t know even if you hear it', NULL, NULL),
+	(9, 0, '"user" has entered.', '2022-11-17 21:48:31', 'en', NULL, NULL, NULL, NULL, NULL),
+	(10, 0, 'test1 has Entered.', '2022-11-20 00:27:55', 'en', NULL, NULL, NULL, NULL, NULL),
+	(11, 1, '아 됐다', '2022-11-20 00:28:04', 'ko', '아 됐다', NULL, NULL, NULL, NULL),
+	(12, 0, '황준연 has Entered.', '2022-11-20 19:56:06', 'en', NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `room_message_1` ENABLE KEYS */;
+
+-- 테이블 chat.room_message_2 구조 내보내기
+CREATE TABLE IF NOT EXISTS `room_message_2` (
+  `MSG_NUM` int(11) NOT NULL AUTO_INCREMENT,
+  `SEND_USER_ID` int(11) NOT NULL,
+  `ORIGINAL_MSG` varchar(1000) CHARACTER SET utf8mb4 NOT NULL,
+  `SEND_TIME` datetime NOT NULL DEFAULT current_timestamp(),
+  `FROM_LANGUAGE` varchar(5) NOT NULL,
+  `TO_ko` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `TO_ja` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `TO_en` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `TO_zh-CN` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `TO_zh-TW` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  PRIMARY KEY (`MSG_NUM`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+
+-- 테이블 데이터 chat.room_message_2:~2 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `room_message_2` DISABLE KEYS */;
+INSERT INTO `room_message_2` (`MSG_NUM`, `SEND_USER_ID`, `ORIGINAL_MSG`, `SEND_TIME`, `FROM_LANGUAGE`, `TO_ko`, `TO_ja`, `TO_en`, `TO_zh-CN`, `TO_zh-TW`) VALUES
+	(1, 0, '황준연 has Entered.', '2022-11-20 16:44:09', 'en', NULL, NULL, NULL, NULL, NULL),
+	(2, 0, '박상도 has Entered.', '2022-11-20 16:44:09', 'en', NULL, NULL, NULL, NULL, NULL);
+/*!40000 ALTER TABLE `room_message_2` ENABLE KEYS */;
+
+-- 테이블 chat.room_message_3 구조 내보내기
+CREATE TABLE IF NOT EXISTS `room_message_3` (
+  `MSG_NUM` int(11) NOT NULL AUTO_INCREMENT,
+  `SEND_USER_ID` int(11) NOT NULL,
+  `ORIGINAL_MSG` varchar(1000) CHARACTER SET utf8mb4 NOT NULL,
+  `SEND_TIME` datetime NOT NULL DEFAULT current_timestamp(),
+  `FROM_LANGUAGE` varchar(5) NOT NULL,
+  `TO_ko` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `TO_ja` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `TO_en` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `TO_zh-CN` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `TO_zh-TW` varchar(1000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  PRIMARY KEY (`MSG_NUM`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
+
+-- 테이블 데이터 chat.room_message_3:~13 rows (대략적) 내보내기
+/*!40000 ALTER TABLE `room_message_3` DISABLE KEYS */;
+INSERT INTO `room_message_3` (`MSG_NUM`, `SEND_USER_ID`, `ORIGINAL_MSG`, `SEND_TIME`, `FROM_LANGUAGE`, `TO_ko`, `TO_ja`, `TO_en`, `TO_zh-CN`, `TO_zh-TW`) VALUES
+	(1, 0, '황준연 has Entered.', '2022-11-20 16:45:09', 'en', NULL, NULL, NULL, NULL, NULL),
+	(2, 0, 'SANGDOMAN has Entered.', '2022-11-20 16:45:09', 'en', NULL, NULL, NULL, NULL, NULL),
+	(3, 5, 'hi', '2022-11-20 16:45:16', 'ko', 'hi', NULL, 'hi', NULL, NULL),
+	(4, 5, '안녕하세요', '2022-11-20 16:45:19', 'ko', '안녕하세요', NULL, 'Hello', NULL, NULL),
+	(5, 8, 'hello', '2022-11-20 16:45:22', 'en', '안녕하세요.', NULL, 'hello', NULL, NULL),
+	(6, 8, 'where are you from', '2022-11-20 16:45:28', 'en', '어디서 오셨나요?', NULL, 'where are you from', NULL, NULL),
+	(7, 5, '한국에서 왔습니다.', '2022-11-20 16:45:33', 'ko', '한국에서 왔습니다.', NULL, 'I am from Korea.', NULL, NULL),
+	(8, 8, 'ah ok', '2022-11-20 16:45:36', 'en', '아, 알았어요', NULL, 'ah ok', NULL, NULL),
+	(9, 0, '박상도 has Entered.', '2022-11-20 16:46:02', 'en', NULL, NULL, NULL, NULL, NULL),
+	(10, 5, 'ㅁㄴㅇㄹ', '2022-11-20 16:46:06', 'ko', 'ㅁㄴㅇㄹ', NULL, 'ㄴㅇㄹㅁ', NULL, NULL),
+	(11, 5, '반갑습니다', '2022-11-20 16:46:11', 'ko', '반갑습니다', NULL, 'Nice to meet you.', NULL, NULL),
+	(12, 0, '박상도 has Entered.', '2022-11-20 16:46:21', 'en', NULL, NULL, NULL, NULL, NULL),
+	(13, 8, 'hi', '2022-11-20 16:49:19', 'en', '안녕하세요.', NULL, 'hi', NULL, NULL);
+/*!40000 ALTER TABLE `room_message_3` ENABLE KEYS */;
 
 -- 프로시저 chat.UPDATE_CHANGES 구조 내보내기
 DELIMITER //
@@ -172,9 +255,14 @@ DELIMITER ;
 
 -- 프로시저 chat.UPDATE_INVITE_ROOM 구조 내보내기
 DELIMITER //
-CREATE PROCEDURE `UPDATE_INVITE_ROOM`( IN roomId INT, IN userId INT )
+CREATE PROCEDURE `UPDATE_INVITE_ROOM`(
+	IN `roomId` INT,
+	IN `userId` INT
+)
 BEGIN
 	INSERT INTO room_info (ROOM_ID, USER_ID) VALUE (roomId, userId);
+	SET @joinMsg = CONCAT((SELECT NAME FROM users WHERE ID = userId), ' has Entered.');
+	CALL UPDATE_SEND_ALERT(roomId, @joinMsg);
 END//
 DELIMITER ;
 
@@ -214,6 +302,22 @@ BEGIN
 END//
 DELIMITER ;
 
+-- 프로시저 chat.UPDATE_SEND_ALERT 구조 내보내기
+DELIMITER //
+CREATE PROCEDURE `UPDATE_SEND_ALERT`( IN roomId INT, IN msg VARCHAR(100) )
+BEGIN
+	SET @sqlQuery = CONCAT('INSERT INTO room_message_', roomId, ' (SEND_USER_ID, ORIGINAL_MSG, FROM_LANGUAGE) VALUES (0, "', msg, '", "en")');
+	PREPARE addMsg FROM @sqlQuery;
+	EXECUTE addMsg;
+	DEALLOCATE PREPARE addMsg;
+	
+	SET @sqlQuery = CONCAT('SELECT MSG_NUM FROM room_message_', roomId, ' ORDER BY MSG_NUM DESC LIMIT 1');
+	PREPARE getLastMsg FROM @sqlQuery;
+	EXECUTE getLastMsg;
+	DEALLOCATE PREPARE getLastMsg;
+END//
+DELIMITER ;
+
 -- 프로시저 chat.UPDATE_SEND_MESSAGE 구조 내보내기
 DELIMITER //
 CREATE PROCEDURE `UPDATE_SEND_MESSAGE`(
@@ -245,9 +349,14 @@ DELIMITER ;
 
 -- 프로시저 chat.UPDATE_TRANSLATION 구조 내보내기
 DELIMITER //
-CREATE PROCEDURE `UPDATE_TRANSLATION`( IN roomId INT, IN msgNum INT, IN lang VARCHAR(5), IN translation VARCHAR(1000) CHARACTER SET UTF8MB4)
+CREATE PROCEDURE `UPDATE_TRANSLATION`(
+	IN `roomId` INT,
+	IN `msgNum` INT,
+	IN `lang` VARCHAR(5),
+	IN `translation` VARCHAR(1000) CHARACTER SET UTF8MB4
+)
 BEGIN
-	SET @sqlQuery = CONCAT('UPDATE room_message_', roomId, ' SET TO_', lang, ' = "', translation, '" WHERE MSG_NUM = ', msgNum);
+	SET @sqlQuery = CONCAT('UPDATE room_message_', roomId, ' SET `TO_', lang, '` = "', translation, '" WHERE MSG_NUM = ', msgNum);
 	PREPARE updateText FROM @sqlQuery;
 	EXECUTE updateText;
 	DEALLOCATE PREPARE updateText;
@@ -319,14 +428,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `COMPANY_END` time DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `EMAIL` (`EMAIL`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
--- 테이블 데이터 chat.users:~2 rows (대략적) 내보내기
+-- 테이블 데이터 chat.users:~7 rows (대략적) 내보내기
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`ID`, `EMAIL`, `PASSWORD`, `NAME`, `LANGUAGE`, `COMPANY_NAME`, `IMG_URL`, `COMPANY_START`, `COMPANY_END`) VALUES
 	(1, '1812105@du.ac.kr', 'a49932b7fe6e0bc17dd7f5aefb5cf59c15967767f858a3904afac5892a2235c7', '박상도', 'ko', '동서울대', 'default_profile.jpg', '09:00:00', '18:00:00'),
 	(2, 'aa55235490@gmail.com', '55daf76ebb48896ce06ae11eac5cf86dc975ced67f0ab9ce1c57efe6a5ca010b', 'パク·サンド', 'ja', NULL, '1668688775674neko.jpg', '08:00:00', '11:00:00'),
-	(3, 'englishman@gmail.com', '7c8eec2d35d8cacbb70d5d79f61a2906f89a6f625c4aaa261622601e6aef100d', 'Homens', 'en', 'East Empire Company', '1668689027579englishMan.png', '00:00:00', '23:59:00');
+	(3, 'englishman@gmail.com', '7c8eec2d35d8cacbb70d5d79f61a2906f89a6f625c4aaa261622601e6aef100d', 'Homens', 'en', 'East Empire Company', '1668689027579englishMan.png', '00:00:00', '23:59:00'),
+	(4, 'test1', '7c8eec2d35d8cacbb70d5d79f61a2906f89a6f625c4aaa261622601e6aef100d', 'test1', 'en', 'East Empire Company', '1668689027579englishMan.png', '00:00:00', '23:59:00'),
+	(5, '1812062@du.ac.kr', '7df857adb66501698de7a6735b3ef7a1e4153c080c2ea4ab99b81ccdf7acbaa1', '황준연', 'ko', '동서울대학교', 'default_profile.jpg', '09:00:00', '18:00:00'),
+	(7, 'tkdeh129@naver.com', '55daf76ebb48896ce06ae11eac5cf86dc975ced67f0ab9ce1c57efe6a5ca010b', '박상도', 'zh-CN', 'DONGSEOULUNIVERCITY', 'default_profile.jpg', NULL, NULL),
+	(8, 'reaui19@naver.com', '55daf76ebb48896ce06ae11eac5cf86dc975ced67f0ab9ce1c57efe6a5ca010b', '박상도', 'zh-CN', 'DONGSEOULUNIVERCITY', '1668931113000neko.jpg', NULL, NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- 프로시저 chat.VIEW_ALL_MESSAGES 구조 내보내기
@@ -337,7 +450,7 @@ CREATE PROCEDURE `VIEW_ALL_MESSAGES`(
 )
 BEGIN
 	SET @sqlQuery = CONCAT('SELECT msg.MSG_NUM, msg.SEND_USER_ID, users.NAME, users.LANGUAGE, users.IMG_URL, ',
-									'msg.ORIGINAL_MSG, msg.TO_', lang, ' AS MSG, msg.SEND_TIME FROM users ', 
+									'msg.ORIGINAL_MSG, IFNULL(msg.`TO_', lang, '`, ORIGINAL_MSG) AS MSG, msg.SEND_TIME FROM users ', 
 									'RIGHT OUTER JOIN room_message_', roomId, ' AS msg ON users.ID = msg.SEND_USER_ID');
 	PREPARE CALL_MESSAGES FROM @sqlQuery;
 	EXECUTE CALL_MESSAGES;
@@ -441,7 +554,7 @@ CREATE PROCEDURE `VIEW_SINGLE_MESSAGE`(
 )
 BEGIN
 	SET @sqlQuery = CONCAT('SELECT msg.MSG_NUM, msg.SEND_USER_ID, users.NAME, users.LANGUAGE, users.IMG_URL, ',
-									'msg.ORIGINAL_MSG, msg.TO_', lang, ' AS MSG, msg.SEND_TIME FROM users ', 
+									'msg.ORIGINAL_MSG, IFNULL(msg.`TO_', lang, '`, ORIGINAL_MSG) AS MSG, msg.SEND_TIME FROM users ', 
 									'RIGHT OUTER JOIN room_message_', roomId, ' AS msg ON users.ID = msg.SEND_USER_ID ',
 									'WHERE msg.MSG_NUM = ', msgNum);
 	PREPARE CALL_MESSAGES FROM @sqlQuery;
