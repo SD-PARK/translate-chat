@@ -27,7 +27,7 @@ body {
 	display:flex;
 }
 #topmenu span.out{
-	background: url("../img/room_out_btn.png") no-repeat;
+	background: url("../img/room_out.png") no-repeat;
 	background-size:contain;
 	cursor:pointer;
 	float:left;
@@ -46,7 +46,7 @@ body {
 	flex:1;
 }
 #topmenu button.menu{
-	background: url("../img/menu_btn.png") no-repeat;
+	background: url("../img/menu.png") no-repeat;
 	background-size:contain;
 	cursor:pointer;
 	float:right;
@@ -96,12 +96,13 @@ body {
 	padding:0 0 27px 0;
 	clear:both;
 	margin-bottom:45px;
+	position:relative;
 }
 #chat-messages div.message.right{
 	margin-right: -8.55px;
 	margin-left: 8.55px;
 }
-#chat-messages .message img{
+#chat-messages .message img:nth-child(1){
 	float: left;
 	margin-left: -50px;
 	border-radius: 50%;
@@ -115,11 +116,20 @@ body {
 	margin-left: 0;
 	margin-right: -50px;
 }
+.message img.flag{
+	position:absolute;
+	top:-5px;
+    width: 15px;
+    height: 10px;
+    object-fit: cover;
+    margin:4px 3px 4px 0;
+  }
 .message strong {
 	float:left;
 	position:relative;
 	top:-5px;
 	width:100px;
+	margin-left: 19px;
 	margin-right: 100%;
 	font-size:15px;
 	color:#8495a3;
@@ -160,7 +170,7 @@ div.message .originalBtn {
 	right:-10px;
 	width:20px;
 	height:20px;
-	background:url("../img/original_text_btn.png") no-repeat;
+	background:url("../img/original_text.png") no-repeat;
 	background-size:cover;
 	border-style:none;
 }
@@ -201,7 +211,7 @@ div.message.right .bubble span{
 	outline: 0;
 }
 #sendmessage button{
-	background:url("../img/send_btn.png") no-repeat;
+	background:url("../img/send.png") no-repeat;
 	background-size:4vh;
 	width:4vh;
 	height:4vh;

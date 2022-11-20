@@ -45,11 +45,11 @@ body {
 	flex:1;
     height:10vh;
 }
-#topmenu span.friends{background:url('../img/friends_btn.png') no-repeat center; background-size:6vh;}
+#topmenu span.friends{background:url('../img/friends.png') no-repeat center; background-size:6vh;}
 #topmenu span.friends:hover{cursor:pointer;}
-#topmenu span.rooms{background:url('../img/rooms_btn.png') no-repeat center; background-size:6vh;}
+#topmenu span.rooms{background:url('../img/rooms.png') no-repeat center; background-size:6vh;}
 #topmenu span.rooms:hover{cursor:pointer;}
-#topmenu span.setting{background:url('../img/setting_btn.png') no-repeat center; background-size:6vh;}
+#topmenu span.setting{background:url('../img/setting.png') no-repeat center; background-size:6vh;}
 #topmenu span.setting:hover{cursor:pointer;}
 
 .divide{
@@ -139,7 +139,7 @@ body {
 .row .status.away{background:#ffce54;}
 .row .status.inactive{background:#eaeef0;}
 #friend_search{
-	background:#e3e9ed url("../img/search_icon.png") 2vh center no-repeat;
+	background:#e3e9ed url("../img/search.png") 2vh center no-repeat;
 	background-size:3.5vh;
 	height:8vh;
 	width:100vw;

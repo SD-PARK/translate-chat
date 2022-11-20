@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="../../styles/roomStyle.css"/>
     <link rel="stylesheet" href="../../styles/menuStyle.css">
+    <link rel="stylesheet" href="../../styles/roomInListStyle.css">
   </head>
   <body>
     <div id="chatbox">
@@ -19,8 +20,9 @@
               <!-- <span class="plus" ></span> -->
               <button id="calendar" onclick="location.href='cal.html'"></button>
               <button id="invite" onclick="inviteBtnClick()"></button>
-              <button id="exit"></button>
+              <button id="exit" onclick="exitBtnClick()"></button>
             </div>
+
             <div class="modal">
               <div class="modal-content invite">
                 <span class="close" onclick="modalClose()">&times;</span>
@@ -39,9 +41,19 @@
                 </div>
                 <button id="inviteRoomBtn" type="submit" onclick="inviteRoom()">Invite</button>
               </div>
+              <div class="modal-content exit">
+                <span class="close" onclick="modalClose()">&times;</span>
+                <p id="modalTitle">Leave the room?</p>
+                <button onclick="exitRoom()">Yes</button>
+              </div>
             </div>
             <!--  -->
         </div>
+
+        <div id="roomInList" onclick="roomInListClick()">
+          <div id="roomInListModal"></div>
+        </div>
+
         <div id="chatview">
             <div id="chat-messages">
                 <!-- Message -->

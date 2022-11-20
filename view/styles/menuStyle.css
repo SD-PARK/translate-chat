@@ -8,7 +8,8 @@
 	height: 27vh;
 	border:1px solid #d8dfe3;
 	background:#fff;
-	z-index: 1;
+	z-index: 2;
+  border-radius:0 0 1vh 1vh;
 }
 
 #menuModal > button {
@@ -36,7 +37,7 @@
 .modal {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
-	z-index: 2; /* Sit on top */
+	z-index: 3; /* Sit on top */
 	padding-top: 18vh; /* Location of the box */
 	left: 0;
 	top: 0;
@@ -47,32 +48,34 @@
 }
 
 /* Modal Content */
-.modal-content.invite{
+.modal-content{
+  display:none;
 	background-color: #fefefe;
 	margin: auto;
 	padding: 2%;
 	border: 1px solid #888;
 	width: 80%;
-	height: 55vh;
   text-align:center;
 }
 
+/** ================== Invite Box ================== */
+.modal-content.invite{
+	height: 55vh;
+}
 /* The Close Button */
-.close {
+.modal-content .close {
   color: #d8dfe3;
   float: right;
   font-size:5vh;
   font-weight: bold;
   margin-right:1.5vh;
 }
-
-.close:hover,
-.close:focus {
+.modal-content .close:hover,
+.modal-content .close:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
 }
-
 /* Title */
 #modalTitle {
   color: #d8dfe3;
@@ -83,17 +86,15 @@
   line-height:6vh;
   margin-left: 1.5vh;
 }
-
 /* Search Field */
-#modalSearch {
+.modal-content.invite #modalSearch {
   position:relative;
   clear:both;
   width:100%;
   height:5vh;
   margin-top:3vh;
 }
-
-#modalSearch input {
+.modal-content.invite #modalSearch input {
   width: 81%;
   height: 4vh;
   margin-top: 0.5vh;
@@ -104,20 +105,19 @@
   color:#fff;
   padding-left:14%;
 }
-#modalSearch input:focus {
+.modal-content.invite #modalSearch input:focus {
   background-color:#fff;
   color:#000;
 }
-#modalSearch img {
+.modal-content.invite #modalSearch img {
   filter: opacity(0.3) drop-shadow(0 0 0 #d8dfe3);
   position:absolute;
   top:1.5vh;
   left:7%;
   width:2vh;
 }
-
 /* Choose List Field */
-#chooseList {
+.modal-content.invite #chooseList {
   width: 92%;
   height: 5vh;
   overflow-x:scroll;
@@ -126,7 +126,7 @@
   margin:1.5vh 3% 0 3%;
   padding: 0.5vh;
 }
-#chooseList::-webkit-scrollbar {
+.modal-content.invite #chooseList::-webkit-scrollbar {
 	display:none;
 }
 .chooseRow {
@@ -159,35 +159,34 @@
 	white-space:nowrap;
 	text-overflow:ellipsis;
 }
-
 /* Select Field */
-#modalSelect {
+.modal-content.invite #modalSelect {
   background-color:#fff;
 	overflow-y:scroll;
 	height:29vh;
 	-ms-overflow-style:none;
 }
-#modalSelect::-webkit-scrollbar {
+.modal-content.invite #modalSelect::-webkit-scrollbar {
 	display:none;
 }
 
-.selectField {
+#modalSelect .selectField {
 	height:60px; /* 11vh */
 	position:relative;
 	overflow:hidden;
 }
-.selectField:hover{
+#modalSelect .selectField:hover{
 	background:#d8dfe3;
 	cursor:pointer;
 }
-.selectField img{
+#modalSelect .selectField img{
   height:41px;
   width:41px;
   border-radius:50%;
   margin:9px;
   float:left;
 }
-.selectField p{
+#modalSelect .selectField p{
 	padding:11px 0 0 0;
 	line-height:120%;
 	width:65%;
@@ -196,19 +195,19 @@
 	text-overflow:ellipsis;
   text-align:left;
 }
-.selectField p strong{
+#modalSelect .selectField p strong{
 	font-weight:bold;
 	font-size:16px;
 	color:#333;
 }
-.selectField p span{
+#modalSelect .selectField p span{
 	font-size:13px;
 	color:#597a90;
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:ellipsis;
 }
-.selectField input[type='checkbox']{
+#modalSelect .selectField input[type='checkbox']{
   position:absolute;
   top:0;
   right:0;
@@ -219,11 +218,10 @@
   appearance:none;
   margin:17.5px;
 }
-.selectField input[type='checkbox']:checked{
+#modalSelect .selectField input[type='checkbox']:checked{
   background:#597a90 url('../img/check.png') no-repeat center;
   background-size: 20px;
 }
-
 /* Make Room Button */
 #inviteRoomBtn {
   width:20vw;
@@ -237,4 +235,25 @@
 }
 #inviteRoomBtn:active {
   background-color:#d8dfe3;
+}
+
+/* ================== Exit Box ================== */
+.modal-content.exit{
+  margin-top: 20vh;
+	height: 15vh;
+  text-align: center;
+  position:relative;
+}
+.modal-content.exit button {
+  position:absolute;
+  left:32vw;
+  bottom:3vh;
+  width:23vw;
+  height:5vh;
+  background:#d8dfe3;
+  border-style:none;
+  border-radius:5%;
+  font-weight:600;
+  font-size:2vh;
+  color:#fff;
 }

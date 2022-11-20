@@ -10,7 +10,7 @@ module.exports = (io, db) => {
             socket.user_id = user_id;
             // ROOM_ID, ROOM_NAME, SEND_TIME, MSG
             let res = [];
-            db.query(`CALL VIEW_JOINROOM(${user_id});`, (err, roomList) => { if (err) return console.log(err);
+            db.query(`CALL VIEW_ROOMSLIST(${user_id});`, (err, roomList) => { if (err) return console.log(err);
                 callback(roomList[0]);
             });
         });

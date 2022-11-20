@@ -27,8 +27,8 @@ function selfPrint(info) {
     $('#rows').append('<div class="divide"><strong>Friends Profile</strong></div>');
 }
 
-function friendPrint(info) {
-    $('#rows').append(`<div class="row friend" onclick="location.href='profile/${info.ID}'">
+function friendPrint(info) { // location.href='profile/${info.ID}
+    $('#rows').append(`<div class="row friend" onclick="'">
                             <img src="../img/profiles/${info.IMG_URL}"/>
                             <p>
                                 <img src="../img/flag/${info.LANGUAGE}.png">

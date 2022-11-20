@@ -54,22 +54,23 @@ exports.signupPostMid = (req, res) => {
                         if (err) throw err;
                         fs.writeFile(req.file.path, buffer, (err) => {if (err) throw err});
                     })
-                    db.query(`UPDATE USERS SET IMG_URL = "${req.file.filename}" WHERE EMAIL = "${email}";`, (err, result) => { if (err) return console.log(err); });
+                    db.query(`CALL UPDATE_USER_REGISTER_IMG("${email}", "${req.file.filename}");`, (err, result) => { if (err) return console.log(err); });
                 } catch (err) {
                     console.log(err);
                 }
             }
             if(company) {
-                db.query(`UPDATE USERS SET COMPANY_NAME = "${company}" WHERE EMAIL = "${email}";`, (err, result) => { if (err) return console.log(err); });
+                db.query(`CALL UPDATE_USER_REGISTER_cName("${email}", "${company}");`, (err, result) => { if (err) return console.log(err); });
             }
             if(company_start) {
-                db.query(`UPDATE USERS SET COMPANY_START = "${company_start}" WHERE EMAIL = "${email}";`, (err, result) => { if (err) return console.log(err); });
+                db.query(`CALL UPDATE_USER_REGISTER_cStart("${email}", "${company_start}");`, (err, result) => { if (err) return console.log(err); });
             }
             if(company_end) {
-                db.query(`UPDATE USERS SET COMPANY_END = "${company_end}" WHERE EMAIL = "${email}";`, (err, result) => { if (err) return console.log(err); });
+                db.query(`CALL UPDATE_USER_REGISTER_cEnd("${email}", "${company_end}");`, (err, result) => { if (err) return console.log(err); });
             }
         }
         res.redirect('/login');
+        alert('Signup Complete');
     });
 }
 

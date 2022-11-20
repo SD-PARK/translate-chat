@@ -12,17 +12,22 @@ let msg = [];
 // Room 입장 이벤트
 socket.emit('join', {user_id: user_id, room_id: room_id}, (title, res) => {
     let msg_length = res.length;
-    let date;
     if(res === 'No permissions')
         return alert(res);
+    roomInUserCheck();
 
-    $('#topmenu input.title').attr('value', title);
-    $("#Untranslated").css('display', 'none');
+    $('#topmenu input.title').attr('value', title); // Title 변경
+    $("#Untranslated").css('display', 'none'); // 번역 대기 중 문자 제거
     console.log(res);
     msg = res;
+
     for(let i=0; i<msg_length; i++) {
         datePrint(new Date(res[i].SEND_TIME).toLocaleDateString()); // 날짜 확인
-        if(res[i].SEND_USER_ID == user_id) { // 본인 메세지와 상대 메세지 구분
+        
+        let date = new Date(res[i].SEND_TIME).toLocaleTimeString().slice(0, -3);
+        if(res[i].SEND_USER_ID == 0) {
+            alertMsg(res[i]);
+        } else if(res[i].SEND_USER_ID == user_id) { // 본인 메세지와 상대 메세지 구분
             selfChat(res[i], date);
         } else {
             personChat(res[i], date);
@@ -30,6 +35,34 @@ socket.emit('join', {user_id: user_id, room_id: room_id}, (title, res) => {
     }
     $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
 });
+
+// 방 참여 인원 확인
+function roomInUserCheck() {
+    socket.emit('inUser', (inUserList) => {
+       console.log(inUserList);
+       const len = inUserList.length;
+       
+       $('#roomInListModal').empty();
+       for(let i=0; i<len; i++) {
+            $('#roomInListModal').append(`<div class="listCol">
+                                            <img src="../../img/profiles/${inUserList[i].IMG_URL}" class="listColProfile">
+                                            <div><img src="../../img/flag/${inUserList[i].LANGUAGE}.png" class="listColFlag"><br>
+                                            <strong>${inUserList[i].NAME}</strong></div></div>`);
+       }
+    });
+}
+/** 참여 인원 확인 버튼 클릭 시 */
+function roomInListClick() {
+    if ($('#roomInListModal').css('display') == 'none') {
+        $('#roomInList').css('top', '14vh');
+        $('#roomInList').css('background-image', 'url("../../img/up.png")');
+        $('#roomInListModal').show();
+    } else {
+        $('#roomInList').css('top', '9vh');
+        $('#roomInList').css('background-image', 'url("../../img/down.png")');
+        $('#roomInListModal').hide();
+    }
+}
 
 /** 입력받은 날짜가 이전 대화의 날짜와 다르면 날짜 출력 */
 function datePrint(date) {
@@ -40,11 +73,20 @@ function datePrint(date) {
         dateCheck = date;
     }
 }
+/** 알림 메시지 (방 입장 등) */
+function alertMsg(chat) {
+    $('#chat-messages').append(`<div class="message" >
+        <img src="../../img/arrow.png"/>
+        <strong style="width:100%; margin-top:1vh;">${chat.MSG}</strong>
+        </div>
+    </div>`);
+    roomInUserCheck();
+}
 /** 다른 사람의 대화 (좌측 말풍선) */
-function personChat(chat) {
-    date = new Date(chat.SEND_TIME).toLocaleTimeString().slice(0, -3);
+function personChat(chat, date) {
     $('#chat-messages').append(`<div class="message">
         <img src="../../img/profiles/${chat.IMG_URL}"/>
+        <img class="flag" src="../../img/flag/${chat.LANGUAGE}.png">
         <strong>${chat.NAME}</strong>
         <div class="bubble"><div id="msg_${chat.MSG_NUM}">${chat.MSG}</div><div class="corner"></div>
             <span class="dateLeft">${date}</span>
@@ -53,8 +95,7 @@ function personChat(chat) {
     </div>`);
 }
 /** 본인의 대화 (우측 말풍선) */
-function selfChat(chat) {
-    date = new Date(chat.SEND_TIME).toLocaleTimeString().slice(0, -3);
+function selfChat(chat, date) {
     $('#chat-messages').append(`<div class="message right">
         <img src="../../img/profiles/${chat.IMG_URL}" />
         <div class="bubble"><div id="msg_${chat.MSG_NUM}">${chat.MSG}</div><div class="corner"></div>
@@ -87,10 +128,14 @@ socket.on('tellNewMsg', (MSG_NUM) => {
     socket.emit('callNewMsg', (MSG_NUM), (newMsg) => {
         msg.push(newMsg);
         datePrint(new Date(newMsg.SEND_TIME).toLocaleDateString()); // 날짜 확인
-        if (newMsg.SEND_USER_ID == user_id) {
-            selfChat(newMsg);
+        
+        let date = new Date(newMsg.SEND_TIME).toLocaleTimeString().slice(0, -3);
+        if(newMsg.SEND_USER_ID == 0) {
+            alertMsg(newMsg);
+        } else if (newMsg.SEND_USER_ID == user_id) {
+            selfChat(newMsg, date);
         } else {
-            personChat(newMsg);
+            personChat(newMsg, date);
         }
         $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight); // 스크롤 맨 아래로
     });
@@ -109,12 +154,12 @@ function textSwitch(msgNum) {
     if (msg[msgNum-1].switch) {
         $(`#msg_${msgNum}`).empty();
         $(`#msg_${msgNum}`).append(translateMsg);
-        $(`#btn_${msgNum}`).css('background-image', 'url("../../img/original_text_btn.png")');
+        $(`#btn_${msgNum}`).css('background-image', 'url("../../img/original_text.png")');
         msg[msgNum-1].switch = 0;
     } else {
         $(`#msg_${msgNum}`).empty();
         $(`#msg_${msgNum}`).append(originalMsg);
-        $(`#btn_${msgNum}`).css('background-image', 'url("../../img/translate_text_btn.png")');
+        $(`#btn_${msgNum}`).css('background-image', 'url("../../img/translate_text.png")');
         msg[msgNum-1].switch = 1;
     }
 }
@@ -130,23 +175,42 @@ function modalBtnClick() {
 
 /** 친구 초대 */
 function inviteBtnClick() {
+    $('#chooseList').empty();
+    inviteIdArr = [];
     $('.modal').show();
+    $('.invite').show();
     socket.emit('friendsSearch', ($('#searchText').val()), (list) => {
         window.list = list;
         modalUpdate();
+        roomInUserCheck();
     });
 }
 
-/** Modal 닫기 */
-function modalClose() {
-    $(".modal").css('display', 'none');
+/** 방 나가기 버튼 클릭 시 재확인 */
+function exitBtnClick() {
+    $('.modal').show();
+    $('.exit').show();
 }
+/** 방 나가기 */
+function exitRoom() {
+    socket.emit('exitRoom', () => {
+        location.replace('../roomsList');
+    });
+}
+
+
 // 팝업 창 외부 영역 클릭 시
 $(window).click((e) => {
     if ($(e.target).is($('.modal'))) {
-        $(".modal").css('display', "none");
+        modalClose();
     }
 });
+/** Modal 닫기 */
+function modalClose() {
+    $(".modal").hide();
+    $('.invite').hide();
+    $('.exit').hide();
+}
 
 // ======= Search Event ======= //
 $(document).ready(() => {

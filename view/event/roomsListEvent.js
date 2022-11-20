@@ -78,7 +78,6 @@ $(window).click((e) => {
     }
 });
 
-
 // ======= Search Event ======= //
 $(document).ready(() => {
     // 검색 창에 입력 시
@@ -135,7 +134,7 @@ function inviteRemove(id) { // Invite Event
 // ======= Submit Event ======= //
 function makeRoom() {
     if(inviteIdArr.length) {
-        socket.emit('makeRoom', inviteIdArr, (callback) => {
+        socket.emit('makeRoom', inviteIdArr, () => {
             // Modal 닫기
             modalClose();
             // 채팅방 목록 갱신
