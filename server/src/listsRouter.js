@@ -9,4 +9,6 @@ router.get('/roomsList', listsController.roomsListGetMid);
 
 router.get('/room/:room_id', listsController.roomJoinGetMid);
 
+router.get('/settingsList', listsController.settingsListGetMid);
+
 module.exports = router;

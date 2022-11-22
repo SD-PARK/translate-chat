@@ -1,23 +1,21 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap");
-@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 * { margin:0px; padding:0px; }
 
 body {
 	position:relative;
 	min-height:100vh;
-	background-color:#E1E8EE;
 	display:flex;
 	align-items:center;
 	justify-content:center;
-	font-family:"Fira Sans", "Nanum Gothic", Helvetica, Arial, sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
 	-webkit-font-smoothing:antialiased;
 	-moz-osx-font-smoothing:grayscale;
 	overflow-x:hidden;
 }
 
 #chatbox{
-	background-color:#fff;
+	background-color:#404040;
 	border-radius:3vh;
 	height:100vh;
 	width:100vw;
@@ -36,8 +34,7 @@ body {
 
 #topmenu{
 	height:10vh;
-	border-bottom:1px solid #d8dfe3;
-	background-color:#FFF;
+	background-color:#404040;
 	display:flex;
 }
 #topmenu span{
@@ -56,25 +53,27 @@ body {
 	padding: 15px 0;
 	text-align: center;
 	line-height: 15px;
-	border-bottom:1px solid #e7ebee;
+	color: #F0EDCC;
+	border-bottom:1px solid #555;
 }
 
 .row{
 	height:90px; /* 11vh */
-	border-bottom:1px solid #e7ebee;
+	border-bottom:1px solid #555;
 	position:relative;
 	overflow:hidden;
 }
 .row:hover{
-	background:#f1f4f6;
+	background:#555;
 	cursor:pointer;
 }
 .row img{
-	height:65px;
-	width:65px;
+	height:60px;
+	width:60px;
 	border-radius:50%;
-	margin:13.5px;
+	margin:16px;
 	float:left;
+	object-fit:cover;
 }
 .row p{
 	padding:20px 0 0 0;
@@ -90,24 +89,25 @@ body {
 .friend p img{
   width: 18px;
   height: 12px;
-  object-fit: cover;
-  margin:7px 5px 7px 0;
+  position: absolute;
+  bottom: 2px;
+  left: 46px;
   border-radius:0;
 }
 .row p strong{
-	font-size:20px;
-	color:#597a96;
+	font-size:18px;
+	color:#F0EDCC;
 }
 .room p strong{
-	font-size:19px;
+	font-size:18px;
 	text-align:left;
 }
 .room div{
     text-align:left;
 	font-size:16px;
-	color:#000;
+	color:#F0EDCC;
 	width:70vw;
-	padding:6.75px 0 0 0;
+	padding:4px 0 0 0;
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:ellipsis;
@@ -116,13 +116,13 @@ body {
     float:right;
     text-align:right;
 	font-size:17px;
-	color:#687a90;
+	color:#F0EDCC;
 	margin:-72px 22.5px 0 0;
 }
 .row p span{
-	font-size:15.3px;
+	font-size:15px;
 	font-weight:400;
-	color:#597a90;
+	color:#F0EDCC;
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:ellipsis;
@@ -139,7 +139,7 @@ body {
 .row .status.away{background:#ffce54;}
 .row .status.inactive{background:#eaeef0;}
 #friend_search{
-	background:#e3e9ed url("../img/search.png") 2vh center no-repeat;
+	background:#555 url("../img/search.png") 2vh center no-repeat;
 	background-size:3.5vh;
 	height:8vh;
 	width:100vw;
@@ -148,14 +148,14 @@ body {
 	left:0;
 }
 #searchfield{
-	background:#e3e9ed;
-	margin:2.8vh 0 0 16vw;
+	background:#555;
+	margin:2.5vh 0 0 16vw;
 	border:none;
 	width:80vw;
 	font-size:2.1vh;
-	font-family:"Fira Sans", "Nanum Gothic", Helvetica, Arial, sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
 	font-weight:400;
-	color:#333;
+	color:#F0EDCC;
 }
 #searchfield:focus{
 	outline:0;

@@ -101,6 +101,7 @@ function modalUpdate() {
         $('#modalSelect').append(`<div class="selectField">
                                     <img src="../img/profiles/${window.list[i].IMG_URL}"/>
                                     <p>
+                                        <img src="../img/flag/${window.list[i].LANGUAGE}.png">
                                         <strong>${window.list[i].NAME}</strong><br>
                                         <span>${window.list[i].EMAIL}</span>
                                     </p>
@@ -115,6 +116,7 @@ function addInvite(id, i) {
         $('#chooseList').append(`<div class="chooseRow" onclick="inviteRemove(${id})">
                                         <span class="chooseCancel">&times;</span>
                                         <img src="../img/profiles/${window.list[i].IMG_URL}">
+                                        <img class="smFlag" src="../img/flag/${window.list[i].LANGUAGE}.png">
                                         <p>${window.list[i].NAME}</p>
                                     </div>`)
     } else { // 이미 체크된 상태라면

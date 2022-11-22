@@ -32,6 +32,7 @@
     overflow:hidden;
 }
 div.listCol img.listColProfile {
+    object-fit:cover;
     width:30px;
     height:30px;
     border-radius:40%;
@@ -46,6 +47,7 @@ div.listCol div {
     white-space:nowrap;
 }
 div.listCol div img.listColFlag {
+    object-fit:cover;
     width:15px;
     height:10px;
 }

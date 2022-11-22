@@ -33,3 +33,12 @@ exports.roomJoinGetMid = (req, res) => {
         res.redirect('/login');
     }
 }
+
+exports.settingsListGetMid = (req, res) => {
+    const { user } = req.session;
+    if (user) {
+        res.sendFile('setting.html', {root: path.join(__dirname + '/../../view/html/')});
+    } else {
+        res.redirect('/login');
+    }
+}

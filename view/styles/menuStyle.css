@@ -111,6 +111,7 @@
 }
 .modal-content.invite #modalSearch img {
   filter: opacity(0.3) drop-shadow(0 0 0 #d8dfe3);
+  object-fit:cover;
   position:absolute;
   top:1.5vh;
   left:7%;
@@ -147,6 +148,7 @@
   width: 3vh;
   height: 3vh;
   margin: 0 1vh;
+  object-fit:cover;
 }
 .chooseRow p {
   width: 4vh;
@@ -185,6 +187,7 @@
   border-radius:50%;
   margin:9px;
   float:left;
+  object-fit:cover;
 }
 #modalSelect .selectField p{
 	padding:11px 0 0 0;

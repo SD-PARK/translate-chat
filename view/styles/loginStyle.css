@@ -1,13 +1,13 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
 html, body {
   position: relative;
+  border: #eee solid 1px;
   min-height: 100vh;
-  background-color: #E1E8EE;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -18,7 +18,7 @@ html, body {
 }
 
 .form-structor {
-  background-color: #222;
+  background-color: #404040;
   border-radius: 3vh;
   height: 100vh;
   width: 100vw;
@@ -36,7 +36,6 @@ html, body {
   background-repeat: no-repeat;
   background-position: left bottom;
   background-size: 100vh;
-  background-image: url("https://images.unsplash.com/photo-1503602642458-232111445657?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bf884ad570b50659c5fa2dc2cfb20ecf&auto=format&fit=crop&w=1000&q=100");
 }
 .form-structor .signup {
   position: absolute;
@@ -73,7 +72,7 @@ html, body {
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .signup .form-title {
-  color: #fff;
+  color: #F0EDCC;
   font-size: 4vh;
   text-align: center;
 }
@@ -84,8 +83,6 @@ html, body {
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .signup .form-holder {
-  border-radius: 3vh;
-  background-color: #fff;
   overflow: hidden;
   margin-top: 10vh;
   opacity: 1;
@@ -100,33 +97,33 @@ html, body {
   height: 6vh;
   line-height: 6vh;
   padding: 0.5vh 3vh;
-  border-bottom: 0.2vh solid #eee;
-  width: 82%;
+  border-bottom: 0.2vh solid #F0EDCC;
+  width: 90%;
   font-size: 2vh;
-}
-.form-structor .signup .form-holder .input:last-child {
-  border-bottom: 0;
+  background-color: #404040;
+  color: #F0EDCC;
 }
 .form-structor .signup .form-holder .input::-webkit-input-placeholder {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(240, 237, 204, 0.4);
 }
 .form-structor .signup .form-holder .select {
   -webkit-appearance: none; /* 화살표 없애기 for chrome*/
   -moz-appearance: none; /* firefox*/
-  color: #000;
+  color: #F0EDCC;
   height: 7vh;
   line-height: 5.5vh;
+  width: 100%;
 }
 .form-structor .signup .submit-btn {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: rgba(255, 255, 255, 0.7);
-  border: 0;
-  border-radius: 3vh;
+  background-color: rgba(64, 64, 64, 0.7);
+  color: rgba(240, 237, 204, 0.7);
+  border: #F0EDCC solid 1px;
+  border-radius: 2vh;
   display: block;
   margin: 3vh auto;
-  padding: 2vh 9vh;
+  padding: 1.7vh 9vh;
   width: 100%;
-  font-size: 2.2vh;
+  font-size: 2vh;
   font-weight: bold;
   cursor: pointer;
   opacity: 1;
@@ -135,7 +132,8 @@ html, body {
 }
 .form-structor .signup .submit-btn:hover {
   transition: all 0.3s ease;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(240, 237, 204, 0.7);
+  color: rgba(64, 64, 64, 0.7);
 }
 .form-structor .login {
   position: absolute;
@@ -143,7 +141,7 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #fff;
+  background-color: #F0EDCC;
   z-index: 5;
   -webkit-transition: all 0.3s ease;
 }
@@ -153,7 +151,7 @@ html, body {
   left: 50%;
   top: -4vh;
   -webkit-transform: translate(-50%, 0);
-  background-color: #fff;
+  background-color: #F0EDCC;
   width: 200%;
   height: 50vh;
   border-radius: 50%;
@@ -170,20 +168,17 @@ html, body {
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .login .center .form-title {
-  color: #000;
+  color: #404040;
   font-size: 4vh;
   text-align: center;
 }
 .form-structor .login .center .form-title span {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(64, 64, 64, 0.4);
   opacity: 0;
   visibility: hidden;
   -webkit-transition: all 0.3s ease;
 }
 .form-structor .login .center .form-holder {
-  border-radius: 3vh;
-  background-color: #fff;
-  border: 0.2vh solid #eee;
   overflow: hidden;
   margin-top: 10vh;
   opacity: 1;
@@ -198,26 +193,25 @@ html, body {
   height: 6vh;
   line-height: 6vh;
   padding: 0.5vh 3vh;
-  border-bottom: 0.2vh solid #eee;
-  width: 82%;
+  border-bottom: 0.2vh solid #404040;
+  width: 90%;
   font-size: 2vh;
-}
-.form-structor .login .center .form-holder .input:last-child {
-  border-bottom: 0;
+  background-color: #F0EDCC;
+  color: #404040;
 }
 .form-structor .login .center .form-holder .input::-webkit-input-placeholder {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(64, 64, 64, 0.4);
 }
 .form-structor .login .center .submit-btn {
-  background-color: #6B92A4;
-  color: rgba(255, 255, 255, 0.7);
-  border: 0;
-  border-radius: 3vh;
+  background-color: rgba(240, 237, 204, 0.7);
+  color: rgba(64, 64, 64, 0.7);
+  border: #404040 solid 1px;
+  border-radius: 2vh;
   display: block;
   margin: 3vh auto;
-  padding: 2vh 9vh;
+  padding: 1.7vh 9vh;
   width: 100%;
-  font-size: 2.2vh;
+  font-size: 2vh;
   font-weight: bold;
   cursor: pointer;
   opacity: 1;
@@ -226,7 +220,8 @@ html, body {
 }
 .form-structor .login .center .submit-btn:hover {
   transition: all 0.3s ease;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(64, 64, 64, 0.7);
+  color: rgba(240, 237, 204, 0.7);
 }
 .form-structor .login.slide-up {
   top: 90%;
@@ -274,6 +269,7 @@ html, body {
   margin: 0 23vw -7vh 23vw;
   width: 25vw;
   height: 25vw;
+  object-fit: cover;
 }
 
 /*# sourceMappingURL=loginStyle.css.map */

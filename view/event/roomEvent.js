@@ -235,6 +235,7 @@ function modalUpdate() {
         $('#modalSelect').append(`<div class="selectField">
                                     <img src="../../img/profiles/${window.list[i].IMG_URL}"/>
                                     <p>
+                                        <img src="../img/flag/${info.LANGUAGE}.png">
                                         <strong>${window.list[i].NAME}</strong><br>
                                         <span>${window.list[i].EMAIL}</span>
                                     </p>
