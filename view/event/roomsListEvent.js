@@ -60,7 +60,9 @@ updateCheck = setInterval(() => { // 1초마다 서버에 업데이트 여부 �
 // ======= Modal Event ======= //
 /** 하단 Modal 버튼 클릭 */
 function modalBtnClick() {
-    $("#myModal").css('display', 'block');
+    $("#myModal").show();
+    $('.modal').animate({opacity: '1'}, 300);
+    $('.modal-content').animate({top: '10vh'}, 300);
     // 친구 목록 로드
     socket.emit('friendsSearch', (''), (list) => {
         window.list = list;
@@ -69,12 +71,16 @@ function modalBtnClick() {
 }
 /** Modal 닫기 */
 function modalClose() {
-    $("#myModal").css('display', 'none');
+    $('.modal').animate({opacity: '0'}, 300);
+    $('.modal-content').animate({top: '100vh'}, 300);
+    setTimeout(() => {
+        $("#myModal").hide();
+    }, 300);
 }
 // 팝업 창 외부 영역 클릭 시
 $(window).click((e) => {
     if ($(e.target).is($('#myModal'))) {
-        $("#myModal").css('display', "none");
+        modalClose();
     }
 });
 

@@ -1,34 +1,44 @@
 /* ======= Menu ======= */
 #menuModal {
-	display:none;
 	position: absolute;
-	top:8vh;
-	right: 0;
-	width: 10vh;
-	height: 27vh;
-	border:1px solid #d8dfe3;
-	background:#fff;
+	right: -41vw;
+	width: 40vw;
+	height: 100vh;
+	background:#404040;
 	z-index: 2;
-  border-radius:0 0 1vh 1vh;
+  border-radius:1vh 0 0 1vh;
 }
-
-#menuModal > button {
-	width: 4vh;
-	height: 5vh;
-	margin: 2vh 3vh;
+#menuModal > div {
+	width: 36vw;
+	height: 50px;
+  display: block;
+  line-height: 50px;
+  padding-left: 4vw;
+  font-size: 15px;
+  border-bottom: 1px solid #555;
+  color: #F0EDCC;
+}
+#menuModal > div > img {
+  width: 20px;
+  height: 20px;
+  margin: 15px;
 	border-style: none;
+  float: right;
 }
-#menuModal > button#calendar {
-	background:url('../img/calendar.png') no-repeat;
-	background-size: 4vh;
+#menuModal > div#roomInList {
+	width: 40vw;
+  padding: 0;
+  height:100%;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  white-space:nowrap;
+  -ms-overflow-style:none;
 }
-#menuModal > button#invite {
-	background:url('../img/invite.png') no-repeat;
-	background-size: 4vh;
+#menuModal > div:hover {
+  background-color: #555;
 }
-#menuModal > button#exit {
-	background:url('../img/exit.png') no-repeat;
-	background-size: 4vh;
+#menuModal > div#roomInList:hover {
+  background-color: #404040;
 }
 
 /* Menu in Button Click */
@@ -36,8 +46,9 @@
 /* background */
 .modal {
 	display: none; /* Hidden by default */
+  opacity: 0;
 	position: fixed; /* Stay in place */
-	z-index: 3; /* Sit on top */
+	z-index: 1; /* Sit on top */
 	padding-top: 18vh; /* Location of the box */
 	left: 0;
 	top: 0;
@@ -50,10 +61,10 @@
 /* Modal Content */
 .modal-content{
   display:none;
-	background-color: #fefefe;
+	background-color: #404040;
 	margin: auto;
 	padding: 2%;
-	border: 1px solid #888;
+	border: 1px solid #555;
 	width: 80%;
   text-align:center;
 }
@@ -61,33 +72,37 @@
 /** ================== Invite Box ================== */
 .modal-content.invite{
 	height: 55vh;
+  opacity: 0;
 }
 /* The Close Button */
 .modal-content .close {
-  color: #d8dfe3;
+  color: #F0EDCC;
   float: right;
-  font-size:5vh;
+  font-size:3vh;
   font-weight: bold;
-  margin-right:1.5vh;
+  margin-top:0.5vh;
+  margin-right:1vh;
 }
 .modal-content .close:hover,
 .modal-content .close:focus {
-  color: #000;
+  color: #555;
   text-decoration: none;
   cursor: pointer;
 }
 /* Title */
 #modalTitle {
-  color: #d8dfe3;
+  color: #F0EDCC;
   float: left;
-  font-size: 2.5vh;
+  font-size: 2.3vh;
   font-weight: bold;
   height:6vh;
-  line-height:6vh;
+  line-height: 5.2vh;
   margin-left: 1.5vh;
 }
 /* Search Field */
 .modal-content.invite #modalSearch {
+  background:url("../img/search.png") 1.5vh center no-repeat;
+  background-size:2.5vh;
   position:relative;
   clear:both;
   width:100%;
@@ -95,27 +110,17 @@
   margin-top:3vh;
 }
 .modal-content.invite #modalSearch input {
-  width: 81%;
+  width: 83%;
   height: 4vh;
   margin-top: 0.5vh;
-  font-size: 1.5vh;
+  margin-left:5.5vh;
+  font-size: 1.8vh;
   border-style: none;
-  border-radius:3vh;
-  background-color:#d8dfe3;
-  color:#fff;
-  padding-left:14%;
+  background-color:#404040;
+  color:#F0EDCC;
 }
 .modal-content.invite #modalSearch input:focus {
-  background-color:#fff;
-  color:#000;
-}
-.modal-content.invite #modalSearch img {
-  filter: opacity(0.3) drop-shadow(0 0 0 #d8dfe3);
-  object-fit:cover;
-  position:absolute;
-  top:1.5vh;
-  left:7%;
-  width:2vh;
+  outline:0;
 }
 /* Choose List Field */
 .modal-content.invite #chooseList {
@@ -140,17 +145,26 @@
   position:absolute;
   top:-8px;
   right:5px;
-  color: #333;
+  color: #F0EDCC;
   font-size:1.5vh;
 }
 .chooseRow img {
+  object-fit:cover;
   border-radius: 50%;
   width: 3vh;
   height: 3vh;
   margin: 0 1vh;
-  object-fit:cover;
+}
+.chooseRow img.smFlag {
+  width: 1.5vh;
+  height: 1vh;
+  position:absolute;
+  bottom:1.8vh;
+  left:2.2vh;
+  border-radius:0;
 }
 .chooseRow p {
+  color: #F0EDCC;
   width: 4vh;
   height: 1.5vh;
   margin-top: -0.5vh;
@@ -163,7 +177,6 @@
 }
 /* Select Field */
 .modal-content.invite #modalSelect {
-  background-color:#fff;
 	overflow-y:scroll;
 	height:29vh;
 	-ms-overflow-style:none;
@@ -178,7 +191,7 @@
 	overflow:hidden;
 }
 #modalSelect .selectField:hover{
-	background:#d8dfe3;
+	background:#555;
 	cursor:pointer;
 }
 #modalSelect .selectField img{
@@ -198,14 +211,22 @@
 	text-overflow:ellipsis;
   text-align:left;
 }
+#modalSelect .selectField p img{
+  width: 15px;
+  height: 10px;
+  position:absolute;
+  bottom:3px;
+  left:30px;
+  border-radius:0;
+}
 #modalSelect .selectField p strong{
 	font-weight:bold;
 	font-size:16px;
-	color:#333;
+	color:#F0EDCC;
 }
 #modalSelect .selectField p span{
 	font-size:13px;
-	color:#597a90;
+	color:#F0EDCC;
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:ellipsis;
@@ -216,28 +237,30 @@
   right:0;
   width:25px;
   height:25px;
-  border:1px solid #999;
+  border:1px solid #555;
   border-radius: 50%;
   appearance:none;
   margin:17.5px;
 }
 #modalSelect .selectField input[type='checkbox']:checked{
-  background:#597a90 url('../img/check.png') no-repeat center;
+  background:#F0EDCC url('../img/check.png') no-repeat center;
   background-size: 20px;
 }
 /* Make Room Button */
 #inviteRoomBtn {
-  width:20vw;
+  width:25vw;
   height:4vh;
   margin:2vh;
-  background-color:#fff;
-  border:1px solid #d8dfe3;
-  border-radius:10%;
+  background-color:#404040;
+  border:1px solid #F0EDCC;
+  color: #F0EDCC;
+  border-radius:5vh;
   box-shadow:none;
   font-size:1.7vh;
 }
-#inviteRoomBtn:active {
-  background-color:#d8dfe3;
+#inviteRoomBtn:hover {
+  background-color:#F0EDCC;
+  color:#404040;
 }
 
 /* ================== Exit Box ================== */
@@ -246,17 +269,60 @@
 	height: 15vh;
   text-align: center;
   position:relative;
+  opacity: 0;
 }
 .modal-content.exit button {
   position:absolute;
   left:32vw;
-  bottom:3vh;
+  bottom:3.5vh;
   width:23vw;
-  height:5vh;
-  background:#d8dfe3;
-  border-style:none;
-  border-radius:5%;
+  height:4vh;
+  background-color:#404040;
+  border:1px solid #F0EDCC;
+  color:#F0EDCC;
+  border-radius:5vh;
   font-weight:600;
-  font-size:2vh;
-  color:#fff;
+  font-size:1.7vh;
+}
+.modal-content.exit button:hover {
+  background-color:#F0EDCC;
+  color:#404040;
+}
+
+
+/* ================== RoomInList Box ================== */
+div#roomInList div.listCol {
+  width:40vw;
+  height:45px;
+  border-bottom:1px solid #555;
+  position: relative;
+  line-height:45px;
+}
+div#roomInList div.listCol:hover {
+  background-color: #555;
+}
+div.listCol img.listColProfile {
+  object-fit:cover;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  margin:7.5px;
+}
+div.listCol img.listColFlag {
+  object-fit:cover;
+  width:15px;
+  height:10px;
+  position: absolute;
+  left: 28px;
+  bottom: 8px;
+}
+div.listCol strong {
+  position: absolute;
+  top: 0;
+  left: 50px;
+  font-size: 15px;
+  width: 60%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }

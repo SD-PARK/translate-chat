@@ -42,26 +42,14 @@ function roomInUserCheck() {
        console.log(inUserList);
        const len = inUserList.length;
        
-       $('#roomInListModal').empty();
+       $('#roomInList').empty();
        for(let i=0; i<len; i++) {
-            $('#roomInListModal').append(`<div class="listCol">
+            $('#roomInList').append(`<div class="listCol">
                                             <img src="../../img/profiles/${inUserList[i].IMG_URL}" class="listColProfile">
-                                            <div><img src="../../img/flag/${inUserList[i].LANGUAGE}.png" class="listColFlag"><br>
-                                            <strong>${inUserList[i].NAME}</strong></div></div>`);
+                                            <img src="../../img/flag/${inUserList[i].LANGUAGE}.png" class="listColFlag">
+                                            <strong>${inUserList[i].NAME}</strong></div>`);
        }
     });
-}
-/** 참여 인원 확인 버튼 클릭 시 */
-function roomInListClick() {
-    if ($('#roomInListModal').css('display') == 'none') {
-        $('#roomInList').css('top', '14vh');
-        $('#roomInList').css('background-image', 'url("../../img/up.png")');
-        $('#roomInListModal').show();
-    } else {
-        $('#roomInList').css('top', '9vh');
-        $('#roomInList').css('background-image', 'url("../../img/down.png")');
-        $('#roomInListModal').hide();
-    }
 }
 
 /** 입력받은 날짜가 이전 대화의 날짜와 다르면 날짜 출력 */
@@ -73,7 +61,7 @@ function datePrint(date) {
         dateCheck = date;
     }
 }
-/** 알림 메시지 (방 입장 등) */
+/** 알림 메시지 (방 입장, 퇴장 등) */
 function alertMsg(chat) {
     $('#chat-messages').append(`<div class="message" >
         <img src="../../img/arrow.png"/>
@@ -166,19 +154,20 @@ function textSwitch(msgNum) {
 
 /** 메뉴 버튼 클릭 시 모달 On/Off */
 function modalBtnClick() {
-    if ($('#menuModal').css('display') == 'none') {
-        $('#menuModal').show();
-    } else {
-        $('#menuModal').hide();
-    }
+    $('.modal').show();
+    $('#menuModal').animate({right: '0'}, 500);
+    $('.modal').animate({opacity: '1'}, 500);
 }
 
 /** 친구 초대 */
 function inviteBtnClick() {
     $('#chooseList').empty();
     inviteIdArr = [];
-    $('.modal').show();
+    
+    $('#menuModal').animate({right: '-41vw'}, 300);
+    $('#menuModal').css('z-index', '1');
     $('.invite').show();
+    $('.invite').animate({opacity: '1'}, 300);
     socket.emit('friendsSearch', ($('#searchText').val()), (list) => {
         window.list = list;
         modalUpdate();
@@ -188,8 +177,10 @@ function inviteBtnClick() {
 
 /** 방 나가기 버튼 클릭 시 재확인 */
 function exitBtnClick() {
-    $('.modal').show();
+    $('#menuModal').animate({right: '-41vw'}, 300);
+    $('#menuModal').css('z-index', '1');
     $('.exit').show();
+    $('.exit').animate({opacity: '1'}, 300);
 }
 /** 방 나가기 */
 function exitRoom() {
@@ -207,9 +198,16 @@ $(window).click((e) => {
 });
 /** Modal 닫기 */
 function modalClose() {
-    $(".modal").hide();
-    $('.invite').hide();
-    $('.exit').hide();
+    $('.invite').animate({opacity: '0'}, 300);
+    $('.exit').animate({opacity: '0'}, 300);
+    $('#menuModal').animate({right: '-41vw'}, 500);
+    $('.modal').animate({opacity: '0'}, 500);
+    setTimeout(() => {
+        $('#menuModal').css('z-index', '2');
+        $(".modal").hide();
+        $('.invite').hide();
+        $('.exit').hide();
+    }, 500);
 }
 
 // ======= Search Event ======= //
@@ -235,7 +233,7 @@ function modalUpdate() {
         $('#modalSelect').append(`<div class="selectField">
                                     <img src="../../img/profiles/${window.list[i].IMG_URL}"/>
                                     <p>
-                                        <img src="../img/flag/${info.LANGUAGE}.png">
+                                        <img src="../../img/flag/${window.list[i].LANGUAGE}.png">
                                         <strong>${window.list[i].NAME}</strong><br>
                                         <span>${window.list[i].EMAIL}</span>
                                     </p>
@@ -249,6 +247,7 @@ function addInvite(id, i) {
         inviteIdArr.push(id); // 값 추가
         $('#chooseList').append(`<div class="chooseRow" onclick="inviteRemove(${id})">
                                         <span class="chooseCancel">&times;</span>
+                                        <img class="smFlag" src="../../img/flag/${window.list[i].LANGUAGE}.png">
                                         <img src="../../img/profiles/${window.list[i].IMG_URL}">
                                         <p>${window.list[i].NAME}</p>
                                     </div>`)

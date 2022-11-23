@@ -3,9 +3,9 @@
 * { margin: 0px;padding: 0px;}
 
 body {
+	overflow:hidden;
 	position:relative;
 	min-height:100vh;
-	background-color:#E1E8EE;
 	display:flex;
 	align-items:center;
 	justify-content:center;
@@ -16,13 +16,12 @@ body {
 #chatbox{
 	height:100vh;
 	width:100vw;
-	background:#fff;
+	background:#404040;
 	border-radius:3vh;
 }
 #topmenu{
 	height:8vh;
-	border-bottom:1px solid #d8dfe3;
-	background-color:#FFF;
+	background-color:#555;
 	display:flex;
 }
 #topmenu span.out{
@@ -30,9 +29,9 @@ body {
 	background-size:contain;
 	cursor:pointer;
 	float:left;
-	width:4vh;
-	height:4vh;
-	margin:2vh 1vh 2vh 3vh;
+	width:3.5vh;
+	height:3.5vh;
+	margin:2.3vh 1vh 2.2vh 3vh;
 }
 #topmenu input.title{
 	height:4vh;
@@ -41,6 +40,8 @@ body {
 	font-weight:bold;
 	text-align:center;
 	font-family: 'Noto Sans KR', sans-serif;
+	background-color: #555;
+	color: #F0EDCC;
 	border-style:none;
 	flex:1;
 }
@@ -49,9 +50,9 @@ body {
 	background-size:contain;
 	cursor:pointer;
 	float:right;
-	width:4vh;
-	height:4vh;
-	margin:2vh 3vh 2vh 1.5vh;
+	width:3.5vh;
+	height:3.5vh;
+	margin:2.5vh 3vh 2vh 1.5vh;
 	border-style:none;
 }
 #chat-messages{
@@ -85,16 +86,15 @@ body {
 	padding:8px 0;
 }
 #chat-messages label{
-	color:#8495a3;
+	color:#F0EDCC;
 	font-size:14.5px;
 	text-align:center;
-	margin:15px 0 25px 10px;
+	margin:15px 0 15px 10px;
 	display:block;
 }
 #chat-messages div.message{
-	padding:0 0 27px 0;
+	padding:0 0 55px 0;
 	clear:both;
-	margin-bottom:45px;
 	position:relative;
 }
 #chat-messages div.message.right{
@@ -119,9 +119,10 @@ body {
 .message img.flag{
     object-fit:cover;
 	position:absolute;
-	top:-5px;
-    width: 15px;
-    height: 10px;
+	bottom:18px;
+	left:-23px;
+    width: 18px;
+    height: 12px;
     object-fit: cover;
     margin:4px 3px 4px 0;
   }
@@ -130,22 +131,21 @@ body {
 	position:relative;
 	top:-5px;
 	width:100px;
-	margin-left: 19px;
 	margin-right: 100%;
 	font-size:15px;
-	color:#8495a3;
+	color:#F0EDCC;
 	overflow:hidden;
 	white-space:nowrap;
 	text-overflow:ellipsis;
 }
 .message .bubble{
-	background:#f0f4f7;
+	background:#F0EDCC;
 	font-size:14px;
 	padding:8px 9px;
 	margin-top: -2px;
 	margin-bottom:27px;
 	border-radius:0 5px 5px 5px;
-	color:#8495a3;
+	color:#404040;
 	position:relative;
 	float:left;
 	word-break:break-all;
@@ -155,9 +155,8 @@ body {
 	border-radius:5px 0px 5px 5px;
 }
 .bubble .corner {
-	background:url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/bubble-corner.png") 0 0 no-repeat;
-	background-size:3px;
-	transform:scaleY(-1);
+	background:url("../img/bubble_corner.png") 0 0 no-repeat;
+	background-size:cover;
 	transition:.3s;
 	position:absolute;
 	width:3px;
@@ -176,12 +175,14 @@ div.message .originalBtn {
 	border-style:none;
 }
 div.message.right .corner{
-	background:url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/bubble-cornerR.png") 0 0 no-repeat;
+	background:url("../img/bubble_corner.png") 0 0 no-repeat;
+	background-size: cover;
+	transform:scaleX(-1);
 	left:auto;
 	right:-2.8px;
 }
 div.message .bubble span{
-	color: #aab8c2;
+	color: #F0EDCC;
 	white-space:nowrap;
 	font-size: 12px;
 	position: absolute;
@@ -196,10 +197,10 @@ div.message.right .bubble span{
 #sendmessage{
 	height:8vh;
 	width:100vw;
-	border-top:1px solid #e7ebee;
+	border-radius: 20% 20% 0 0;
 	position:absolute;
 	bottom:0;
-	background:#fff;
+	background:#555;
 }
 #sendmessage input{
 	width:80vw;
@@ -207,8 +208,8 @@ div.message.right .bubble span{
 	border:none;
 	padding:0;
 	font-size:2vh;
-	/* color:#aab8c2; */
-	color:#333;
+	background-color: #555;
+	color:#F0EDCC;
 	outline: 0;
 }
 #sendmessage button{

@@ -3,7 +3,6 @@
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 10vh; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -11,6 +10,7 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  opacity: 0;
 }
 
 /* Modal Button */
@@ -25,8 +25,10 @@
 
 /* Modal Content */
 .modal-content {
+  position: absolute;
+  top: 100vh;
+  left: 8%;
   background-color: #404040;
-  margin: auto;
   padding: 2%;
   width: 80%;
   height: 80vh;
@@ -174,6 +176,7 @@
 	overflow:hidden;
 	text-overflow:ellipsis;
   text-align:left;
+	color:#F0EDCC;
 }
 .selectField p img{
   width: 15px;
@@ -223,7 +226,7 @@
   box-shadow:none;
   font-size:1.7vh;
 }
-#makeRoomBtn:active {
+#makeRoomBtn:hover {
   background-color:#F0EDCC;
   color:#404040;
 }

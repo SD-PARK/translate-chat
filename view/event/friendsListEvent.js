@@ -43,7 +43,9 @@ function friendPrint(info) { // location.href='profile/${info.ID}
 // ======= Modal Event ======= //
 /** 하단 Modal 버튼 클릭 */
 function modalBtnClick() {
-    $("#myModal").css('display', 'block');
+    $("#myModal").show();
+    $('.modal').animate({opacity: '1'}, 300);
+    $('.modal-content').animate({top: '17vh'}, 300);
 }
 // 팝업 창 외부 영역 클릭 시
 $(window).click((e) => {
@@ -53,10 +55,14 @@ $(window).click((e) => {
 });
 /** Modal 닫기 */
 function modalClose() {
-    $("#myModal").css('display', 'none');
+    $('.modal').animate({opacity: '0'}, 300);
+    $('.modal-content').animate({top: '100vh'}, 300);
     socket.emit('view', (user_id), (res) => { // 친구 목록 갱신
         printMid(res, 1);
     });
+    setTimeout(() => {
+        $("#myModal").hide();
+    }, 300);
 }
 
 // ======= Search Event ======= //

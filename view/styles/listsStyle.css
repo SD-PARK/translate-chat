@@ -48,6 +48,7 @@ body {
 #topmenu span.rooms:hover{cursor:pointer;}
 #topmenu span.setting{background:url('../img/setting.png') no-repeat center; background-size:6vh;}
 #topmenu span.setting:hover{cursor:pointer;}
+#topmenu span.select{filter: invert(100%) sepia(9%) saturate(420%) hue-rotate(7deg) brightness(140%) contrast(90%);}
 
 .divide{
 	padding: 15px 0;
@@ -81,17 +82,18 @@ body {
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:ellipsis;
+	color:#F0EDCC;
 }
 .friend p{
 	padding:22.5px 0 0 0;
 	line-height:150%;
 }
 .friend p img{
-  width: 18px;
-  height: 12px;
+  width: 21px;
+  height: 14px;
   position: absolute;
-  bottom: 2px;
-  left: 46px;
+  bottom: 0px;
+  left: 44px;
   border-radius:0;
 }
 .row p strong{
