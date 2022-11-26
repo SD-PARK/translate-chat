@@ -12,8 +12,8 @@ module.exports = (io, db) => {
                 for(let i=0; i<len; i++) {
                     console.log(nullList[0][i].FROM_LANGUAGE, userLanguage, nullList[0][i].ORIGINAL_MSG);
                     let transMsg = await papago.lookup(nullList[0][i].FROM_LANGUAGE, userLanguage, nullList[0][i].ORIGINAL_MSG);
-                    let eTransMsg = escapeMap(transMsg);
-                    db.query(`CALL UPDATE_TRANSLATION(${room_id}, ${nullList[0][i].MSG_NUM}, '${userLanguage}', '${eTransMsg}');`, (err, res) => { if (err) return console.log(err); });
+                    // let eTransMsg = escapeMap(transMsg);
+                    db.query(`CALL UPDATE_TRANSLATION(${room_id}, ${nullList[0][i].MSG_NUM}, '${userLanguage}', '${transMsg}');`, (err, res) => { if (err) return console.log(err); });
                 }
                 resolve();
             });
@@ -105,9 +105,11 @@ module.exports = (io, db) => {
         socket.on('exitRoom', (callback) => {
             const userId = socket.user_id;
             const roomId = socket.room_id;
-            db.query(`CALL DELETE_ROOM_IN_USER(${roomId}, ${userId})`, (err, res) => { if (err) return console.log(err); });
-            console.log('Exit Room :', roomId, 'User', userId);
-            callback();
+            db.query(`CALL DELETE_ROOM_IN_USER(${roomId}, ${userId})`, (err, res) => { if (err) return console.log(err); 
+                Room.to(socket.room_id).emit('tellNewMsg', res[0][0].MSG_NUM);
+                console.log('Exit Room :', roomId, 'User', userId);
+                callback();
+            });
         });
 
         socket.on('disconnect', () => {
