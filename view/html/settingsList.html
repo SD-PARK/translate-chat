@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'> -->
+    <link rel="stylesheet" href="../styles/listsStyle.css"/>
+    <link rel="stylesheet" href="../styles/makeRoomStyle.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> 
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../event/roomsListEvent.js"></script>
+  </head>
+  <body>
+    <div id="chatbox">
+      <div id="rowslist">
+        <div id="topmenu">
+          <span class="friends" onclick="location.href='friendsList'"></span>
+          <span class="rooms select"></span>
+          <span class="setting" onclick="location.href='settingsList'"></span>
+        </div>
+
+        <div id="rows">
+          <!-- Room List -->
+
+        </div>
+        <div id="room_search">
+          <!-- Open The Make Room Box -->
+          <button id="myBtn" onclick="modalBtnClick()"></button>
+          <!-- Make Room Box The Modal -->
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span class="close" onclick="modalClose()">&times;</span>
+              <p id="modalTitle">Select a contact</p>
+              <div id="modalSearch">
+                <input type="text" placeholder="Search name" id="searchText">
+              </div>
+              <div id="chooseList">
+                <!-- chooseRow -->
+
+              </div>
+              <div id="modalSelect">
+                <!-- selectField -->
+                
+              </div>
+              <button id="makeRoomBtn" type="submit" onclick="makeRoom()">Create</button>
+            </div>
+          </div>
+          <!--  -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
