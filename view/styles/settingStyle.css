@@ -1,0 +1,140 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+* { margin:0px; padding:0px; }
+
+body {
+	position:relative;
+	min-height:100vh;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	font-family: 'Noto Sans KR', sans-serif;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale;
+	overflow-x:hidden;
+}
+
+#chatbox{
+	background-color:#404040;
+	border-radius:3vh;
+	height:100vh;
+	width:100vw;
+	position:relative;
+	overflow:hidden;
+}
+
+#topmenu{
+	height:10vh;
+	background-color:#404040;
+	display:flex;
+}
+#topmenu span{
+	float:left;
+	flex:1;
+    height:10vh;
+}
+#topmenu span.friends{background:url('../img/friends.png') no-repeat center; background-size:6vh;}
+#topmenu span.friends:hover{cursor:pointer;}
+#topmenu span.rooms{background:url('../img/rooms.png') no-repeat center; background-size:6vh;}
+#topmenu span.rooms:hover{cursor:pointer;}
+#topmenu span.setting{background:url('../img/setting.png') no-repeat center; background-size:6vh;}
+#topmenu span.setting:hover{cursor:pointer;}
+#topmenu span.select{filter: invert(100%) sepia(9%) saturate(420%) hue-rotate(7deg) brightness(140%) contrast(90%);}
+
+#rows{
+	overflow-y:scroll;
+	height:82vh;
+	-ms-overflow-style:none;
+}
+#rows::-webkit-scrollbar{
+	display:none;
+}
+
+/* 프로필 */
+#rows form#profile {
+	height: 100px;
+	border-bottom:#555 solid 1px;
+	position:relative;
+	overflow: hidden;
+}
+/* 프로필 이미지 */
+#profile label img#profile_img {
+	position: static;
+	border:1px solid #eee;
+	border-radius: 50%;
+	margin:0px 15px;
+	width:60px;
+	height:60px;
+	object-fit:cover;
+}
+#profile input#change_img {
+	display:none;
+}
+#profile #cam_icon {
+	width:17px;
+	height:17px;
+	position:absolute;
+	left:65px;
+	top:50px;
+}
+#profile button#resetImg {
+	width:85px;
+	height: 20px;
+	font-size:11px;
+	position: absolute;
+	left: 5px;
+	top: 73px;
+}
+
+/* 유저 정보 */
+#profile div#info {
+	position:absolute;
+	top:0;
+	left:100px;
+	height:100px;
+	width:70vw;
+	display:inline-block;
+	line-height:20px;
+}
+#info input {
+	width:50vw;
+	height:30px;
+	background:none;
+	border-style:none;
+	color:#F0EDCC;
+	outline:none;
+}
+#info input#name {
+	font-weight:600;
+	margin-top:16px;
+	font-size:18px;
+}
+#info input#company {
+	font-size:16px;
+}
+
+
+#profile img#pencil_icon {
+	width:20px;
+	height:20px;
+	position: absolute;
+	right:10px;
+	bottom:5px;
+}
+/* 프로필 변경 버튼 */
+#profile button {
+	width:35vw;
+	height:35px;
+	border:1px solid #F0EDCC;
+	border-radius:20px;
+	background:#404040;
+	color:#F0EDCC;
+	position: absolute;
+	left: 32.5vw;
+	bottom: -35px;
+}
+#profile button:hover {
+	border:1px solid #404040;
+	background:#F0EDCC;
+	color:#404040;
+}

@@ -4,48 +4,33 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'> -->
-    <link rel="stylesheet" href="../styles/listsStyle.css"/>
-    <link rel="stylesheet" href="../styles/makeRoomStyle.css">
+    <link rel="stylesheet" href="../styles/settingStyle.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="../event/roomsListEvent.js"></script>
+    <script src="../event/settingsListEvent.js"></script> 
   </head>
   <body>
     <div id="chatbox">
       <div id="rowslist">
         <div id="topmenu">
           <span class="friends" onclick="location.href='friendsList'"></span>
-          <span class="rooms select"></span>
-          <span class="setting" onclick="location.href='settingsList'"></span>
+          <span class="rooms" onclick="location.href='roomsList'"></span>
+          <span class="setting select"></span>
         </div>
 
         <div id="rows">
           <!-- Room List -->
-
-        </div>
-        <div id="room_search">
-          <!-- Open The Make Room Box -->
-          <button id="myBtn" onclick="modalBtnClick()"></button>
-          <!-- Make Room Box The Modal -->
-          <div id="myModal" class="modal">
-            <div class="modal-content">
-              <span class="close" onclick="modalClose()">&times;</span>
-              <p id="modalTitle">Select a contact</p>
-              <div id="modalSearch">
-                <input type="text" placeholder="Search name" id="searchText">
-              </div>
-              <div id="chooseList">
-                <!-- chooseRow -->
-
-              </div>
-              <div id="modalSelect">
-                <!-- selectField -->
-                
-              </div>
-              <button id="makeRoomBtn" type="submit" onclick="makeRoom()">Create</button>
+          <form id="profile" action="/lists/settingsList" method="post" enctype="multipart/form-data">
+            <label for="change_img"><img id="profile_img" src="../img/profiles/default_profile.jpg"><img id="cam_icon" src="../img/camera.png"></label>
+            <input type="file" id="change_img" onchange="changeImage()" name="img_file">
+            <button id="resetImg" type="button" onclick="imageDefault()">Defualt Image</button><input id="resetCheck" type="text" name="reset" value="0" style="display:none;">
+            <div id="info">
+              <input id="name" type="text" name="name">
+              <input id="company" type="text" name="company">
             </div>
-          </div>
-          <!--  -->
+            <img src="../img/pencil.png" id="pencil_icon">
+            <button type="submit">Change</button>
+          </form>
         </div>
       </div>
     </div>

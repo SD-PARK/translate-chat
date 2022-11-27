@@ -44,6 +44,7 @@ body {
 	color: #F0EDCC;
 	border-style:none;
 	flex:1;
+	outline:none;
 }
 #topmenu button.menu{
 	background: url("../img/menu.png") no-repeat;
