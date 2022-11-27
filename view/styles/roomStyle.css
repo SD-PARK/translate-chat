@@ -31,7 +31,8 @@ body {
 	float:left;
 	width:3.5vh;
 	height:3.5vh;
-	margin:2.3vh 1vh 2.2vh 3vh;
+	margin:2.3vh 0.5vh 2.2vh 1.5vh;
+	padding:0 0.5vh 0 1.5vh;
 }
 #topmenu input.title{
 	height:4vh;
@@ -53,7 +54,8 @@ body {
 	float:right;
 	width:3.5vh;
 	height:3.5vh;
-	margin:2.5vh 3vh 2vh 1.5vh;
+	margin:2.3vh 1.5vh 2.2vh 0.5vh;
+	padding:0 1.5vh 0 1vh;
 	border-style:none;
 }
 #chat-messages{

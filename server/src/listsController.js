@@ -67,7 +67,7 @@ exports.settingsListPostMid = (req, res) => {
         db.query(`CALL UPDATE_USER_REGISTER_NAME(${userId}, "${name}");`, (err, res) => { if (err) return console.log(err); });
     }
     if(language) {
-        db.query(`CALL UPDATE_USER_REGISTER_LANGUAGE(${userId}, "${langauge}");`, (err, res) => { if (err) return console.log(err); });
+        db.query(`CALL UPDATE_USER_REGISTER_LANGUAGE(${userId}, "${language}");`, (err, res) => { if (err) return console.log(err); });
     }
     if(company) {
         db.query(`CALL UPDATE_USER_REGISTER_cName(${userId}, "${company}");`, (err, res) => { if (err) return console.log(err); });

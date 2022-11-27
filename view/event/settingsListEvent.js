@@ -13,6 +13,7 @@ socket.emit('callProfile', (user_id), (profile) => {
     $('#profile_img').attr('src', '../img/profiles/' + userInfo.IMG_URL);
     $('#name').val(userInfo.NAME);
     $('#company').val(userInfo.COMPANY_NAME);
+    $("#language").val(userInfo.LANGUAGE).prop("selected", true);
 });
 
 /** 이미지 업로드 */
@@ -48,6 +49,7 @@ $(document).ready(() => {
             showChangeButton();
         }
     });
+    
     $('#info input#company').change(() => {
         if($('#info input#company').val() == "") {
             $('#company').val(userInfo.COMPANY_NAME);
@@ -55,13 +57,34 @@ $(document).ready(() => {
             showChangeButton();
         }
     });
+
+    $('#language').change(() => {
+        showChangeButton();
+    });
 });
 
 /** Change 버튼 출현 애니메이션 */
 function showChangeButton() {
-    console.log(userInfo);
     $('#profile').animate({height: '135px'}, 300);
     setTimeout(() => {
-        $('#profile button').animate({bottom: '10px'}, 700);
+        $('#profile button').animate({bottom: '10px'}, 500);
     }, 300);
+}
+
+/** Graphic 클릭 시 */
+function setGraphic() {
+    if($('.graphicRow').css('height') == '0px') {
+        $('.graphicRow').animate({height: '50px', opacity: '1'}, 300);
+    } else {
+        $('.graphicRow').animate({height: '0px', opacity: '0'}, 300);
+    }
+}
+
+/** Sound 클릭 시 */
+function setSound() {
+    if($('.soundRow').css('height') == '0px') {
+        $('.soundRow').animate({height: '50px', opacity: '1'}, 300);
+    } else {
+        $('.soundRow').animate({height: '0px', opacity: '0'}, 300);
+    }
 }

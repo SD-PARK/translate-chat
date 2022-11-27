@@ -28,9 +28,23 @@
               <input id="name" type="text" name="name">
               <input id="company" type="text" name="company">
             </div>
+            <select name="language" id="language">
+              <option value="en">English</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+              <option value="zh-CN">简体中文</option>
+              <option value="zh-TW">繁體中文</option>
+            </select>
             <img src="../img/pencil.png" id="pencil_icon">
             <button type="submit">Change</button>
           </form>
+          <div class="set graphic" onclick="setGraphic()">Graphic</div>
+          <div class="setRow graphicRow">Thema</div>
+          <div class="setRow graphicRow">Font</div>
+          <div class="set sound" onclick="setSound()">Sound</div>
+          <div class="setRow soundRow">Notification</div>
+          <div class="setRow soundRow">Do Not Disturb</div>
+          <div class="set logout" onclick="location.href='../login/logout'">Logout</div>
         </div>
       </div>
     </div>

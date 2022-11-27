@@ -74,6 +74,13 @@ exports.signupPostMid = (req, res) => {
     });
 }
 
+exports.logoutGetMid = (req, res) => {
+    if(req.session.user) {
+        req.session.destroy(() => {});
+    }
+    res.redirect('/login')
+}
+
 function hash(password) {
     return crypto.createHmac('SHA256', SECRET).update(password).digest('hex');
 }
